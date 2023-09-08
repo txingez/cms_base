@@ -1,15 +1,14 @@
 import {headers, headersUpload} from "../commonService";
 import axios from "axios";
 
-const URL = import.meta.env.ENV_STATIC_SERVICE;
+const URL = import.meta.env.ENV_BACKEND_SERVICE;
 const config = {
     headers: headersUpload()
 }
 
-export const uploadImage = (type, file, onProgress) => {
+export const uploadImage = (file, onProgress) => {
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('type', type);
+    formData.append('image', file);
     return axios.post(`${URL}/upload`,
         formData,
         Object.assign(config, onProgress ? {

@@ -26,7 +26,7 @@
 
                 <div class="flex justify-end">
                     <a-form-item>
-                        <a-button type="primary" html-type="submit" :loading="state.loading">
+                        <a-button type="primary" html-type="submit" :loading="state.loading" class="bg-[#1677ff]">
                             Đăng nhập
                         </a-button>
                     </a-form-item>
@@ -42,7 +42,6 @@ import {useRouter} from "vue-router";
 import {login} from "../../services/authentication";
 import {ACCESS_TOKEN_KEY} from "@/constants/constants";
 import {handleResponse} from "../../services/commonService";
-import {showToast} from "../../utils/showToast";
 
 const router = useRouter();
 

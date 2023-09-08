@@ -26,52 +26,46 @@ const router = createRouter({
                 },
                 {
                     id: 3,
-                    path: "/category",
-                    name: "category",
-                    component: () => import("../views/category/ManagementCategory.vue"),
+                    path: "/activities",
+                    name: "activities",
+                    component: () => import("../views/activity/list/Activities.vue")
                 },
                 {
                     id: 4,
-                    path: "/news",
-                    name: "news",
-                    component: () => import("../views/news/list/NewsList.vue")
+                    path: "/activity/editor",
+                    name: "editor_activity",
+                    component: () => import("../views/activity/create/EditorActivity.vue")
                 },
                 {
                     id: 5,
-                    path: "/news/editor",
-                    name: "editor_news",
-                    component: () => import("../views/news/create/EditorNews.vue")
+                    path: "/activity/edit/:activityId",
+                    name: "edit_activity",
+                    component: () => import("../views/activity/create/EditorActivity.vue"),
                 },
                 {
                     id: 6,
-                    path: "/news/edit/:newsId",
-                    name: "edit_news",
-                    component: () => import("../views/news/create/EditorNews.vue"),
+                    path: "/management_home",
+                    name: "management_home",
+                    component: () => import("../views/managementHomePage/ManagementHomePage.vue")
                 },
                 {
                     id: 7,
-                    path: "/policy",
-                    name: "management_policy",
-                    component: () => import("../views/policy/ManagementPolicy.vue")
+                    path: "/management_overview",
+                    name: "management_overview",
+                    component: () => import("../views/managementOverviewPage/ManagementOverviewPage.vue")
                 },
                 {
                     id: 8,
-                    path: "/popup",
-                    name: "popup",
-                    component: () => import("../views/popup/ManagementPopup.vue")
+                    path: "/message",
+                    name: "management_message",
+                    component: () => import("../views/message/ManagementMessage.vue")
                 },
                 {
                     id: 9,
-                    path: "/comment",
-                    name: "comment",
-                    component: () => import("../views/comment/ManagementComment.vue")
-                },
-                {
-                    id: 10,
-                    path: "/notifications",
-                    name: "notification",
-                    component: () => import("../views/notification/NotificationList.vue")
-                },
+                    path: "/evaluated_result",
+                    name: "management_result",
+                    component: () => import("../views/managementEvaluatedResult/ManagementEvaluatedResultPage.vue")
+                }
             ],
         },
         {
