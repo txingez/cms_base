@@ -33,8 +33,10 @@
                 </a-col>
                 <a-col :xs="24" :md="12">
                     <a-form-item label="Ngày đăng"
+                                 name="releaseDate"
                                  :rules="[{required: true}]">
                         <a-date-picker class="w-full"
+                                       v-model:value="formData.releaseDate"
                                        format="YYYY-MM-DD"
                                        valueFormat="YYYY-MM-DD"
                                        placeholder="Chọn ngày đăng"/>
@@ -75,8 +77,8 @@
                                  :rules="[{required: true}]">
                         <a-select v-model:value="formData.contentType"
                                   :options="optionContentType"
-                                  allow-clear
-                                  placeholder="Nguồn"/>
+                                  placeholder="Nguồn">
+                        </a-select>
                     </a-form-item>
                 </a-col>
                 <a-col :xs="24" :md="24">
@@ -92,7 +94,7 @@
                                           :toolbar="toolbar"
                                           content-type="html">
                             </quill-editor>
-                            <a-input v-else></a-input>
+                            <a-input v-else v-model:value="formData.content" placeholder="Target Link"/>
                         </div>
                     </a-form-item>
                 </a-col>
@@ -199,7 +201,8 @@ const formData = reactive({
     content: '',
     errorBigImage: '',
     errorThumbnail: '',
-    contentType: 'HTML'
+    contentType: null,
+    releaseDate: ''
 });
 
 const optionsCategory = [
@@ -208,8 +211,8 @@ const optionsCategory = [
 ];
 
 const optionContentType = [
-  {label: 'LINK', value: 'link'},
-  {label: 'HTML', value: 'html'}
+    {label: 'LINK', value: 'LINK'},
+    {label: 'HTML', value: 'HTML'}
 ];
 
 const state = reactive({
