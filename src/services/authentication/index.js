@@ -4,9 +4,9 @@ import axios from "axios";
 const config = {headers: headers()};
 
 export const login = body => {
-    return axios.post(`${URL}/auth-cms/login`, body, config);
-};
+    return axios.post(`${URL}/api/v1/auth/sign_in`, body, config)
+}
 
-export const logout = body => {
-    return axios.post(`${URL}/auth-cms/logout`, body, config);
-};
+export const logout = () => {
+    return axios.post(`${URL}/api/v1/auth/sign_out`)
+}

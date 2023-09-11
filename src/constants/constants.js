@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-export const ACCESS_TOKEN_KEY = '__accessToken'
+export const ACCESS_TOKEN_KEY = 'token'
 export const REFRESH_TOKEN_KEY = '__refreshToken'
 
 export const MAP_KEY_TREE_WITH_NAME = {

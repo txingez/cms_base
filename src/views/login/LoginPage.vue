@@ -1,27 +1,18 @@
 <template>
     <div class="content-center bg-right flex justify-center items-center h-screen bg-blue-500">
         <div
-                class="xl:w-2/5 lg:w-3/5 sm:w-4/5 w-11/12 bg-white p-8 opacity-90 lg:opacity-100 rounded shadow-gray-400 shadow-md"
-        >
-            <a-form :model="formState"
-                    layout="vertical"
-                    name="basic"
-                    autocomplete="off"
-                    :validate-messages="validateMessages"
-                    @finish="handleSubmit">
+            class="xl:w-2/5 lg:w-3/5 sm:w-4/5 w-11/12 bg-white p-8 opacity-90 lg:opacity-100 rounded shadow-gray-400 shadow-md">
+            <a-form :model="formState" layout="vertical" name="basic" autocomplete="off"
+                :validate-messages="validateMessages" @finish="handleSubmit">
                 <div class="text-3xl font-semibold my-5">Đăng nhập</div>
-                <a-form-item label="Tên đăng nhập"
-                             name="username"
-                             :rules="[{ required: true }]">
-                    <a-input v-model:value="formState.username"
-                             placeholder="Tên đăng nhập"/>
+                <a-form-item label="Email" name="email" :rules="[{ pattern: new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/), message: 'Email không dúng định dạng' },
+                { required: true, message: 'Hãy nhập thông tin' }]">
+                    <a-input v-model:value="formState.email" placeholder="Email" />
                 </a-form-item>
 
-                <a-form-item label="Mật khẩu"
-                             name="password"
-                             :rules="[{ required: true }]">
-                    <a-input-password v-model:value="formState.password"
-                                      placeholder="Mật khẩu"/>
+                <a-form-item label="Mật khẩu" name="password" :rules="[{ required: true, message: 'Bạn chưa nhập mật khẩu' },
+                { min: 6, message: 'Mật khẩu phải ít nhất 6 kí tự' }]">
+                    <a-input-password v-model:value="formState.password" placeholder="Mật khẩu" />
                 </a-form-item>
 
                 <div class="flex justify-end">
@@ -37,11 +28,11 @@
 </template>
 
 <script setup>
-import {reactive} from "@vue/reactivity";
-import {useRouter} from "vue-router";
-import {login} from "../../services/authentication";
-import {ACCESS_TOKEN_KEY} from "@/constants/constants";
-import {handleResponse} from "../../services/commonService";
+import { reactive } from "@vue/reactivity";
+import { useRouter } from "vue-router";
+import { login } from "../../services/authentication";
+import { ModalError } from "../../components/ModalError";
+import { ModalSuccess } from "../../components/ModalSuccess";
 
 const router = useRouter();
 
@@ -50,8 +41,9 @@ const state = reactive({
 });
 
 const formState = reactive({
-    username: "",
-    password: ""
+    email: "",
+    password: "",
+    type: "CMS"
 });
 
 const validateMessages = {
@@ -59,35 +51,47 @@ const validateMessages = {
 };
 
 const handleSubmit = () => {
-    state.loading = true;
+    state.loading = true
 
     const body = {
-        username: formState.username,
-        password: formState.password
-    };
+        email: formState.email,
+        password: formState.password,
+        type: formState.type
+    }
 
     login(body)
-        .then(responseLogin => {
-            const responseLoginData = handleResponse(responseLogin.status, responseLogin.data);
-            state.loading = false;
-            if (responseLoginData) {
-                storeInfoLogin(responseLoginData.data.accessToken, responseLoginData.data.refreshToken);
+        .then((response) => {
+            state.loading = false
+            const user = response.data.data.user
+            const callback = () => {
+                sessionStorage.setItem(import.meta.env.ENV_USER_ID_KEY, user.id)
+                sessionStorage.setItem(import.meta.env.ENV_EMAIL_KEY, user.email)
+                sessionStorage.setItem(import.meta.env.ENV_FULL_NAME_KEY, `${user.first_name} ${user.last_name}`)
+                sessionStorage.setItem(import.meta.env.ENV_TOKEN_KEY, user.token)
                 router.push("/");
             }
-        })
-        .catch(error => {
-            //For test, delete when done backend api
-            storeInfoLogin('accessToken');
-            router.push("/");
-
-            //Todo: Uncomment code when auth api has done
-            // state.loading = false;
-            // console.log('Lỗi đăng nhập', error);
-            // showToast('error', 'Đăng nhập thất bại')
+            ModalSuccess('Bạn đã đăng nhập thành công', callback)
+        }).catch((err) => {
+            console.log(err)
+            state.loading = false
+            const data = err.response.data
+            const message = data.message
+            ModalError('Đăng nhập thất bại', handleLoginFailed(message))
         })
 };
 
-const storeInfoLogin = (accessToken) => {
-    sessionStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-};
+const handleLoginFailed = message => {
+    switch (message) {
+        case 'Access denied!!!':
+            return 'Bạn không có quyền truy cập trang web này!'
+        case 'Please fill in all fields!':
+            return 'Hãy điền đầy đủ thông tin đăng nhập!'
+        case 'Password does not match.':
+            return 'Mật khẩu không đúng'
+        case 'The provided email is not registered.':
+            return 'Email chưa được đăng ký!'
+        default:
+            return 'Có lỗi xảy ra. Vui lòng kỹ thuật để hỗ trợ!'
+    }
+}
 </script>
