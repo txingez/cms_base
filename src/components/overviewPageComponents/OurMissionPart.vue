@@ -1,11 +1,19 @@
 <script setup>
 import DividerWithTitle from "../DividerWithTitle.vue";
-import {onMounted, reactive, ref} from "vue";
+import {computed, onMounted, reactive, ref} from "vue";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons-vue";
 import {handleResponse} from "../../services/commonService";
 import PreviewModal from "../PreviewModal.vue";
 import {saveData} from "../../services/overviewPage";
 import {showToast} from "../../utils/showToast";
+import {ModulesEditor} from "../../constants/modulesEditor";
+import {QuillEditor} from "@vueup/vue-quill";
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import {ToolbarEditor} from "../../constants/toolbarEditor";
+
+const quill = ref()
+
+const toolbar = computed(() => ToolbarEditor(quill))
 
 const props = defineProps({
     pageId: String
@@ -14,7 +22,8 @@ const props = defineProps({
 const formState = reactive({
     missions: [
         {id: 0, title: '', description: ''}
-    ]
+    ],
+    content : ''
 })
 
 const missionToDelete = ref([])
@@ -91,7 +100,7 @@ const addRow = () => {
 
     <a-form :label-wrap="true"
             label-align="left"
-            :label-col="{span: 3}"
+            :label-col="{span: 4}"
             :model="formState"
             @finish="handleSubmit">
         <div class="space-y-5 mb-5">
@@ -99,41 +108,44 @@ const addRow = () => {
                  :key="mission.id"
                  class="flex items-center gap-5">
                 <div class="basis-full">
-                    <a-form-item :name="['missions', index, 'title']"
-                                 :label="['Tiêu đề ', index + 1]"
+<!--                    <a-form-item :name="['missions', index, 'title']"-->
+<!--                                 :label="['Tiêu đề ', index + 1]"-->
+<!--                                 :rules="[{required: true, message: 'Nội dung không được để trống'}]">-->
+<!--                        <a-input v-model:value="mission.title" placeholder="Tiêu đề nhiệm vụ"/>-->
+<!--                    </a-form-item>-->
+                    <a-form-item name="content"
+                                 label="Nội dung"
                                  :rules="[{required: true, message: 'Nội dung không được để trống'}]">
-                        <a-input v-model:value="mission.title" placeholder="Tiêu đề nhiệm vụ"/>
-                    </a-form-item>
-                    <a-form-item :name="['missions', index, 'description']"
-                                 :label="['Mô tả ', index + 1]"
-                                 :rules="[{required: true, message: 'Nội dung không được để trống'}]">
-                        <a-textarea v-model:value="mission.description"
-                                    placeholder="Mô tả nhiệm vụ"
-                                    allow-clear
-                                    show-count
-                                    :maxlength="250"
-                                    :rows="5"/>
+                        <div class="w-full">
+                            <quill-editor ref="quill"
+                                          v-model:content="formState.content"
+                                          class="min-h-[300px] max-h-[700px] overflow-x-scroll"
+                                          :modules="ModulesEditor"
+                                          :toolbar="toolbar"
+                                          content-type="html">
+                            </quill-editor>
+                        </div>
                     </a-form-item>
                 </div>
-                <a-form-item>
-                    <a-button type="text"
-                              shape="circle"
-                              danger
-                              @click="removeRow(mission)"
-                              :disabled="formState.missions.length === 1">
-                        <minus-circle-outlined/>
-                    </a-button>
-                </a-form-item>
+<!--                <a-form-item>-->
+<!--                    <a-button type="text"-->
+<!--                              shape="circle"-->
+<!--                              danger-->
+<!--                              @click="removeRow(mission)"-->
+<!--                              :disabled="formState.missions.length === 1">-->
+<!--                        <minus-circle-outlined/>-->
+<!--                    </a-button>-->
+<!--                </a-form-item>-->
             </div>
-            <a-form-item>
-                <a-button v-if="formState.missions.length < 4"
-                          type="dashed"
-                          class="flex items-center"
-                          @click="addRow">
-                    <plus-outlined/>
-                    Thêm mục
-                </a-button>
-            </a-form-item>
+<!--            <a-form-item>-->
+<!--                <a-button v-if="formState.missions.length < 4"-->
+<!--                          type="dashed"-->
+<!--                          class="flex items-center"-->
+<!--                          @click="addRow">-->
+<!--                    <plus-outlined/>-->
+<!--                    Thêm mục-->
+<!--                </a-button>-->
+<!--            </a-form-item>-->
         </div>
 
         <a-form-item class="text-right">

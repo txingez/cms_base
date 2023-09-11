@@ -23,7 +23,8 @@ const formState = reactive({
     title: '',
     boldText: '',
     description: '',
-    image: []
+    image: [],
+    content: ''
 })
 
 const loading = ref(false)

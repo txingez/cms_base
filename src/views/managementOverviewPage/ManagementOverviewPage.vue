@@ -22,6 +22,6 @@ const pid = 'overview_page_pid'
         <TittlePage label="QUẢN LÝ NỘI DUNG TRANG TỔNG QUAN"/>
         <KnowAboutUsPart :page-id="pid"/>
         <OurMissionPart :page-id="pid"/>
-        <MainContentPart :page-id="pid"/>
+<!--        <MainContentPart :page-id="pid"/>-->
     </div>
 </template>
