@@ -87,7 +87,7 @@ const addRow = () => {
 </script>
 
 <template>
-    <DividerWithTitle label="Nhiệm vụ của chúng tôi"/>
+    <DividerWithTitle label="Mục tiêu của chúng tôi"/>
 
     <a-form :label-wrap="true"
             label-align="left"

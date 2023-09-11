@@ -4,7 +4,7 @@
     </div>
 
     <div class="bg-white p-10">
-        <TittlePage label="Tạo/Chỉnh sửa hoạt động"/>
+        <TittlePage label="Sự kiện, tin tức, thư viện"/>
         <a-form autocomplete="off"
                 name="form_data"
                 layout="vertical"
@@ -32,53 +32,16 @@
                     </a-form-item>
                 </a-col>
                 <a-col :xs="24" :md="12">
-                    <a-form-item label="Tin nổi bật">
-                        <a-checkbox v-model:checked="formData.isHotNews" :disabled="state.disableEdit"/>
-                    </a-form-item>
-                </a-col>
-                <a-col :xs="24" :md="12">
-                    <a-form-item label="Tác giả"
-                                 name="authorId"
+                    <a-form-item label="Ngày đăng"
                                  :rules="[{required: true}]">
-                        <a-select v-model:value="formData.authorId"
-                                  placeholder="Tác giả"
-                                  showSearch
-                                  :filter-option="false"
-                                  :options="state.optionsAuthor"
-                                  @search="searchUser">
-                            <template v-if="state.fetching" #notFoundContent>
-                                <a-spin size="small"/>
-                            </template>
-                        </a-select>
-                    </a-form-item>
-                </a-col>
-                <a-col :xs="24" :md="12" class="mb-2">
-                    <a-form-item label="Từ khoá">
-                        <a-input v-model:value="state.keywordInput"
-                                 @blur="handleInputKeyword"
-                                 @keyup.enter="handleInputKeyword"
-                                 placeholder="Từ khoá"/>
-                    </a-form-item>
-                    <template v-for="(keyword, index) in formData.keywords"
-                              :key="keyword">
-                        <a-tag :closable="true"
-                               @close="deleteKeyword(keyword)">
-                            {{ keyword }}
-                        </a-tag>
-                    </template>
-                </a-col>
-                <a-col :xs="24" :md="12">
-                    <a-form-item label="Mô tả"
-                                 name="description"
-                                 :rules="[{required: true}]">
-                        <a-textarea v-model:value="formData.description"
-                                    placeholder="Mô tả"
-                                    :rows="5"
-                                    allow-clear/>
+                        <a-date-picker class="w-full"
+                                       format="YYYY-MM-DD"
+                                       valueFormat="YYYY-MM-DD"
+                                       placeholder="Chọn ngày đăng"/>
                     </a-form-item>
                 </a-col>
                 <a-col :xs="24" :md="12">
-                    <a-form-item label="Ảnh lớn"
+                    <a-form-item label="Ảnh"
                                  name="bigImage"
                                  :rules="[{required: formData.thumbnail.length === 0 && formData.bigImage.length === 0}]">
                         <div>
@@ -107,32 +70,13 @@
                     </a-form-item>
                 </a-col>
                 <a-col :xs="24" :md="12">
-                    <a-form-item label="Thumbnail"
-                                 name="thumbnail"
-                                 :rules="[{required: formData.thumbnail.length === 0 && formData.bigImage.length === 0}]">
-                        <div>
-                            <a-upload name="thumbnail"
-                                      v-model:file-list="formData.thumbnail"
-                                      accept=".png, .jpg, .jpeg"
-                                      list-type="picture-card"
-                                      :max-count="1"
-                                      :data="{type: 'small'}"
-                                      @preview="open"
-                                      :before-upload="file => beforeUpload(file, 'small')"
-                                      :custom-request="uploadFile">
-                                <div v-if="formData.thumbnail.length < 2">
-                                    <plus-outlined/>
-                                    <div>Upload</div>
-                                </div>
-                            </a-upload>
-                            <div class="italic">Ảnh thumbnail hiển thị ở các phần danh sách, banner.</div>
-                            <div class="italic">Vui lòng sử dụng ảnh tỉ lệ: 16:9 có dung lượng &lt;= 300kb</div>
-                            <div class="text-orange-500 text-sm">
-                                {{
-                                formData.errorThumbnail === 'Size' ? 'Vui lòng sử dụng ảnh dung lượng tối đa 300KB.' : formData.errorThumbnail === 'Aspect Ratio' ? 'Tỉ lệ ảnh không đúng' : ''
-                                }}
-                            </div>
-                        </div>
+                    <a-form-item label="Nguồn"
+                                 name="contentType"
+                                 :rules="[{required: true}]">
+                        <a-select v-model:value="formData.contentType"
+                                  :options="optionContentType"
+                                  allow-clear
+                                  placeholder="Nguồn"/>
                     </a-form-item>
                 </a-col>
                 <a-col :xs="24" :md="24">
@@ -141,12 +85,14 @@
                                  :rules="[{required: true}]">
                         <div class="w-full">
                             <quill-editor ref="quill"
+                                          v-if="formData.contentType === 'HTML'"
                                           v-model:content="formData.content"
                                           class="min-h-[300px] max-h-[700px] overflow-x-scroll"
                                           :modules="ModulesEditor"
                                           :toolbar="toolbar"
                                           content-type="html">
                             </quill-editor>
+                            <a-input v-else></a-input>
                         </div>
                     </a-form-item>
                 </a-col>
@@ -252,13 +198,19 @@ const formData = reactive({
     thumbnail: [],
     content: '',
     errorBigImage: '',
-    errorThumbnail: ''
+    errorThumbnail: '',
+    contentType: 'HTML'
 });
 
 const optionsCategory = [
     {label: 'Sự kiện', value: 'event'},
     {label: 'Chương trình hỗ trợ', value: 'support_program'}
-]
+];
+
+const optionContentType = [
+  {label: 'LINK', value: 'link'},
+  {label: 'HTML', value: 'html'}
+];
 
 const state = reactive({
     fetching: false,

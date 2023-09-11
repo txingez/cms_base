@@ -31,13 +31,13 @@
                         <span>Quản lý Site</span>
                     </div>
                 </template>
-                <a-menu-item key="management_home"
-                             @click="navigate('/management_home')">
-                    <template #icon>
-                        <HomeOutlined/>
-                    </template>
-                    <span>Quản lý trang chủ</span>
-                </a-menu-item>
+<!--                <a-menu-item key="management_home"-->
+<!--                             @click="navigate('/management_home')">-->
+<!--                    <template #icon>-->
+<!--                        <HomeOutlined/>-->
+<!--                    </template>-->
+<!--                    <span>Quản lý trang chủ</span>-->
+<!--                </a-menu-item>-->
                 <a-menu-item key="management_overview"
                              @click="navigate('/management_overview')">
                     <template #icon>

@@ -1,6 +1,6 @@
 <script setup>
 import DividerWithTitle from "../DividerWithTitle.vue";
-import {onMounted, reactive, ref} from "vue";
+import {computed, onMounted, reactive, ref} from "vue";
 import {open} from "../../utils/previewerUtils";
 import {PlusOutlined} from "@ant-design/icons-vue";
 import {uploadImage} from "../../services/uploadFile";
@@ -8,6 +8,12 @@ import {handleResponse} from "../../services/commonService";
 import PreviewModal from "../PreviewModal.vue";
 import {saveData} from "../../services/overviewPage";
 import {showToast} from "../../utils/showToast";
+import {ModulesEditor} from "../../constants/modulesEditor";
+import {QuillEditor} from "@vueup/vue-quill";
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import {ToolbarEditor} from "../../constants/toolbarEditor";
+
+const quill = ref()
 
 const props = defineProps({
     pageId: String
@@ -21,6 +27,8 @@ const formState = reactive({
 })
 
 const loading = ref(false)
+
+const toolbar = computed(() => ToolbarEditor(quill))
 
 onMounted(() => {
     getComponentData()
@@ -81,54 +89,26 @@ const uploadFile = (options) => {
 </script>
 
 <template>
-    <DividerWithTitle label="Biết về chúng tôi"/>
+    <DividerWithTitle label="Tổng quan"/>
 
     <a-form :model="formState"
             label-align="left"
             :label-col="{span: 4}"
             :label-wrap="true"
             @finish="handleSubmit">
-        <a-form-item name="title"
-                     label="Tiêu đề"
-                     :rules="[{required: true, message: 'Nội dung không được để trống'},{max: 100, message: 'Nội dung quá dài'}]">
-            <a-input v-model:value="formState.title" placeholder="Tiêu đề"/>
+        <a-form-item name="content"
+                     label="Nội dung"
+                     :rules="[{required: true, message: 'Nội dung không được để trống'}]">
+            <div class="w-full">
+                <quill-editor ref="quill"
+                              v-model:content="formState.content"
+                              class="min-h-[300px] max-h-[700px] overflow-x-scroll"
+                              :modules="ModulesEditor"
+                              :toolbar="toolbar"
+                              content-type="html">
+                </quill-editor>
+            </div>
         </a-form-item>
-        <a-form-item name="boldText"
-                     label="Mô tả ngắn chữ đậm"
-                     :rules="[{required: true, message: 'Nội dung không được để trống'},{max: 200, message: 'Nội dung quá dài'}]">
-            <a-textarea v-model:value="formState.boldText"
-                        placeholder="Mô tả ngắn chữ đậm"
-                        allow-clear
-                        show-count
-                        :maxlength="200"
-                        :rows="3"/>
-        </a-form-item>
-        <a-form-item name="description"
-                     label="Mô tả"
-                     :rules="[{required: true, message: 'Nội dung không được để trống'},{max: 500, message: 'Nội dung quá dài'}]">
-            <a-textarea v-model:value="formState.description"
-                        placeholder="Mô tả"
-                        allow-clear
-                        show-count
-                        :maxlength="500"
-                        :rows="5"/>
-        </a-form-item>
-        <a-form-item name="image"
-                     label="Ảnh"
-                     :rules="[{required: true, message: 'Ảnh chưa được upload'}]">
-            <a-upload v-model:file-list="formState.image"
-                      accept=".png, .jpg, .jpeg"
-                      list-type="picture-card"
-                      :max-count="1"
-                      @preview="open"
-                      :custom-request="uploadFile">
-                <div v-if="formState.image.length < 2">
-                    <plus-outlined/>
-                    <div>Upload</div>
-                </div>
-            </a-upload>
-        </a-form-item>
-
         <a-form-item class="text-right">
             <a-button html-type="submit" type="primary" class="bg-[#1677ff]" :loading="loading">
                 Lưu cài đặt
