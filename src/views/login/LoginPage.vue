@@ -1,5 +1,5 @@
 <template>
-    <div class="content-center bg-right flex justify-center items-center h-screen bg-blue-500">
+    <div class="content-center bg-right flex justify-center items-center h-screen bg-[url(https://lh3.googleusercontent.com/pw/AIL4fc-J6iD2OQld4PuJ_DMf6xByK2bI5ZDAV_oSSbT0QiAn9CBkJWuKrBWq2-41lwevfHYtxgLJhCkctLwnYTjCWbabmvijw7bUojXD5Wa7bDnIXwpwgF9wgo_T7ED5xuDPyI1l2RfOlBoTeKCs8TLru8I=w1873-h970-s-no?authuser=0)]">
         <div
             class="xl:w-2/5 lg:w-3/5 sm:w-4/5 w-11/12 bg-white p-8 opacity-90 lg:opacity-100 rounded shadow-gray-400 shadow-md">
             <a-form :model="formState" layout="vertical" name="basic" autocomplete="off"
