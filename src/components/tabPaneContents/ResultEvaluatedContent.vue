@@ -5,8 +5,8 @@ import {RatingClassification} from "../../constants/ratingClassification";
 
 const props = defineProps({
     dataSource: Array,
-    totalPoint: Number,
-    rate: Number
+    totalPoint: String,
+    rate: String
 })
 const columns = [
     {
@@ -77,6 +77,7 @@ onMounted(() => {
         }
     )
 })
+
 </script>
 
 <template>
@@ -102,8 +103,8 @@ onMounted(() => {
                     <a-table-summary-cell class="text-right font-bold">{{ totalPoint }}</a-table-summary-cell>
                 </a-table-summary-row>
                 <a-table-summary-row class="bg-[#FAFAFA]">
-                    <a-table-summary-cell :col-span="2" class="font-bold">Xếp hạng sao</a-table-summary-cell>
-                    <a-table-summary-cell class="text-right font-bold">{{ `${rate} sao` }}</a-table-summary-cell>
+                    <a-table-summary-cell :col-span="2" class="font-bold">Xếp hạng</a-table-summary-cell>
+                    <a-table-summary-cell class="text-right font-bold">{{ rate }}</a-table-summary-cell>
                 </a-table-summary-row>
                 <a-table-summary-row class="bg-[#FAFAFA]">
                     <a-table-summary-cell :col-span="2" class="font-bold">
@@ -125,9 +126,7 @@ onMounted(() => {
 
         <div class="flex gap-5 flex-col py-5">
             <div class="font-bold text-xl">Đề xuất cho doanh nghiệp</div>
-            <div class="whitespace-pre-wrap">
-                {{ RatingClassification[rate].suggest }}
-            </div>
+            <div class="whitespace-pre-wrap" v-html="RatingClassification[rate].suggest"></div>
         </div>
     </div>
 </template>

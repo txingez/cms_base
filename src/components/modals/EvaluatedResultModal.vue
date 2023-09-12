@@ -12,6 +12,7 @@ import jsPDF from "jspdf";
 
 const html3Pdf = ref()
 const resultModal = resultModalStore()
+console.log(resultModal)
 const resultData = computed(() => resultModal.data)
 console.log(`ANHBLL2: ${JSON.stringify(resultModal.data)}`)
 const resultEvaluatedDataSource = computed(() => {
@@ -126,31 +127,6 @@ const createPdf = async ({doc, elements}) => {
                                         :total-point="resultData.result.total"
                                         :rate="resultData.result.rate" class="abc"/>
             </div>
-            <!--            <a-tabs v-model:active-key="activeTab" class="h-full">-->
-            <!--                <a-tab-pane :key="1" tab="Thông tin doanh nghiệp">-->
-            <!--                    <OrganizationProfileContent :profile-data="resultData.organizationProfile" id="test1"/>-->
-            <!--                </a-tab-pane>-->
-            <!--                <a-tab-pane :key="2" tab="E - Môi trường">-->
-            <!--                    <EvaluatedQuestionsContent-->
-            <!--                            :result-data="resultData.answers.filter(a => a.key.startsWith('E'))"-->
-            <!--                            :questions="EnvironmentQuestions" class="test"/>-->
-            <!--                </a-tab-pane>-->
-            <!--                <a-tab-pane :key="3" tab="S - Xã hội">-->
-            <!--                    <EvaluatedQuestionsContent-->
-            <!--                            :result-data="resultData.answers.filter(a => a.key.startsWith('S'))"-->
-            <!--                            :questions="SocialQuestions" class="test"/>-->
-            <!--                </a-tab-pane>-->
-            <!--                <a-tab-pane :key="4" tab="G - Quản trị">-->
-            <!--                    <EvaluatedQuestionsContent-->
-            <!--                            :result-data="resultData.answers.filter(a => a.key.startsWith('G'))"-->
-            <!--                            :questions="GovernanceQuestions" class="test"/>-->
-            <!--                </a-tab-pane>-->
-            <!--                <a-tab-pane :key="5" tab="Tổng điểm ESG">-->
-            <!--                    <ResultEvaluatedContent :data-source="resultEvaluatedDataSource"-->
-            <!--                                            :total-point="resultData.result.total"-->
-            <!--                                            :rate="resultData.result.rate"/>-->
-            <!--                </a-tab-pane>-->
-            <!--            </a-tabs>-->
             <a-button @click.prevent="exportHTMLToPDF">Genenrate</a-button>
         </div>
     </a-modal>

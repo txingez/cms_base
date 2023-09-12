@@ -67,15 +67,7 @@ const getTableData = async (options) => {
                 return {
                     ...formData.data,
                     key: r.id,
-                    number: (options.targetPage - 1) * pageSizeState.value + index + 1,
-                    fullNameEvaluated: formData.data.organizationProfile.fullName,
-                    evaluatedDate: formData.data.organizationProfile.evaluatedDate,
-                    companyName: formData.data.organizationProfile.companyName,
-                    taxCode: formData.data.organizationProfile.taxCode,
-                    registrationType: formData.data.organizationProfile.registrationType,
-                    businessType: formData.data.organizationProfile.businessType,
-                    totalPoint: formData.data.result.total,
-                    rate: formData.data.result.rate
+                    number: (options.targetPage - 1) * pageSizeState.value + index + 1
                 }
             });
 
@@ -216,7 +208,7 @@ const getTableData = async (options) => {
 // }
 
 const showResult = result => {
-    console.log(`ANHBLLLLL: ${JSON.stringify(result)}`);
+    // console.log(`ANHBLLLLL: ${JSON.stringify(result)}`);
     resultModal.show()
     resultModal.setData(result)
 }
