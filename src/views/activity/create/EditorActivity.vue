@@ -53,8 +53,8 @@
                                       list-type="picture-card"
                                       :max-count="1"
                                       :data="{type: 'big'}"
-                                      @preview="open"
                                       :before-upload="file => beforeUpload(file, 'big')"
+                                      @preview="open"
                                       :custom-request="uploadFile">
                                 <div v-if="formData.bigImage.length < 2">
                                     <plus-outlined/>
@@ -72,13 +72,22 @@
                     </a-form-item>
                 </a-col>
                 <a-col :xs="24" :md="12">
-                    <a-form-item label="Nguồn"
+                    <a-form-item label="Loại nội dung"
                                  name="contentType"
                                  :rules="[{required: true}]">
                         <a-select v-model:value="formData.contentType"
                                   :options="optionContentType"
-                                  placeholder="Nguồn">
+                                  placeholder="Loại nội dung">
                         </a-select>
+                    </a-form-item>
+                </a-col>
+                <a-col :xs="24" :md="12">
+                    <a-form-item label="Nguồn"
+                                 name="source"
+                                 :rules="[{required: true}]">
+                        <a-input v-model:value="formData.source"
+                                 :maxlength="255"
+                                 placeholder="Nguồn"/>
                     </a-form-item>
                 </a-col>
                 <a-col :xs="24" :md="24">
@@ -94,7 +103,7 @@
                                           :toolbar="toolbar"
                                           content-type="html">
                             </quill-editor>
-                            <a-input v-else v-model:value="formData.content" placeholder="Target Link"/>
+                            <a-input v-else v-model:value="formData.link" placeholder="Link (https:www.content.com)"/>
                         </div>
                     </a-form-item>
                 </a-col>
@@ -109,7 +118,7 @@
                     Xoá
                 </a-button>
                 <a-button type="dashed"
-                          v-if="formData.status === '' || formData.status === 'DRAFT'"
+                          v-if="formData.status === '' || formData.status === statusEnum.DRAFT"
                           @click="handleDraft"
                           :loading="state.loadingDraft">
                     Lưu nháp
@@ -124,7 +133,7 @@
                               :loading="state.loading"
                               html-type="submit"
                               class="bg-[#1677ff]">
-                        {{ formData.status === '' || formData.status === 'DRAFT' ? 'Đăng tin' : 'Lưu' }}
+                        {{ formData.status === '' || formData.status === statusEnum.DRAFT ? 'Đăng tin' : 'Lưu' }}
                     </a-button>
                 </a-form-item>
             </div>
@@ -172,7 +181,7 @@ import Compressor from 'compressorjs';
 import {ModulesEditor} from "../../../constants/modulesEditor";
 import {ToolbarEditor} from "../../../constants/toolbarEditor";
 import TittlePage from "../../../components/TittlePage.vue";
-import {createActivity, deleteById, dismissById, draft, getById, updateById} from "../../../services/activity";
+import {createPost, deletePost, dismissById, saveForm, getById, updatePost} from "../../../services/activity";
 import PreviewModal from "../../../components/PreviewModal.vue";
 import {open} from "../../../utils/previewerUtils";
 
@@ -180,6 +189,27 @@ const router = useRouter();
 const quill = ref(null);
 
 const toolbar = computed(() => ToolbarEditor(quill))
+
+const statusEnum = {
+    DRAFT: "DRAFT",
+    PUBLISH: "PUBLISH"
+}
+
+const categoryEnum = {
+    LIBRARY: "LIBRARY",
+    NEWS: "NEWS",
+    EVENT: "EVENT"
+}
+
+const pageEnum = {
+    LIBRARY: "LIB",
+    ACTIVITIES: "ATV"
+}
+
+const contentTypeEnum = {
+    HTML: "HTML",
+    LINK: "LINK"
+}
 
 const routes = [
     {name: 'Home', to: '/'},
@@ -199,20 +229,23 @@ const formData = reactive({
     bigImage: [],
     thumbnail: [],
     content: '',
+    link: '',
     errorBigImage: '',
     errorThumbnail: '',
     contentType: null,
-    releaseDate: ''
+    releaseDate: '',
+    source: ''
 });
 
 const optionsCategory = [
-    {label: 'Sự kiện', value: 'event'},
-    {label: 'Chương trình hỗ trợ', value: 'support_program'}
+    { label: 'Thư viện', value: 'LIBRARY' },
+    { label: 'Sự kiện', value: 'EVENT' },
+    { label: 'Tin tức', value: 'NEWS' }
 ];
 
 const optionContentType = [
-    {label: 'LINK', value: 'LINK'},
-    {label: 'HTML', value: 'HTML'}
+    {label: 'Nội dung đính kèm', value: 'LINK'},
+    {label: 'Nội dung soạn thảo', value: 'HTML'}
 ];
 
 const state = reactive({
@@ -239,6 +272,7 @@ watch(router.currentRoute, (route) => {
         formData.bigImage = [];
         formData.thumbnail = [];
         formData.content = '';
+        formData.link = '';
         formData.keywords = [];
         formData.status = '';
 
@@ -348,6 +382,7 @@ const resetForm = () => {
     formData.bigImage = [];
     formData.thumbnail = [];
     formData.content = '';
+    formData.link = '';
     formData.keywords = [];
     formData.errorBigImage = '';
     formData.errorThumbnail = '';
@@ -369,19 +404,20 @@ const handleDraft = () => {
         return;
     }
     const body = {
-        ...(formData.id !== 0 && {activityId: formData.id}),
-        title: formData.title,
-        isHotNews: formData.isHotNews,
-        category: formData.category,
-        description: formData.description,
-        bigImage: formData.bigImage.length !== 0 ? formData.bigImage[0].url : null,
-        thumbnail: formData.smallImage.length !== 0 ? formData.smallImage[0].url : null,
-        authorId: formData.authorId,
-        keywords: formData.keywords,
-        content: handleImageCssInContent(formData.content)
+        status: statusEnum.DRAFT,
+        additional_params: {
+            page_id: getPageId(formData.category),
+            source: formData.source,
+            title: formData.title,
+            category: formData.category,
+            image: formData.bigImage.length !== 0 ? formData.bigImage[0].url : null,
+            content: formData.contentType === contentTypeEnum.HTML ? formData.content : formData.link,
+            content_type: formData.contentType,
+            release_date: formData.releaseDate
+        }
     };
 
-    draft(body)
+    saveForm(body)
         .then(response => {
             const responseData = handleResponse(response.status, response.data);
             state.loadingDraft = false;
@@ -403,64 +439,39 @@ const onFinish = () => {
         showToast('error', 'Vui lòng sử dụng ảnh có dung lượng chuẩn');
     } else {
 
-        let body = {
-            ...((formData.status === 'DRAFT' && formData.id !== 0) && {activityId: formData.id}),
-            title: formData.title,
-            isHotNews: formData.isHotNews,
-            category: formData.category,
-            description: formData.description,
-            bigImage: formData.bigImage.length !== 0 ? formData.bigImage[0].url : formData.thumbnail[0].url,
-            thumbnail: formData.thumbnail.length !== 0 ? formData.thumbnail[0].url : null,
-            authorId: formData.authorId,
-            keywords: formData.keywords,
-            content: handleImageCssInContent(formData.content)
+        const body = {
+            status: statusEnum.DRAFT,
+            additional_params: {
+                page_id: getPageId(formData.category),
+                source: formData.source,
+                title: formData.title,
+                category: formData.category,
+                image: formData.bigImage.length !== 0 ? formData.bigImage[0].url : null,
+                content: formData.contentType === contentTypeEnum.HTML ? formData.content : formData.link,
+                content_type: formData.contentType,
+                release_date: formData.releaseDate
+            }
         };
 
-        if (formData.thumbnail.length === 0) {
-            const file = formData.bigImage[0].file;
-            if (file.size > 300000) {
-                new Compressor(file, {
-                    quality: 0.1,
-                    success(result) {
-                        const newFile = new File([result], result.name, {lastModified: Date.now(), type: result.type});
-                        uploadImage(newFile)
-                            .then((res) => {
-                                const responseData = handleResponse(res.status, res.data);
-                                if (responseData) {
-                                    const finalBody = Object.assign(body, {thumbnail: responseData.data.image_url});
-                                    executeActivityAPI(finalBody)
-                                }
-                            })
-                            .catch((err) => {
-                                console.log(err.message);
-                            });
-                    },
-                    error(error) {
-                        console.log(error.message);
-                    }
-                })
-            }
-        } else {
-            executeActivityAPI(body);
-        }
+        executeActivityAPI(body);
     }
 };
 
 const executeActivityAPI = (body) => {
     state.loading = true;
-    const request = formData.id !== 0 && formData.status !== 'DRAFT' ? updateById(formData.id, body) : createActivity(body);
+    const request = formData.id !== 0 ? updatePost(body) : createPost(body);
     request.then(response => {
         const responseData = handleResponse(response.status, response.data);
         state.loading = false;
         if (responseData) {
-            showToast('success', formData.id !== 0 && formData.status !== 'DRAFT' ? 'Chỉnh sửa thành công' : 'Tạo mới thành công');
+            showToast('success', formData.id !== 0 ? 'Chỉnh sửa thành công' : 'Tạo mới thành công');
             resetForm();
             router.push('/activities')
         }
     }).catch(error => {
         console.log('Lỗi khi tạo hoạt động', error);
         state.loading = false;
-        showToast('error', formData.id !== 0 && formData.status !== 'DRAFT' ? 'Chỉnh sửa thất bại' : 'Tạo mới thất bại');
+        showToast('error', formData.id !== 0 ? 'Chỉnh sửa thất bại' : 'Tạo mới thất bại');
     });
 };
 
@@ -550,14 +561,16 @@ const uploadFile = (options) => {
     uploadImage(file, onProgress)
         .then(response => {
             const responseData = handleResponse(response.status, response.data);
+
             if (responseData) {
+                console.log(`ANHBLLLL: ${JSON.stringify(data)}`)
                 switch (data.type) {
                     case 'big':
                         formData.bigImage = [{
                             file: file,
                             status: 'done',
                             response: responseData,
-                            url: responseData.data.image_url
+                            url: responseData.data.file_url
                         }];
                         return;
                     case 'small':
@@ -565,7 +578,7 @@ const uploadFile = (options) => {
                             file: file,
                             status: 'done',
                             response: responseData,
-                            url: responseData.data.image_url
+                            url: responseData.data.file_url
                         }];
                         return;
                 }
@@ -619,7 +632,7 @@ const handleConfirm = confirmed => {
 
             case 'DELETE':
                 if (confirmed) {
-                    return deleteById(activityId);
+                    return deletePost(activityId);
                 }
                 return;
         }
@@ -644,4 +657,16 @@ const handleImageCssInContent = content => {
     }
     return tempDiv.innerHTML.toString();
 };
+
+const getPageId = category => {
+    switch(category) {
+        case categoryEnum.NEWS:
+        case categoryEnum.EVENT:
+            return pageEnum.ACTIVITIES;
+        case categoryEnum.LIBRARY:
+            return pageEnum.LIBRARY;
+        default:
+            console.error(`Category ${category} is not supported!!!`)
+    }
+}
 </script>

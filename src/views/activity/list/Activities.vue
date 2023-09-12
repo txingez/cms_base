@@ -186,23 +186,22 @@ import {dateTimeFormatString} from "../../../utils/reformatTime";
 import axios from "axios";
 import {showToast} from "../../../utils/showToast";
 import TittlePage from "../../../components/TittlePage.vue";
-import {deleteById, getAll} from "../../../services/activity";
+import {deletePost, getAll} from "../../../services/activity";
 
 const columns = [
     {title: 'Tiêu đề', dataIndex: 'title', key: 'title', fixed: 'left', width: 200, ellipsis: true},
-    {title: 'Ngày đăng', dataIndex: 'createdAt', key: 'createdAt', width: 160},
+    {title: 'Ngày đăng', dataIndex: 'release_date', key: 'release_date', width: 160},
+    {title: 'Nguồn', dataIndex: 'source', key: 'source', width: 190},
     {title: 'Chuyên mục', dataIndex: 'category', key: 'category'},
+    {title: 'Ảnh', dataIndex: 'image', key: 'image', width: 200},
+    {title: 'Loại nội dung', dataIndex: 'content_type', key: 'content_type', width: 110},
     {title: 'Trạng thái', key: 'status', dataIndex: 'status', width: 130},
-    {title: 'Người tạo', dataIndex: 'createdBy', key: 'createdBy', width: 190},
-    {title: 'Tác giả', dataIndex: 'author', key: 'author', width: 200},
-    {title: 'Tin nổi bật', dataIndex: 'isHotNews', key: 'isHotNews', width: 110},
-    {title: 'Thao tác', key: 'action', fixed: 'right', width: 120}
 ];
 
 const optionsStatus = [
     {value: '', label: 'Tất cả'},
     {value: 'DRAFT', label: 'Tin đang soạn'},
-    {value: 'PUBLIC', label: 'Tin đã đăng'}
+    {value: 'PUBLISH', label: 'Tin đã đăng'}
 ];
 
 const colorByStatus = {
@@ -226,9 +225,9 @@ const routes = [
 ];
 
 const optionsCategory = [
-    {label: 'Tất cả', value: 'all'},
-    {label: 'Sự kiện', value: 'event'},
-    {label: 'Chương trình hỗ trợ', value: 'support_program'}
+    {label: 'Thư viện', value: 'LIBRARY'},
+    {label: 'Sự kiện', value: 'EVENT'},
+    {label: 'Tin tức', value: 'NEWS'}
 ]
 
 const router = useRouter();
@@ -252,7 +251,7 @@ const state = reactive({
 const filterForm = reactive({
     findByWord: '',
     status: '',
-    category: 'all',
+    category: '',
     author: [],
     isMyNews: true,
     isHotNews: false
@@ -316,9 +315,9 @@ const showConfirm = activityId => {
         cancelText: 'Từ chối',
         onOk() {
             const deleteRequests = typeof activityId === 'string'
-                ? [deleteById(activityId)]
+                ? [deletePost(activityId)]
                 : selectedRowKeys.value.map(activityId => {
-                    return deleteById(activityId);
+                    return deletePost(activityId);
                 });
             axios.all(deleteRequests).then(responses => {
                 const responsesHandled = responses.map(r => handleResponse(r.status, r.data))
@@ -350,14 +349,17 @@ const onShowSizeChange = (currentPage, size) => {
 };
 
 const getFilterQuery = () => {
-    const filterByWord = filterForm.findByWord !== '' ? `&filters[search]=${filterForm.findByWord}` : '';
-    const filterByStatus = filterForm.status !== '' ? `&filters[status]=${filterForm.status}` : '';
-    const filterByCategory = filterForm.category !== 'all' ? `&filters[categories]=${filterForm.category}` : '';
+    const filterByWord = filterForm.findByWord !== '' ? filterForm.findByWord : '';
+    const filterByStatus = filterForm.status !== '' ? filterForm.status : '';
+    const filterByCategory = filterForm.category !== 'all' ? filterForm.category : '';
     const filterByAuthor = filterForm.author.length ? `&filters[authors]=${filterForm.author.map(u => u.value).toString()}` : '';
     const filterByMine = filterForm.isMyNews ? `&filters[isMyNews]=${filterForm.isMyNews}` : '';
     const filterByHotNews = filterForm.isHotNews ? `&filters[isHotNews]=${filterForm.isHotNews}` : '';
 
-    return `${filterByWord}${filterByStatus}${filterByCategory}${filterByAuthor}${filterByMine}${filterByHotNews}`;
+    const query = {
+
+    };
+    return query;
 };
 
 const handleTableChange = page => {
@@ -373,29 +375,31 @@ const getTableData = (options) => {
     state.tableLoading = true;
     const {targetPage, pageSize, otherFilter} = options;
 
-    getAll(targetPage, pageSize, otherFilter)
+    const body = {
+        limit: pageSize,
+        offset: targetPage - 1,
+        additional_params: otherFilter
+    }
+    getAll(body)
         .then(response => {
             const responseData = handleResponse(response.status, response.data);
             state.visibleDrawer = false;
             state.tableLoading = false;
             responseData !== null
                 ? (() => {
-                    tableData.value = responseData.data.docs.map(n => {
+                    tableData.value = responseData.data.results.map(n => {
                         return {
                             key: n.id,
                             id: n.id,
-                            createdBy: n.createdBy,
-                            status: n.status.toUpperCase(),
                             title: n.title,
-                            description: n.description,
+                            sourcce: n.sourcce,
+                            release_date: n.release_date,
+                            image: n.image,
                             category: n.category,
-                            keywords: n.keywords,
-                            author: {
-                                authorId: n.author._id,
-                                name: n.author.fullName
-                            },
-                            isHotNews: n.isHotNews,
-                            createdAt: dateTimeFormatString(n.createdAt)
+                            content: n.content,
+                            content_type: n.content_type,
+                            page_id: n.page_id,
+                            status: n.status
                         }
                     });
                     total.value = responseData.data.total;

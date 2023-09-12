@@ -8,8 +8,8 @@ const config = {
 
 export const uploadImage = (file, onProgress) => {
     const formData = new FormData();
-    formData.append('image', file);
-    return axios.post(`${URL}/upload`,
+    formData.append('file', file);
+    return axios.post(`${URL}/api/v1/cms/upload_file`,
         formData,
         Object.assign(config, onProgress ? {
             onUploadProgress: e => {

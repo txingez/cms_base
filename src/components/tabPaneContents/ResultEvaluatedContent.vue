@@ -69,7 +69,7 @@ onMounted(() => {
                         },
                         alignToPixels: true,
                         grid: {
-                            circular: false
+                            circular: true
                         }
                     }
                 }
