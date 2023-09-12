@@ -9,20 +9,17 @@ export const headersUpload = () => ({
 });
 
 export const headers = () => ({
-    Authorization: `Bearer ${sessionStorage.getItem(ACCESS_TOKEN_KEY)}`,
+    Authorization: `Bearer ${sessionStorage.getItem(import.meta.env.ENV_TOKEN_KEY)}`,
 });
 
 export function handleResponse(status, data) {
     return (() => {
         switch (status) {
             case 200:
+                return data;
             case 201:
-                if (data.statusCode === 200) {
-                    return data;
-                } else {
-                    showToast("error", data.message);
-                    return null;
-                }
+                showToast("error", data.message);
+                return null;
 
             case 401:
                 showToast("warning", "Đã hết phiên đăng nhập, mời đăng nhập lại");

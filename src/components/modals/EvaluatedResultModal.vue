@@ -13,6 +13,7 @@ import jsPDF from "jspdf";
 const html3Pdf = ref()
 const resultModal = resultModalStore()
 const resultData = computed(() => resultModal.data)
+console.log(`ANHBLL2: ${JSON.stringify(resultModal.data)}`)
 const resultEvaluatedDataSource = computed(() => {
     return [
         {
@@ -113,13 +114,13 @@ const createPdf = async ({doc, elements}) => {
             <div class="test">
                 <OrganizationProfileContent :profile-data="resultData.organizationProfile" class="abc"/>
                 <EvaluatedQuestionsContent
-                        :result-data="resultData.answers.filter(a => a.key.startsWith('E'))"
+                        :result-data="resultData.answers.filter(a => a.question.startsWith('E'))"
                         :questions="EnvironmentQuestions" class="abc"/>
                 <EvaluatedQuestionsContent
-                        :result-data="resultData.answers.filter(a => a.key.startsWith('S'))"
+                        :result-data="resultData.answers.filter(a => a.question.startsWith('S'))"
                         :questions="SocialQuestions" class="abc"/>
                 <EvaluatedQuestionsContent
-                        :result-data="resultData.answers.filter(a => a.key.startsWith('G'))"
+                        :result-data="resultData.answers.filter(a => a.question.startsWith('G'))"
                         :questions="GovernanceQuestions" class="abc"/>
                 <ResultEvaluatedContent :data-source="resultEvaluatedDataSource"
                                         :total-point="resultData.result.total"

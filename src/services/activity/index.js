@@ -16,6 +16,10 @@ export const getAll = (page, pageSize, otherFilter) => {
     return axios.get(`${URL}/activity?page=${page}&perPage=${pageSize}${otherFilter}`, config);
 }
 
+export const getFormData = async(body) => {
+    return axios.post(`${URL}/api/v1/cms/form_data`, body, config);
+}
+
 export const getById = activityId => {
     return axios.get(`${URL}/activity/${activityId}`, config);
 };
