@@ -32,36 +32,6 @@
                                   placeholder="Chọn chuyên mục"/>
                     </a-form-item>
                 </a-col>
-                <a-col :span="24">
-                    <a-form-item label="Tác giả"
-                                 name="authors">
-                        <a-select v-model:value="filterForm.author"
-                                  mode="multiple"
-                                  label-in-value
-                                  placeholder="Chọn tác giả"
-                                  :filter-option="false"
-                                  :not-found-content="state.fetchingAuthor ? undefined : null"
-                                  :options="state.dataAuthor"
-                                  @search="fetchAuthor">
-                            <template v-if="state.fetchingAuthor" #notFoundContent>
-                                <a-spin size="small"/>
-                            </template>
-                        </a-select>
-                    </a-form-item>
-                </a-col>
-                <a-col :span="12">
-                    <a-form-item label="Tin của tôi"
-                                 name="isMyNews">
-                        <a-checkbox v-model:checked="filterForm.isMyNews"
-                                    :disabled="!policies.some(p => ['APPROVE_NEWS', 'PUBLIC_NEWS'].includes(p))"/>
-                    </a-form-item>
-                </a-col>
-                <a-col :span="12">
-                    <a-form-item label="Tin nổi bật"
-                                 name="isHotNews">
-                        <a-checkbox v-model:checked="filterForm.isHotNews"/>
-                    </a-form-item>
-                </a-col>
             </a-row>
             <div class="flex justify-end space-x-2">
                 <a-form-item>
@@ -84,7 +54,7 @@
         <BreadCrumb :routes="routes"/>
     </div>
     <div class="flex justify-between">
-        <TittlePage label="Danh sách tin tức"/>
+        <TitlePage label="Danh sách bài viết"/>
         <div class="flex justify-end space-x-2">
             <a-button key="deleteButton"
                       v-if="selectedRowKeys.length !== 0"
@@ -118,9 +88,9 @@
                  :scroll="{ x: 1300, y: 1000 }">
             <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'title'">
-                    <span @click="showActivityNews(record.id)">
-                        <a>{{ record.title }}</a>
-                    </span>
+                    <a @click="showActivityNews(record.id)" class="text-blue-400 hover:text-blue-500 hover:underline">
+                        {{ record.title }}
+                    </a>
                 </template>
                 <template v-else-if="column.key === 'status'">
                     <div class="w-full">
@@ -129,23 +99,11 @@
                         </a-tag>
                     </div>
                 </template>
-                <template v-else-if="column.key === 'author'">
-                    <span v-if="record.author">{{ record.author.name }}</span>
-                    <line-outlined v-else/>
-                </template>
-                <template v-else-if="column.key === 'isHotNews'">
-                    <a-checkbox v-model:checked="record.isHotNews" disabled/>
-                </template>
                 <template v-else-if="column.key === 'category'">
-                    <span v-if="record.category.length !== 0">
-                        <a-tag v-for="category in record.category"
-                               :key="category.id"
-                               color="green"
-                               class="text-sm">
-                            {{ category.name }}
-                        </a-tag>
-                    </span>
-                    <line-outlined v-else/>
+                    <span>{{ handleCategory(record.category) }}</span>
+                </template>
+                <template v-else-if="column.key === 'image'">
+                    <a-image :width="150" :height="100" :src="record.image" alt="image"/>
                 </template>
                 <template v-else-if="column.key === 'action'">
                     <span @click="showActivityNews(record.id)">
@@ -175,26 +133,23 @@
 import {reactive} from "@vue/reactivity";
 import {createVNode, onMounted, ref} from "vue";
 import {Modal} from "ant-design-vue";
-import {LineOutlined, PlusOutlined, SearchOutlined} from "@ant-design/icons-vue";
+import {PlusOutlined, SearchOutlined} from "@ant-design/icons-vue";
 import {handleResponse} from "../../../services/commonService";
 import {useRouter} from "vue-router";
 import BreadCrumb from "../../../components/breadcrumb/BreadCrumb.vue";
 import {numberWithComma} from "../../../utils/formatNumber";
-import {debounce} from "lodash-es";
-import {getUsers} from "../../../services/user";
-import {dateTimeFormatString} from "../../../utils/reformatTime";
 import axios from "axios";
 import {showToast} from "../../../utils/showToast";
-import TittlePage from "../../../components/TittlePage.vue";
 import {deletePost, getAll} from "../../../services/activity";
+import TitlePage from "../../../components/TitlePage.vue";
 
 const columns = [
-    {title: 'Tiêu đề', dataIndex: 'title', key: 'title', fixed: 'left', width: 200, ellipsis: true},
-    {title: 'Ngày đăng', dataIndex: 'release_date', key: 'release_date', width: 160},
-    {title: 'Nguồn', dataIndex: 'source', key: 'source', width: 190},
-    {title: 'Chuyên mục', dataIndex: 'category', key: 'category'},
+    {title: 'Tiêu đề', dataIndex: 'title', key: 'title', fixed: 'left', width: 300, ellipsis: true},
+    {title: 'Ngày đăng', dataIndex: 'release_date', key: 'release_date', width: 130},
+    {title: 'Nguồn', dataIndex: 'source', key: 'source'},
+    {title: 'Chuyên mục', dataIndex: 'category', key: 'category', width: 150},
     {title: 'Ảnh', dataIndex: 'image', key: 'image', width: 200},
-    {title: 'Loại nội dung', dataIndex: 'content_type', key: 'content_type', width: 110},
+    {title: 'Loại nội dung', dataIndex: 'content_type', key: 'content_type', width: 130},
     {title: 'Trạng thái', key: 'status', dataIndex: 'status', width: 130},
 ];
 
@@ -206,22 +161,19 @@ const optionsStatus = [
 
 const colorByStatus = {
     DRAFT: '#f87171',
-    PUBLIC: '#22c55e',
+    PUBLISH: '#22c55e',
     DISMISS: '#d1d5db'
 };
 
 const labelByStatus = {
     DRAFT: 'Tin đang soạn',
-    WAITING_APPROVE: 'Tin chờ phê duyệt',
-    REJECTED: 'Tin bị từ chối',
-    WAITING_POSTED: 'Tin chờ đăng',
-    POSTED: 'Tin đã đăng',
+    PUBLISH: 'Tin đã đăng',
     DISMISS: 'Tin đã bị gỡ'
 };
 
 const routes = [
     {name: 'Home', to: '/'},
-    {name: 'Danh sách tin tức', to: '/news'}
+    {name: 'Danh sách tin tức', to: '/activities'}
 ];
 
 const optionsCategory = [
@@ -236,25 +188,19 @@ const total = ref(1);
 const current = ref(1);
 const pageSize = ref(10);
 const tableData = ref([]);
-const policies = ref([]);
 const selectedRowKeys = ref([]);
 
 const state = reactive({
     tableLoading: false,
     loading: false,
     uploadLoading: false,
-    visibleDrawer: false,
-    fetchingAuthor: false,
-    dataAuthor: []
+    visibleDrawer: false
 });
 
 const filterForm = reactive({
     findByWord: '',
     status: '',
-    category: '',
-    author: [],
-    isMyNews: true,
-    isHotNews: false
+    category: null
 });
 
 onMounted(() => {
@@ -269,40 +215,26 @@ const closeDrawer = () => {
     state.visibleDrawer = false;
 };
 
-const fetchAuthor = debounce(value => {
-    state.fetching = true;
-    getUsers(1, 500, `&filters[search]=${value}`)
-        .then(response => {
-            const responseData = handleResponse(response.status, response.data);
-            state.fetching = false;
-            state.dataAuthor = responseData
-                ? responseData.data.docs.map(u => {
-                    return {
-                        value: u._id,
-                        label: u.fullName
-                    }
-                })
-                : [];
-        })
-        .catch(error => {
-            console.log('Search user failed', error);
-            state.fetching = false;
-            state.dataAuthor = [];
-        });
-}, 500);
-
 const resetDrawer = () => {
     filterForm.findByWord = '';
     filterForm.status = '';
-    filterForm.category = 'all';
-    filterForm.author = [];
-    filterForm.isMyNews = true;
-    filterForm.isHotNews = false;
+    filterForm.category = null
 };
 
 const navigate = (target) => {
     resetDrawer();
     router.push(target);
+}
+
+const handleCategory = category => {
+    switch (category) {
+        case 'LIBRARY':
+            return 'Thư viện'
+        case 'EVENT':
+            return 'Sự kiện'
+        case 'NEWS':
+            return 'Tin tức'
+    }
 }
 
 const showConfirm = activityId => {
@@ -352,13 +284,8 @@ const getFilterQuery = () => {
     const filterByWord = filterForm.findByWord !== '' ? filterForm.findByWord : '';
     const filterByStatus = filterForm.status !== '' ? filterForm.status : '';
     const filterByCategory = filterForm.category !== 'all' ? filterForm.category : '';
-    const filterByAuthor = filterForm.author.length ? `&filters[authors]=${filterForm.author.map(u => u.value).toString()}` : '';
-    const filterByMine = filterForm.isMyNews ? `&filters[isMyNews]=${filterForm.isMyNews}` : '';
-    const filterByHotNews = filterForm.isHotNews ? `&filters[isHotNews]=${filterForm.isHotNews}` : '';
 
-    const query = {
-
-    };
+    const query = {};
     return query;
 };
 
@@ -392,7 +319,7 @@ const getTableData = (options) => {
                             key: n.id,
                             id: n.id,
                             title: n.title,
-                            sourcce: n.sourcce,
+                            source: n.source,
                             release_date: n.release_date,
                             image: n.image,
                             category: n.category,

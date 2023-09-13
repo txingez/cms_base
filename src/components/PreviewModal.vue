@@ -11,6 +11,8 @@ const previewerStore = previewer()
              title="Preview"
              :footer="null"
              @cancel="close">
-        <img alt="preview" class="w-full" :src="previewerStore.previewerState.previewImage"/>
+        <img v-if="previewerStore.previewerState.type === 'IMAGE_URL'" alt="preview" class="w-full"
+             :src="previewerStore.previewerState.previewContent"/>
+        <div v-else v-html="previewerStore.previewerState.previewContent"/>
     </a-modal>
 </template>

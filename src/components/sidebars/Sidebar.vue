@@ -31,13 +31,13 @@
                         <span>Quản lý Site</span>
                     </div>
                 </template>
-<!--                <a-menu-item key="management_home"-->
-<!--                             @click="navigate('/management_home')">-->
-<!--                    <template #icon>-->
-<!--                        <HomeOutlined/>-->
-<!--                    </template>-->
-<!--                    <span>Quản lý trang chủ</span>-->
-<!--                </a-menu-item>-->
+                <!--                <a-menu-item key="management_home"-->
+                <!--                             @click="navigate('/management_home')">-->
+                <!--                    <template #icon>-->
+                <!--                        <HomeOutlined/>-->
+                <!--                    </template>-->
+                <!--                    <span>Quản lý trang chủ</span>-->
+                <!--                </a-menu-item>-->
                 <a-menu-item key="management_overview"
                              @click="navigate('/management_overview')">
                     <template #icon>
@@ -56,13 +56,13 @@
                         <template #icon>
                             <form-outlined/>
                         </template>
-                        <span>Soạn thảo hoạt động</span>
+                        <span>Soạn thảo nội dung bài viết</span>
                     </a-menu-item>
                     <a-menu-item key="activities" @click="navigate('/activities')">
                         <template #icon>
                             <unordered-list-outlined/>
                         </template>
-                        <span>Danh sách hoạt động</span>
+                        <span>Danh sách bài viết</span>
                     </a-menu-item>
                 </a-sub-menu>
             </a-sub-menu>
@@ -96,7 +96,6 @@ import Icon, {
     FormOutlined,
     FundProjectionScreenOutlined,
     FundViewOutlined,
-    HomeOutlined,
     MenuOutlined,
     MessageOutlined,
     ProfileOutlined,

@@ -2,13 +2,12 @@ import {previewer} from "../stores/previewer"
 
 const previewerStore = previewer()
 
-export const open = file => {
-    console.log(JSON.stringify(file.url))
+export const open = (content, type) => {
     previewerStore.updateIsPreview(true)
-    previewerStore.updatePreviewUrl(file.url)
+    previewerStore.updatePreviewContent(content, type)
 }
 
 export const close = () => {
     previewerStore.updateIsPreview(false)
-    previewerStore.updatePreviewUrl('')
+    previewerStore.updatePreviewContent('', '')
 }

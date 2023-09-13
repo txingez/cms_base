@@ -4,7 +4,7 @@
     </div>
 
     <div class="bg-white p-10">
-        <TittlePage label="Sự kiện, tin tức, thư viện"/>
+        <TitlePage label="Sự kiện - Tin tức - Thư viện"/>
         <a-form autocomplete="off"
                 name="form_data"
                 layout="vertical"
@@ -44,19 +44,18 @@
                 </a-col>
                 <a-col :xs="24" :md="12">
                     <a-form-item label="Ảnh"
-                                 name="bigImage"
-                                 :rules="[{required: formData.thumbnail.length === 0 && formData.bigImage.length === 0}]">
+                                 name="image"
+                                 :rules="[{required: true}]">
                         <div>
                             <a-upload name="bigImage"
-                                      v-model:file-list="formData.bigImage"
+                                      v-model:file-list="formData.image"
                                       accept=".png, .jpg, .jpeg"
                                       list-type="picture-card"
                                       :max-count="1"
-                                      :data="{type: 'big'}"
-                                      :before-upload="file => beforeUpload(file, 'big')"
-                                      @preview="open"
+                                      :before-upload="file => beforeUpload(file)"
+                                      @preview="file => open(file, 'IMAGE_URL')"
                                       :custom-request="uploadFile">
-                                <div v-if="formData.bigImage.length < 2">
+                                <div v-if="formData.image.length < 2">
                                     <plus-outlined/>
                                     <div>Upload</div>
                                 </div>
@@ -65,7 +64,7 @@
                             <div class="italic">Vui lòng sử dụng ảnh tỉ lệ: 16:9</div>
                             <div class="text-orange-500 text-sm">
                                 {{
-                                formData.errorBigImage === 'Size' ? 'Vui lòng sử dụng ảnh dung lượng tối đa 5MB.' : formData.errorBigImage === 'Aspect Ratio' ? 'Tỉ lệ ảnh không đúng' : ''
+                                formData.errorImage === 'Size' ? 'Vui lòng sử dụng ảnh dung lượng tối đa 5MB.' : formData.errorImage === 'Aspect Ratio' ? 'Tỉ lệ ảnh không đúng' : ''
                                 }}
                             </div>
                         </div>
@@ -92,19 +91,24 @@
                 </a-col>
                 <a-col :xs="24" :md="24">
                     <a-form-item label="Nội dung"
+                                 v-if="formData.contentType === contentTypeEnum.HTML"
                                  name="content"
                                  :rules="[{required: true}]">
                         <div class="w-full">
                             <quill-editor ref="quill"
-                                          v-if="formData.contentType === 'HTML'"
                                           v-model:content="formData.content"
                                           class="min-h-[300px] max-h-[700px] overflow-x-scroll"
                                           :modules="ModulesEditor"
                                           :toolbar="toolbar"
                                           content-type="html">
                             </quill-editor>
-                            <a-input v-else v-model:value="formData.link" placeholder="Link (https:www.content.com)"/>
                         </div>
+                    </a-form-item>
+                    <a-form-item label="Nội dung"
+                                 v-else
+                                 name="link"
+                                 :rules="[{required: true}]">
+                        <a-input v-model:value="formData.link" placeholder="Link (https:www.content.com)"/>
                     </a-form-item>
                 </a-col>
             </a-row>
@@ -122,11 +126,6 @@
                           @click="handleDraft"
                           :loading="state.loadingDraft">
                     Lưu nháp
-                </a-button>
-                <a-button danger
-                          v-if="state.isEdit && formData.status === 'PUBLIC'"
-                          @click="showConfirm({title: 'Gỡ tin', type: 'DISMISS'})">
-                    Gỡ tin
                 </a-button>
                 <a-form-item>
                     <a-button type="primary"
@@ -150,6 +149,7 @@
         <template #footer>
             <a-button @click="handleConfirm(false)">Huỷ</a-button>
             <a-button type="primary"
+                      class="bg-[#1677ff]"
                       @click="handleConfirm(true)">
                 Xác nhận
             </a-button>
@@ -172,16 +172,12 @@ import {uploadImage} from "../../../services/uploadFile";
 import {PlusOutlined} from "@ant-design/icons-vue";
 import {showToast} from "../../../utils/showToast";
 import BreadCrumb from "../../../components/breadcrumb/BreadCrumb.vue";
-import {publicNews} from "../../../services/news";
-import {debounce} from "lodash-es";
-import {getUsers} from "../../../services/user";
 import {QuillEditor} from "@vueup/vue-quill";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import Compressor from 'compressorjs';
 import {ModulesEditor} from "../../../constants/modulesEditor";
 import {ToolbarEditor} from "../../../constants/toolbarEditor";
-import TittlePage from "../../../components/TittlePage.vue";
-import {createPost, deletePost, dismissById, saveForm, getById, updatePost} from "../../../services/activity";
+import TitlePage from "../../../components/TitlePage.vue";
+import {createPost, deletePost, getById, saveForm, updatePost} from "../../../services/activity";
 import PreviewModal from "../../../components/PreviewModal.vue";
 import {open} from "../../../utils/previewerUtils";
 
@@ -222,25 +218,19 @@ const formData = reactive({
     title: '',
     status: '',
     category: null,
-    isHotNews: false,
-    authorId: null,
-    keywords: [],
-    description: '',
-    bigImage: [],
-    thumbnail: [],
+    image: [],
     content: '',
     link: '',
-    errorBigImage: '',
-    errorThumbnail: '',
+    errorImage: '',
     contentType: null,
     releaseDate: '',
     source: ''
 });
 
 const optionsCategory = [
-    { label: 'Thư viện', value: 'LIBRARY' },
-    { label: 'Sự kiện', value: 'EVENT' },
-    { label: 'Tin tức', value: 'NEWS' }
+    {label: 'Thư viện', value: 'LIBRARY'},
+    {label: 'Sự kiện', value: 'EVENT'},
+    {label: 'Tin tức', value: 'NEWS'}
 ];
 
 const optionContentType = [
@@ -261,20 +251,23 @@ const state = reactive({
     reason: ''
 });
 
+const resetForm = () => {
+    formData.id = 0;
+    formData.title = '';
+    formData.category = null;
+    formData.releaseDate = '';
+    formData.image = [];
+    formData.content = '';
+    formData.link = '';
+    formData.errorImage = '';
+    formData.source = '';
+
+    state.disableEdit = false;
+};
+
 watch(router.currentRoute, (route) => {
     if (route.params.activityId === undefined) {
-        formData.id = 0;
-        formData.title = '';
-        formData.category = null;
-        formData.isHotNews = false;
-        formData.authorId = null;
-        formData.description = '';
-        formData.bigImage = [];
-        formData.thumbnail = [];
-        formData.content = '';
-        formData.link = '';
-        formData.keywords = [];
-        formData.status = '';
+        resetForm()
 
         state.isEdit = false;
     } else {
@@ -285,31 +278,21 @@ watch(router.currentRoute, (route) => {
             .then(response => {
                 const responseData = handleResponse(response.status, response.data);
                 if (responseData) {
-                    formData.id = responseData.data.id;
-                    formData.title = responseData.data.title;
-                    formData.status = responseData.data.status;
-                    formData.category = responseData.data.category;
-                    formData.isHotNews = responseData.data.isHotNews;
-                    formData.authorId = responseData.data.author ? responseData.data.author._id : '';
-                    state.optionsAuthor = [{
-                        value: responseData.data.author._id,
-                        label: responseData.data.author.username
-                    }];
-                    formData.description = responseData.data.description;
-                    formData.bigImage = responseData.data.bigImage ? [{
-                        name: responseData.data.bigImage,
-                        url: responseData.data.bigImage,
+                    formData.id = responseData.id;
+                    formData.title = responseData.title;
+                    formData.status = responseData.status;
+                    formData.category = responseData.category;
+                    formData.image = responseData.image ? [{
+                        name: responseData.image,
+                        url: responseData.image,
                         status: 'done'
                     }] : [];
-                    formData.thumbnail = responseData.data.thumbnail ? [{
-                        name: responseData.data.thumbnail,
-                        url: responseData.data.thumbnail,
-                        status: 'done'
-                    }] : [];
-                    formData.content = responseData.data.content;
-                    formData.keywords = responseData.data.keywords;
-                    formData.errorBigImage = '';
-                    formData.errorThumbnail = '';
+                    formData.releaseDate = responseData.release_date;
+                    formData.contentType = responseData.content_type;
+                    formData.source = responseData.source
+                    formData.content = responseData.content_type === contentTypeEnum.HTML ? responseData.content : '';
+                    formData.link = responseData.content_type === contentTypeEnum.LINK ? responseData.content : '';
+                    formData.errorImage = '';
                 }
             });
     }
@@ -327,35 +310,25 @@ onMounted(() => {
 });
 
 const getDetail = (activityId) => {
-    state.isView = true;
-
     getById(activityId)
         .then(response => {
             const responseData = handleResponse(response.status, response.data);
             if (responseData) {
-                formData.id = responseData.data.id;
-                formData.title = responseData.data.title;
-                formData.status = responseData.data.status;
-                formData.category = responseData.data.category;
-                formData.isHotNews = responseData.data.isHotNews;
-                formData.authorId = responseData.data.author ? responseData.data.author.id : '';
-                state.optionsAuthor = [{value: responseData.data.author._id, label: responseData.data.author.fullName}];
-                formData.description = responseData.data.description;
-                formData.bigImage = responseData.data.bigImage ? [{
-                    name: responseData.data.bigImage,
-                    url: responseData.data.bigImage,
+                formData.id = responseData.id;
+                formData.title = responseData.title;
+                formData.status = responseData.status;
+                formData.category = responseData.category;
+                formData.image = responseData.image ? [{
+                    name: responseData.image,
+                    url: responseData.image,
                     status: 'done'
                 }] : [];
-                formData.thumbnail = responseData.data.thumbnail ? [{
-                    name: responseData.data.thumbnail,
-                    url: responseData.data.thumbnail,
-                    status: 'done'
-                }] : [];
-                formData.content = responseData.data.content;
-                formData.keywords = responseData.data.keywords;
-                formData.target = responseData.data.target;
-                formData.errorBigImage = '';
-                formData.errorThumbnail = '';
+                formData.releaseDate = responseData.release_date;
+                formData.contentType = responseData.content_type;
+                formData.source = responseData.source
+                formData.content = responseData.content_type === 'HTML' ? responseData.content : '';
+                formData.link = responseData.content_type === 'LINK' ? responseData.content : '';
+                formData.errorImage = '';
             } else {
                 showToast('error', 'Không lấy được thông tin');
                 router.push('/activities');
@@ -364,31 +337,12 @@ const getDetail = (activityId) => {
         .catch(error => {
             console.log('Lỗi lấy thông tin hoạt động, ', error);
             showToast('error', 'Không lấy được thông tin hoạt động');
-            router.push('/news');
+            router.push('/activities');
         });
 }
 
 const validateMessages = {
     required: "${label} là bắt buộc",
-};
-
-const resetForm = () => {
-    formData.id = 0;
-    formData.title = '';
-    formData.category = null;
-    formData.isHotNews = false;
-    formData.authorId = null;
-    formData.description = '';
-    formData.bigImage = [];
-    formData.thumbnail = [];
-    formData.content = '';
-    formData.link = '';
-    formData.keywords = [];
-    formData.errorBigImage = '';
-    formData.errorThumbnail = '';
-
-    state.isView = false;
-    state.disableEdit = false;
 };
 
 const handleCancel = () => {
@@ -410,7 +364,7 @@ const handleDraft = () => {
             source: formData.source,
             title: formData.title,
             category: formData.category,
-            image: formData.bigImage.length !== 0 ? formData.bigImage[0].url : null,
+            image: formData.image.length !== 0 ? formData.image[0].url : null,
             content: formData.contentType === contentTypeEnum.HTML ? formData.content : formData.link,
             content_type: formData.contentType,
             release_date: formData.releaseDate
@@ -435,18 +389,18 @@ const handleDraft = () => {
 };
 
 const onFinish = () => {
-    if (formData.errorBigImage === 'Size' || formData.errorSmallImage === 'Size') {
+    if (formData.errorImage === 'Size') {
         showToast('error', 'Vui lòng sử dụng ảnh có dung lượng chuẩn');
     } else {
 
         const body = {
-            status: statusEnum.DRAFT,
+            status: statusEnum.PUBLISH,
             additional_params: {
                 page_id: getPageId(formData.category),
                 source: formData.source,
                 title: formData.title,
                 category: formData.category,
-                image: formData.bigImage.length !== 0 ? formData.bigImage[0].url : null,
+                image: formData.image.length !== 0 ? formData.image[0].url : null,
                 content: formData.contentType === contentTypeEnum.HTML ? formData.content : formData.link,
                 content_type: formData.contentType,
                 release_date: formData.releaseDate
@@ -459,7 +413,7 @@ const onFinish = () => {
 
 const executeActivityAPI = (body) => {
     state.loading = true;
-    const request = formData.id !== 0 ? updatePost(body) : createPost(body);
+    const request = formData.id !== 0 ? updatePost({...body, id: formData.id}) : createPost(body);
     request.then(response => {
         const responseData = handleResponse(response.status, response.data);
         state.loading = false;
@@ -475,55 +429,13 @@ const executeActivityAPI = (body) => {
     });
 };
 
-const searchUser = debounce(value => {
-    state.fetching = true;
-    getUsers(1, 1000, `&filters[search]=${value}`)
-        .then(response => {
-            state.fetching = false;
-            const responseData = handleResponse(response.status, response.data);
-            if (responseData) {
-                state.optionsAuthor = responseData.data.docs.map(u => {
-                    return {
-                        label: u.fullName,
-                        value: u._id
-                    }
-                })
-            }
-        })
-        .catch(error => {
-            state.fetching = false;
-            console.log('Lỗi khi tìm kiếm user', error);
-            state.optionsAuthor = [];
-        });
-}, 300);
-
-const handleInputKeyword = () => {
-    const inputValue = state.keywordInput;
-    let currentKeywords = formData.keywords;
-    if (inputValue && currentKeywords.indexOf(inputValue) === -1) {
-        formData.keywords = [...currentKeywords, inputValue];
-        state.keywordInput = '';
-    }
-};
-
-const deleteKeyword = removedKeyword => {
-    formData.keywords = formData.keywords.filter(k => k !== removedKeyword);
-};
-
-const beforeUpload = (file, type) => {
+const beforeUpload = (file) => {
     formData.error = '';
     return new Promise((resolve, reject) => {
         const isLt5M = file.size / 1024 / 1024 <= 5;
-        const isLt300KB = file.size <= 300000;
-        if (type === 'big' && !isLt5M) {
+        if (!isLt5M) {
             file.status = 'error';
-            formData.errorBigImage = 'Size';
-            return reject(false);
-        }
-
-        if (type === 'small' && !isLt300KB) {
-            file.status = 'error';
-            formData.errorThumbnail = 'Size';
+            formData.errorImage = 'Size';
             return reject(false);
         }
 
@@ -537,17 +449,9 @@ const beforeUpload = (file, type) => {
                 const width = image.width;
                 if ((width / height) === (16 / 9)) {
                     file.status = 'done';
-                    if (type === 'big') {
-                        formData.errorBigImage = '';
-                    } else {
-                        formData.errorThumbnail = '';
-                    }
+                    formData.errorImage = '';
                 } else {
-                    if (type === 'big') {
-                        formData.errorBigImage = 'Aspect Ratio';
-                    } else {
-                        formData.errorThumbnail = 'Aspect Ratio';
-                    }
+                    formData.errorImage = 'Aspect Ratio';
                 }
                 return resolve(true);
             }
@@ -563,25 +467,12 @@ const uploadFile = (options) => {
             const responseData = handleResponse(response.status, response.data);
 
             if (responseData) {
-                console.log(`ANHBLLLL: ${JSON.stringify(data)}`)
-                switch (data.type) {
-                    case 'big':
-                        formData.bigImage = [{
-                            file: file,
-                            status: 'done',
-                            response: responseData,
-                            url: responseData.data.file_url
-                        }];
-                        return;
-                    case 'small':
-                        formData.thumbnail = [{
-                            file: file,
-                            status: 'done',
-                            response: responseData,
-                            url: responseData.data.file_url
-                        }];
-                        return;
-                }
+                formData.image = [{
+                    file: file,
+                    status: 'done',
+                    response: responseData,
+                    url: responseData.data.file_url
+                }];
             } else {
                 const error = new Error('Uploaded Failed');
                 onError(error);
@@ -618,18 +509,6 @@ const handleConfirm = confirmed => {
     state.confirmLoading = true;
     const request = (() => {
         switch (state.typeModal) {
-            case 'PUBLIC':
-                const bodyPublic = {
-                    status: 'PUBLIC'
-                };
-                return publicNews(activityId, bodyPublic);
-
-            case 'DISMISS':
-                const bodyDismiss = {
-                    status: 'DISMISS'
-                };
-                return dismissById(activityId, bodyDismiss);
-
             case 'DELETE':
                 if (confirmed) {
                     return deletePost(activityId);
@@ -642,7 +521,7 @@ const handleConfirm = confirmed => {
         state.confirmLoading = false;
         if (responseData) {
             showToast('success', 'Thao tác thành công');
-            router.push('/news');
+            router.push('/activities');
             resetModal();
         }
     })
@@ -659,7 +538,7 @@ const handleImageCssInContent = content => {
 };
 
 const getPageId = category => {
-    switch(category) {
+    switch (category) {
         case categoryEnum.NEWS:
         case categoryEnum.EVENT:
             return pageEnum.ACTIVITIES;

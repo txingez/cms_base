@@ -11,8 +11,7 @@ export const ToolbarEditor = (quillRef) => {
             [{'indent': '-1'}, {'indent': '+1'}],
             [{'color': []}, {'background': []}],
             [{'align': null}, {'align': 'center'}, {'align': 'right'}, {'align': 'justify'}],
-            ['image', 'video'],
-            ['clean']
+            ['link', 'image', 'video']
         ],
         handlers: {
             'image': () => {

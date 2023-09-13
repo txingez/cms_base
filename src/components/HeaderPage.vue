@@ -28,7 +28,7 @@
         <!--            </a-dropdown>-->
         <!--        </div>-->
         <a-dropdown :trigger="['click']">
-            <a-avatar class="cursor-pointer bg-blue-500" :size="{ xs: 18, sm: 20, md: 36, lg: 40, xl: 40, xxl: 40 }">
+            <a-avatar class="cursor-pointer bg-blue-500 flex justify-center items-center" :size="{ xs: 18, sm: 20, md: 36, lg: 40, xl: 40, xxl: 40 }">
                 <template #icon>
                     <user-outlined/>
                 </template>

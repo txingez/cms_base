@@ -1,6 +1,6 @@
 <script setup>
 
-import TittlePage from "../../components/TittlePage.vue";
+import TitlePage from "../../components/TitlePage.vue";
 import BreadCrumb from "../../components/breadcrumb/BreadCrumb.vue";
 import { onMounted, ref } from "vue";
 import { numberWithComma } from "../../utils/formatNumber";
@@ -79,136 +79,7 @@ const getTableData = async (options) => {
         })
 }
 
-// const sampleResponse = {
-//     status: 200,
-//     message: 'success',
-//     data: {
-//         total: 1,
-//         page: 1,
-//         results: [
-//             {
-//                 id: 1,
-//                 organizationProfile: {
-//                     companyName: 'Cong ty ABC',
-//                     taxCode: '123456789',
-//                     foundedYear: '2000',
-//                     registrationType: 'Doanh nghiệp tư nhân',
-//                     businessType: 'Doanh nghiệp không niêm yết',
-//                     fullTimeEmployees: '1000',
-//                     femaleFullTimeEmployees: '500',
-//                     partTimeEmployees: '200',
-//                     femalePartTimeEmployees: '50',
-//                     seasonalEmployees: '100',
-//                     femaleSeasonalEmployees: '70',
-//                     numberManagers: '100',
-//                     numberFemaleManagers: '30',
-//                     equalFifteenAndUnderEighteenEmployees: '0',
-//                     b6Value: 'Có',
-//                     b7Value: 'Có',
-//                     businessModel: 'Sản xuất năng lượng khác',
-//                     startedESGYear: '2020',
-//                     websiteCompany: 'https://website.com',
-//                     fullNameManager: 'DO VAN A',
-//                     sexManager: 'male',
-//                     nationManager: 'Kinh',
-//                     workPlaceManager: 'Tong giam doc',
-//                     emailManager: 'email@email.com',
-//                     phoneNumberManager: '0987654321',
-//                     evaluatedDate: '30/08/2023',
-//                     fullName: 'TRAN VAN B',
-//                     workPlace: 'Truong phong',
-//                     workUnit: 'Phong ke hoach',
-//                     email: 'abc@email.com',
-//                     phoneNumber: '0981234567'
-//                 },
-//                 answers: [
-//                     { key: 'E1', answer: 'B' },
-//                     { key: 'E2', answer: 'B' },
-//                     { key: 'E3', answer: 'B' },
-//                     { key: 'E4', answer: 'B' },
-//                     { key: 'E5', answer: 'B' },
-//                     { key: 'E6', answer: 'B' },
-//                     { key: 'E7', answer: 'B' },
-//                     { key: 'E8', answer: 'B' },
-//                     { key: 'E9', answer: 'B' },
-//                     { key: 'E10', answer: 'B' },
-//                     { key: 'E11', answer: 'B' },
-//                     { key: 'E12', answer: 'B' },
-//                     { key: 'E13', answer: 'B' },
-//                     { key: 'E14', answer: 'B' },
-//                     { key: 'E15', answer: 'B' },
-//                     { key: 'E16', answer: 'B' },
-//                     { key: 'S1', answer: 'B' },
-//                     { key: 'S2', answer: 'B' },
-//                     { key: 'S3', answer: 'B' },
-//                     { key: 'S4', answer: 'B' },
-//                     { key: 'S5', answer: 'B' },
-//                     { key: 'S6', answer: 'B' },
-//                     { key: 'S7', answer: 'B' },
-//                     { key: 'S8', answer: 'B' },
-//                     { key: 'S9', answer: 'B' },
-//                     { key: 'S10', answer: 'B' },
-//                     { key: 'S11', answer: 'B' },
-//                     { key: 'S12', answer: 'B' },
-//                     { key: 'S13', answer: 'B' },
-//                     { key: 'S14', answer: 'B' },
-//                     { key: 'S15', answer: 'B' },
-//                     { key: 'S16', answer: 'B' },
-//                     { key: 'S17', answer: 'B' },
-//                     { key: 'S18', answer: 'B' },
-//                     { key: 'S19', answer: 'B' },
-//                     { key: 'S20', answer: 'B' },
-//                     { key: 'S21', answer: 'B' },
-//                     { key: 'S22', answer: 'B' },
-//                     { key: 'S23', answer: 'B' },
-//                     { key: 'S24', answer: 'B' },
-//                     { key: 'S25', answer: 'B' },
-//                     { key: 'S26', answer: 'B' },
-//                     { key: 'S27', answer: 'B' },
-//                     { key: 'S28', answer: 'B' },
-//                     { key: 'S29', answer: 'B' },
-//                     { key: 'S30', answer: 'B' },
-//                     { key: 'S31', answer: 'B' },
-//                     { key: 'G1', answer: 'B' },
-//                     { key: 'G2', answer: 'B' },
-//                     { key: 'G3', answer: 'B' },
-//                     { key: 'G4', answer: 'B' },
-//                     { key: 'G5', answer: 'B' },
-//                     { key: 'G6', answer: 'B' },
-//                     { key: 'G7', answer: 'B' },
-//                     { key: 'G8', answer: 'B' },
-//                     { key: 'G9', answer: 'B' },
-//                     { key: 'G10', answer: 'B' },
-//                     { key: 'G11', answer: 'B' },
-//                     { key: 'G12', answer: 'B' },
-//                     { key: 'G13', answer: 'B' },
-//                     { key: 'G14', answer: 'B' },
-//                     { key: 'G15', answer: 'B' },
-//                     { key: 'G16', answer: 'B' }
-//                 ],
-//                 result: {
-//                     environment: {
-//                         point: 25,
-//                         distribution: 50
-//                     },
-//                     social: {
-//                         point: 30,
-//                         distribution: 25
-//                     },
-//                     governance: {
-//                         point: 35,
-//                         distribution: 25
-//                     },
-//                     total: 48,
-//                     rate: 1
-//                 }
-//             }
-//         ]
-//     }
-// }
-
 const showResult = result => {
-    // console.log(`ANHBLLLLL: ${JSON.stringify(result)}`);
     resultModal.show()
     resultModal.setData(result)
 }
@@ -218,13 +89,13 @@ const showResult = result => {
     <div class="mb-5">
         <BreadCrumb :routes="routes" />
     </div>
-    <TittlePage label="Quản lý kết quả đánh giá" />
+    <TitlePage label="Quản lý kết quả đánh giá" />
 
     <div class="mt-5">
         <a-table :columns="columns" :data-source="tableData" :pagination="false" :scroll="{ x: 500, y: 700 }">
             <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'view'">
-                    <div @click.prevent="showResult(record)">
+                    <div @click.prevent="showResult(record)" class="hover:cursor-pointer text-blue-500">
                         <font-awesome-icon icon="fa-solid fa-eye" />
                     </div>
                 </template>

@@ -21,7 +21,7 @@ export const getFormData = async(body) => {
 }
 
 export const getById = activityId => {
-    return axios.get(`${URL}/activity/${activityId}`, config);
+    return axios.get(`${URL}/api/v1/post_detail?id=${activityId}`, config);
 };
 
 export const deletePost = id => {

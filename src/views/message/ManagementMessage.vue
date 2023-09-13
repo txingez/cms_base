@@ -3,7 +3,7 @@
     <div class="mb-5">
         <BreadCrumb :routes="routes"/>
     </div>
-    <TittlePage label="Quản lý tin nhắn"/>
+    <TitlePage label="Quản lý tin nhắn"/>
   <!--  End Header Page-->
 
   <!--  Table quản lý-->
@@ -34,7 +34,7 @@ import BreadCrumb from "../../components/breadcrumb/BreadCrumb.vue";
 import {numberWithComma} from "../../utils/formatNumber";
 import {dateTimeFormatString} from "../../utils/reformatTime";
 import {showToast} from "../../utils/showToast";
-import TittlePage from "../../components/TittlePage.vue";
+import TitlePage from "../../components/TitlePage.vue";
 import {getAll} from "../../services/message";
 
 const columns = [

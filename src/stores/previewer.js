@@ -4,16 +4,18 @@ import {reactive} from "vue";
 export const previewer = defineStore('preview', () => {
     const previewerState = reactive({
         isPreview: false,
-        previewUrl: ''
+        previewContent: '',
+        type: ''
     })
 
     const updateIsPreview = newVal => {
         previewerState.isPreview = newVal
     }
 
-    const updatePreviewUrl = newVal => {
-        previewerState.previewUrl = newVal
+    const updatePreviewContent = (newVal, type) => {
+        previewerState.previewContent = type === 'IMAGE_URL' ? newVal.url : newVal
+        previewerState.type = type
     }
 
-    return {previewerState, updateIsPreview, updatePreviewUrl}
+    return {previewerState, updateIsPreview, updatePreviewContent}
 })
