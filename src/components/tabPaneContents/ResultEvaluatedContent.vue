@@ -113,7 +113,7 @@ onMounted(() => {
                         167/QĐ-TTg ngày 8/2/2022 về Chương trình hỗ trợ doanh nghiệp khu vực tư nhân kinh doanh bền vững
                         giai đoạn 2022 -2025 hay không?
                     </a-table-summary-cell>
-                    <a-table-summary-cell class="text-right font-bold">Không đạt</a-table-summary-cell>
+                    <a-table-summary-cell class="text-right font-bold">{{ totalPoint < 50 ? 'Không đạt' : 'Đạt' }}</a-table-summary-cell>
                 </a-table-summary-row>
             </template>
         </a-table>
@@ -126,7 +126,7 @@ onMounted(() => {
 
         <div class="flex gap-5 flex-col py-5">
             <div class="font-bold text-xl">Đề xuất cho doanh nghiệp</div>
-            <div class="whitespace-pre-wrap" v-html="RatingClassification[rate].suggest"></div>
+            <div v-html="RatingClassification[rate].suggest"></div>
         </div>
     </div>
 </template>

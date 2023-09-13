@@ -65,6 +65,12 @@ const router = createRouter({
                     path: "/evaluated_result",
                     name: "management_result",
                     component: () => import("../views/managementEvaluatedResult/ManagementEvaluatedResultPage.vue")
+                },
+                {
+                    id: 10,
+                    path: "/result_detail/:id",
+                    name: "evaluated_result_detail",
+                    component: () => import("../views/managementEvaluatedResult/EvaluatedResultDetailPage.vue")
                 }
             ],
         },

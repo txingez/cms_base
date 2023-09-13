@@ -115,27 +115,6 @@ const navigate = (path) => {
     router.push(path);
 };
 
-watch(
-    () => router.currentRoute,
-    (n) => {
-        const selectedKey = (() => {
-            switch (router.currentRoute.value.name) {
-                case 'edit_news':
-                    return 'editor_news';
-
-                default:
-                    return router.currentRoute.value.name;
-            }
-        })();
-
-        selectedKeys.value = [selectedKey];
-    },
-    {
-        deep: true,
-        immediate: true
-    }
-);
-
 watch(() => router.currentRoute,
     (n) => {
         openKeys.value = (() => {
@@ -152,12 +131,28 @@ watch(() => router.currentRoute,
 
                 case 'management_message':
                 case 'management_result':
+                case 'evaluated_result_detail':
                     return ['submenu_2']
 
                 default:
                     return ['']
             }
         })();
+
+        const selectedKey = (() => {
+            switch (router.currentRoute.value.name) {
+                case 'edit_news':
+                    return 'editor_news';
+
+                case 'evaluated_result_detail':
+                    return 'management_result';
+
+                default:
+                    return router.currentRoute.value.name;
+            }
+        })();
+
+        selectedKeys.value = [selectedKey];
     },
     {
         deep: true,

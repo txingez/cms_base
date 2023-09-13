@@ -1,0 +1,185 @@
+<script setup>
+import {computed} from "vue";
+import OrganizationProfileContent from "../../components/tabPaneContents/OrganizationProfileContent.vue";
+import EvaluatedQuestionsContent from "../../components/tabPaneContents/EvaluatedQuestionsContent.vue";
+import {EnvironmentQuestions} from "../../constants/environmentQuestions";
+import {SocialQuestions} from "../../constants/socialQuestions";
+import {GovernanceQuestions} from "../../constants/governanceQuestions";
+import ResultEvaluatedContent from "../../components/tabPaneContents/ResultEvaluatedContent.vue";
+import * as htmlToImage from "html-to-image";
+import jsPDF from "jspdf";
+import {resultStore} from "../../stores/resultStore";
+import BreadCrumb from "../../components/breadcrumb/BreadCrumb.vue";
+import TitlePage from "../../components/TitlePage.vue";
+import {useRouter} from "vue-router";
+import DividerWithTitle from "../../components/DividerWithTitle.vue";
+import {FirstCriteria} from "../../constants/firstCriteria";
+import {SecondCriteria} from "../../constants/secondCriteria";
+import {ThirdCriteria} from "../../constants/thirdCriteria";
+
+const resultPinia = resultStore()
+const router = useRouter()
+
+const routes = computed(() => [
+    {name: 'Home', to: '/'},
+    {name: 'Quản lý kết quả đánh giá', to: '/evaluated_result'},
+    {name: 'Kết quả đánh giá', to: `/result_detail/${router.currentRoute.value.params.id}`}
+]);
+
+const resultData = computed(() => resultPinia.data)
+const resultAndQaA = computed(() => {
+    switch (resultData.value.formId) {
+        case 'ESG':
+            return {
+                firstPart: {
+                    answers: resultData.value.answers.filter(a => a.question.startsWith('E')),
+                    questions: EnvironmentQuestions,
+                },
+                secondPart: {
+                    answers: resultData.value.answers.filter(a => a.question.startsWith('S')),
+                    questions: SocialQuestions
+                },
+                thirdPart: {
+                    answers: resultData.value.answers.filter(a => a.question.startsWith('G')),
+                    questions: GovernanceQuestions
+                },
+                result: [
+                    {
+                        name: 'E - Môi trường',
+                        point: resultData.value.result.environment.point,
+                        distribution: resultData.value.result.environment.distribution
+                    },
+                    {
+                        name: 'S - Xã hội',
+                        point: resultData.value.result.social.point,
+                        distribution: resultData.value.result.social.distribution
+                    },
+                    {
+                        name: 'G - Quản trị',
+                        point: resultData.value.result.governance.point,
+                        distribution: resultData.value.result.governance.distribution
+                    }
+                ]
+            }
+
+        case 'NEC':
+            return {
+                firstPart: {
+                    answers: resultData.value.answers.filter(a => a.question.startsWith('FC')),
+                    questions: FirstCriteria
+                },
+                secondPart: {
+                    answers: resultData.value.answers.filter(a => a.question.startsWith('SC')),
+                    questions: SecondCriteria
+                },
+                thirdPart: {
+                    answers: resultData.value.answers.filter(a => a.question.startsWith('TC')),
+                    questions: ThirdCriteria
+                },
+                result: [
+                    {
+                        name: 'Nhóm tiêu chí 1',
+                        point: resultData.value.result.first_criteria.point,
+                        distribution: resultData.value.result.first_criteria.distribution
+                    },
+                    {
+                        name: 'Nhóm tiêu chí 2',
+                        point: resultData.value.result.second_criteria.point,
+                        distribution: resultData.value.result.second_criteria.distribution
+                    },
+                    {
+                        name: 'Nhóm tiêu chí 3',
+                        point: resultData.value.result.third_criteria.point,
+                        distribution: resultData.value.result.third_criteria.distribution
+                    }
+                ]
+            }
+    }
+})
+
+const exportHTMLToPDF = async () => {
+    const doc = new jsPDF({
+        orientation: 'p',
+        unit: 'px',
+        format: 'a4',
+        putOnlyUsedFonts: true,
+        floatPrecision: 16 // or "smart", default is 16
+    })
+    const elements = document.getElementsByClassName("print")
+    await createPdf({doc, elements})
+
+    doc.save(`ket_qua_danh_gia.pdf`)
+}
+
+const createPdf = async ({doc, elements}) => {
+    let top = 20;
+    const padding = 30;
+    for (let i = 0; i < elements.length; i++) {
+        const el = elements.item(i);
+        const imgData = await htmlToImage.toPng(el);
+
+        let elHeight = el.offsetHeight;
+        let elWidth = el.offsetWidth;
+
+        const pageWidth = doc.internal.pageSize.getWidth();
+
+        if (elWidth > pageWidth) {
+            const ratio = pageWidth / elWidth;
+            //resize chart width and height proportionally
+            elHeight = elHeight * ratio - padding;
+            elWidth = elWidth * ratio - padding;
+        }
+
+        const pageHeight = doc.internal.pageSize.getHeight();
+        //if chart do not fit to the page height
+        if (top + elHeight > pageHeight) {
+            doc.addPage(); // add new page
+            top = 20; // reset height counter
+        }
+
+        doc.addImage(imgData, "PNG", padding - 15, top, elWidth, elHeight, `image${i}`, 'FAST');
+        top += elHeight;
+    }
+}
+
+</script>
+
+<template>
+    <div class="mb-5">
+        <BreadCrumb :routes="routes"/>
+    </div>
+    <TitlePage label="Chi tiết kết quả đánh giá"/>
+
+    <div class="flex flex-col gap-5 border rounded-[5px] p-5 bg-white">
+        <div class="space-y-5">
+            <div class="print">
+                <DividerWithTitle label="Hồ sơ doanh nghiệp/tổ chức" place="center"/>
+                <OrganizationProfileContent :organization-profile="resultData.organizationProfile"
+                                            :form-id="resultData.formId"/>
+            </div>
+
+            <div class="print">
+                <DividerWithTitle label="Đáp án lựa chọn" place="center"/>
+                <EvaluatedQuestionsContent
+                        :result-data="resultAndQaA.firstPart.answers"
+                        :questions="resultAndQaA.firstPart.questions"/>
+                <EvaluatedQuestionsContent
+                        :result-data="resultAndQaA.secondPart.answers"
+                        :questions="resultAndQaA.secondPart.questions"/>
+                <EvaluatedQuestionsContent
+                        :result-data="resultAndQaA.thirdPart.answers"
+                        :questions="resultAndQaA.thirdPart.questions"/>
+            </div>
+
+            <div class="print">
+                <DividerWithTitle label="Kết quả cuối cùng" place="center"/>
+                <ResultEvaluatedContent :data-source="resultAndQaA.result"
+                                        :total-point="resultData.result.total"
+                                        :rate="resultData.result.rate"/>
+            </div>
+        </div>
+        <div class="text-right">
+            <a-button type="primary" class="bg-blue-500" @click.prevent="exportHTMLToPDF">Xuất file</a-button>
+        </div>
+    </div>
+</template>

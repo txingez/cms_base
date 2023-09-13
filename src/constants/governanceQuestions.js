@@ -84,7 +84,7 @@ export const GovernanceQuestions = {
         }
     },
     G13: {
-        question: 'Báo cáo thường niên có công bố lương, thưởng, các khoản thu nhập khác, các lợi ích khác và chi phí mà doanh nghiệp chi trả, thanh toán cho từng thành viên trong HĐQT hoặc HĐTV hoặc Ban Giám đốc không?',
+        question: 'Báo cáo thường niên có quy chế rõ rảng về lương, thưởng, các khoản thu nhập khác, quỹ phúc lợi và chi phí mà doanh nghiệp chi trả, thanh toán cho từng thành viên trong HĐQT hoặc HĐTV hoặc Ban Giám đốc không?',
         answers: {
             A: {answer: 'Không', point: 0},
             B: {answer: 'Có', point: 1}
@@ -136,7 +136,8 @@ export const GovernanceQuestions = {
         question: 'Trong trường hợp doanh nghiệp bắt buộc phải có Kiểm toán nội bộ theo pháp luật Việt Nam, danh sách các ứng viên kiểm toán có được công bố công khai không?',
         answers: {
             A: {answer: 'Không', point: 0},
-            B: {answer: 'Có', point: 1}
+            B: {answer: 'Có', point: 1},
+            C: {answer: 'Không áp dụng do pháp luật Việt Nam không yêu cầu', point: 'N/A'},
         }
     },
     G21: {
@@ -169,7 +170,6 @@ export const GovernanceQuestions = {
         }
     },
     G25: {
-
         question: 'Doanh nghiệp có bộ phận chịu trách nhiệm giám sát truyền thông ra bên ngoài và lưu trữ thông tin theo quy định của pháp luật không?',
         answers: {
             A: {answer: 'Không', point: 0},
@@ -216,7 +216,8 @@ export const GovernanceQuestions = {
         question: 'Trong trường hợp doanh nghiệp bắt buộc phải có Kiểm toán độc lập theo pháp luật Việt Nam, doanh nghiệp có công bố đã bổ nhiệm một bên độc lập (kiểm tra, giám sát viên) là Kiểm toán độc lập?',
         answers: {
             A: {answer: 'Không', point: 0},
-            B: {answer: 'Có', point: 1}
+            B: {answer: 'Có', point: 1},
+            C: {answer: 'Không áp dụng do pháp luật Việt Nam không yêu cầu', point: 'N/A'}
         }
     },
     G32: {

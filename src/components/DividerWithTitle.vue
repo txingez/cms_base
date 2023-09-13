@@ -1,11 +1,12 @@
 <script setup>
 defineProps({
-    label: String
+    label: String,
+    place: String
 })
 </script>
 
 <template>
-    <a-divider orientation="left" orientation-margin="0px">
-        {{ label }}
+    <a-divider :orientation="place ? place : 'left'" orientation-margin="0px">
+        <span class="text-lg font-bold">{{ label }}</span>
     </a-divider>
 </template>

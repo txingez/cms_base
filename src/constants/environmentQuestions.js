@@ -17,7 +17,7 @@ export const EnvironmentQuestions = {
         }
     },
     E3: {
-        question: 'Trong 12 tháng gần nhất, doanh nghiệp có thực hiện báo cáo, công bố thông tin về công tác quản lý môi trường không?',
+        question: 'Trong 12 tháng gần nhất, doanh nghiệp có thực hiện báo cáo, công bố thông tin về công tác quản lý môi trường không?',
         answers: {
             A: {answer: 'Không', point: 0},
             B: {
@@ -29,7 +29,6 @@ export const EnvironmentQuestions = {
         }
     },
     E4: {
-
         question: 'Trong 12 tháng gần nhất, doanh nghiệp có thực hiện kiểm toán các báo cáo môi trường không?',
         answers: {
             A: {answer: 'Không', point: 0},
@@ -83,16 +82,13 @@ export const EnvironmentQuestions = {
         answers: {
             A: {answer: 'Không', point: 0},
             B: {
-                key: 'B',
                 answer: 'Có - thống kê lượng nước đầu vào, không sử dụng nước tuần hoàn và tái sử dụng',
                 point: 1
             },
-            C:
-                {
-                    key: 'C',
-                    answer: 'Có - thống kê và đo lường lượng nước đầu vào, nước tuần hoàn và nước tái sử dụng',
-                    point: 2
-                }
+            C: {
+                answer: 'Có - thống kê và đo lường lượng nước đầu vào, nước tuần hoàn và nước tái sử dụng',
+                point: 2
+            }
         }
     },
     E11: {
@@ -102,7 +98,6 @@ export const EnvironmentQuestions = {
             B: {answer: 'Có - theo pháp luật Việt Nam', point: 1},
             C: {answer: 'Có -  theo pháp luật Việt Nam và chuẩn mực quốc tế', point: 2},
             D: {
-                key: 'D',
                 answer: 'Không áp dụng do hoạt động của doanh nghiệp không ảnh hưởng đến đa dạng sinh học (N/A)',
                 point: 'N/A'
             }
@@ -117,21 +112,16 @@ export const EnvironmentQuestions = {
         }
     },
     E13: {
-
-        question: 'Trong 12 tháng gần nhất, doanh nghiệp có báo cáo chi tiết về tổng lượng nước thải theo chất lượng không?',
+        question: 'Trong 12 tháng gần nhất, doanh nghiệp có báo cáo chi tiết về tổng lượng nước thải theo chất lượng không?',
         answers: {
             A: {answer: 'Không', point: 0},
-            B: {
-                key: 'B',
-                answer: 'Có -  công bố nhưng không chi tiết theo loại nước thải và nguồn phát thải',
-                point: 1
-            },
+            B: {answer: 'Có -  công bố nhưng không chi tiết theo loại nước thải và nguồn phát thải', point: 1},
             C: {answer: 'Có - công bố và báo cáo chi tiết theo loại nước thải và nguồn phát thải', point: 2},
             D: {answer: 'Không áp dụng do không phát thải nước thải', point: 'N/A'}
         }
     },
     E14: {
-        question: 'Trong 12 tháng gần nhất, doanh nghiệp có báo cáo chi tiết về tổng lượng chất thải, bao gồm chất thải nguy hại, chất thải không nguy hại, và phương pháp xử lý chất thải không?',
+        question: 'Trong 12 tháng gần nhất, doanh nghiệp có báo cáo chi tiết về tổng lượng chất thải, bao gồm chất thải nguy hại, chất thải không nguy hại, và phương pháp xử lý chất thải không?',
         answers: {
             A: {answer: 'Không', point: 0},
             B: {answer: 'Có - báo cáo không đầy đủ các thông tin', point: 1},
@@ -149,7 +139,6 @@ export const EnvironmentQuestions = {
         }
     },
     E16: {
-
         question: 'Trong kỳ báo cáo, doanh nghiệp có theo dõi và báo cáo về tỷ trọng các loại nguyên vật liệu có thể tái chế trong cơ cấu sản phẩm không? (bao gồm cả nguyên liệu đóng gói trong quá trình phân phối)',
         answers: {
             A: {answer: 'Không', point: 0},

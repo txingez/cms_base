@@ -71,7 +71,7 @@ export const SocialQuestions = {
         }
     },
     S10: {
-        question: 'Trong 12 tháng gần nhất, doanh nghiệp có báo cáo chi tiết về tỷ lệ người lao động có nguy cơ cao mắc các bệnh nghề nghiệp không?',
+        question: 'Trong 12 tháng gần nhất, doanh nghiệp có báo cáo chi tiết về tỷ lệ người lao động có nguy cơ cao mắc các bệnh nghề nghiệp không?',
         answers: {
             A: {answer: 'Không', point: 0},
             B: {answer: 'Có', point: 1}
@@ -132,62 +132,69 @@ export const SocialQuestions = {
         }
     },
     S17: {
-        question: 'Trong 12 tháng gần nhất, doanh nghiệp có lập báo cáo thống kê chi tiết về tỷ lệ tổng thu nhập của người lao động nữ so với người lao động nam giới trong mỗi cách thức phân loại không?',
+        question: 'Trong 12 tháng gần nhất, doanh nghiệp có lập báo cáo thống kê chi tiết về tỷ lệ tổng thu nhập của người lao động nữ so với người lao động nam giới trong mỗi cách thức phân loại không?',
         answers: {
             A: {answer: 'Không', point: 0},
             B: {answer: 'Có', point: 1}
         }
     },
     S18: {
-        question: 'Trong 12 tháng gần nhất, doanh nghiệp có lập báo cáo vụ việc phân biệt đối xử xảy ra trong khoảng thời gian này không?',
+        question: 'Trong 12 tháng gần nhất, doanh nghiệp có lập báo cáo vụ việc phân biệt đối xử xảy ra trong khoảng thời gian này không? ',
         answers: {
             A: {answer: 'Không', point: 0},
             B: {answer: 'Có', point: 1}
         }
     },
     S19: {
-        question: 'Trong 12 tháng gần nhất, những vụ việc phân biệt đối xử được báo cáo có được phân loại không?',
+        question: 'Trong 12 tháng gần nhất, những vụ việc phân biệt đối xử được báo cáo có được phân loại không?',
         answers: {
             A: {answer: 'Không', point: 0},
             B: {answer: 'Có', point: 1}
         }
     },
     S20: {
-        question: 'Doanh nghiệp có cơ chế tố giác và bảo vệ danh tính và sự an toàn của người tố giác về các vấn đề phân biệt đối xử, bất bình đẳng, quấy rối tình dục không?',
+        question: 'Doanh nghiệp có cơ chế tố giác và bảo vệ danh tính và sự an toàn của người tố giác về các vấn đề phân biệt đối xử, bất bình đẳng, quấy rối tình dục không? ',
         answers: {
             A: {answer: 'Không', point: 0},
             B: {answer: 'Có', point: 1}
         }
     },
     S21: {
-        question: 'Doanh nghiệp có thúc đẩy người lao động tham gia công đoàn, các tổ chức đoàn thể khác và thúc đẩy các hoạt động thương lượng tập thể nhưng không vi phạm pháp luật và chính sách doanh nghiệp không?',
+        question: 'Doanh nghiệp có chính sách và sáng kiến tạo điều kiện khuyến khích sự tham gia của nhóm yếu thế vào chuỗi giá trị của doanh nghiệp hay không?',
         answers: {
             A: {answer: 'Không', point: 0},
             B: {answer: 'Có', point: 1}
         }
     },
     S22: {
+        question: 'Doanh nghiệp có thúc đẩy người lao động tham gia công đoàn, các tổ chức đoàn thể khác và thúc đẩy các hoạt động thương lượng tập thể nhưng không vi phạm pháp luật và chính sách doanh nghiệp không?',
+        answers: {
+            A: {answer: 'Không', point: 0},
+            B: {answer: 'Có', point: 1}
+        }
+    },
+    S23: {
         question: 'Trong 12 tháng gần nhất, doanh nghiệp có sử dụng lao động từ đủ 13 đến dưới 15 tuổi ngoài danh mục cho phép không?',
         answers: {
             A: {answer: 'Có', point: 0},
             B: {answer: 'Không', point: 1}
         }
     },
-    S23: {
+    S24: {
         question: 'Trong 12 tháng gần nhất, doanh nghiệp có lao động từ đủ 15 đến dưới 18 tuổi ngoài danh mục cho phép không?',
         answers: {
             A: {answer: 'Có', point: 0},
             B: {answer: 'Không', point: 1}
         }
     },
-    S24: {
+    S25: {
         question: 'Trong 12 tháng gần nhất, doanh nghiệp có sử dụng lao động cưỡng bức hay bắt buộc không?',
         answers: {
             A: {answer: 'Có', point: 0},
             B: {answer: 'Không', point: 1}
         }
     },
-    S25: {
+    S26: {
         question: 'Trong 12 tháng gần nhất, doanh nghiệp có tiến hành đào tạo cho nhân viên hiểu về quyền lợi của mình khi làm việc tại doanh nghiệp cũng như các quyền dân sự cơ bản khác theo quy định pháp luật không?',
         answers: {
             A: {answer: 'Không', point: 0},
@@ -195,14 +202,14 @@ export const SocialQuestions = {
             C: {answer: 'Có - bằng hoặc trên 50% người lao động tham gia tập huấn', point: 2}
         }
     },
-    S26: {
+    S27: {
         question: 'Trong 12 tháng gần nhất, doanh nghiệp có tổ chức các hoạt động gắn kết với cộng đồng địa phương, có sự tham gia của cộng đồng địa phương hay tác động tích cực đến cộng đồng địa phương không?',
         answers: {
             A: {answer: 'Không', point: 0},
             B: {answer: 'Có', point: 1}
         }
     },
-    S27: {
+    S28: {
         question: 'Doanh nghiệp có tiêu chí/ tiêu chuẩn xã hội cho nhà cung cấp không?',
         answers: {
             A: {answer: 'Không', point: 0},
@@ -210,7 +217,7 @@ export const SocialQuestions = {
             C: {answer: 'Có - áp dụng đầy đủ', point: 2}
         }
     },
-    S28: {
+    S29: {
         question: 'Doanh nghiệp có quy trình đánh giá nhằm đảm bảo sản phẩm, dịch vụ an toàn cho khách hàng không?',
         answers: {
             A: {answer: 'Không', point: 0},
@@ -218,21 +225,21 @@ export const SocialQuestions = {
             C: {answer: 'Có - áp dụng công khai', point: 2}
         }
     },
-    S29: {
+    S30: {
         question: 'Trong 12 tháng gần nhất, doanh nghiệp có các vụ việc vi phạm các quy định về an toàn của sản phẩm với sức khỏe của người sử dụng không?',
         answers: {
             A: {answer: 'Có', point: 0},
             B: {answer: 'Không', point: 1}
         }
     },
-    S30: {
+    S31: {
         question: 'Doanh nghiệp có thông báo đầy đủ và đúng thông tin sản phẩm, dịch vụ đến khách hàng hay không?',
         answers: {
             A: {answer: 'Không', point: 0},
             B: {answer: 'Có', point: 1}
         }
     },
-    S31: {
+    S32: {
         question: 'Trong 12 tháng gần nhất, doanh nghiệp có bị khiếu nại liên quan đến vi phạm bảo mật thông tin khách hàng không?',
         answers: {
             A: {answer: 'Có', point: 0},
