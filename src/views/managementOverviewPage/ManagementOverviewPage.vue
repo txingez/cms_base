@@ -13,6 +13,7 @@ import {handleResponse} from "../../services/commonService";
 import {showToast} from "../../utils/showToast";
 import PreviewModal from "../../components/PreviewModal.vue";
 import {open} from "../../utils/previewerUtils";
+import {ModalConfirm} from "../../components/ModalConfirm"
 
 const quillAbout = ref()
 const quillMission = ref()
@@ -23,54 +24,49 @@ const toolbarMission = computed(() => ToolbarEditor(quillMission))
 const loading = ref(false)
 
 const formState = reactive({
-    id: 0,
+    id: "",
     contentAbout: ''
     // contentMission: ''
 })
 
-const pid = 'overview_page_pid'
+const pid = 'ESG'
 const routes = [
     {name: 'Home', to: '/'},
     {name: 'Quản lý trang tổng quan', to: '/management_overview'}
 ];
 
-const getContentOverview = () => {
-  const response = {
-    "success": true,
-    "message": "Uploaded content successfully!!!",
-    "data": {
-      "id": 1,
-      "content": "<p>asdasdasdasdasd</p>"
-    }
-  };
-  formState.id = response.data.id;
+const getContentOverview = (response) => {
+  formState.id = response.data.page_id;
   formState.contentAbout = response.data.content;
 };
 
-onMounted(() => {
-    getContentOverview()
-})
-
+// onMounted(() => {
+//     getContentOverview()
+// })
 const handleSubmit = () => {
     loading.value = true;
 
     const body = {
-        pid: props.pageId,
-        title: formState.contentAbout,
+        page_id: pid,
+        content: formState.contentAbout,
     };
 
-    saveData(body, 'bo sung sau').then((response) => {
-        const handledResponse = handleResponse(response.status, response.data)
-        if (handledResponse) {
-            loading.value = false
-            getContentOverview()
-            showToast('success', 'Success')
-        }
-    }).catch((err) => {
-        loading.value = false
-        console.log('Lưu overview data thất bại ', err)
-        showToast('error', 'Lưu cài đặt thất bại');
-    })
+    const callback = () => {
+        saveData(body)
+            .then((response) => {
+                const handledResponse = handleResponse(response.status, response.data)
+                if (handledResponse) {
+                    loading.value = false
+                    getContentOverview(handledResponse)
+                    showToast('success', 'Success')
+                }
+            }).catch((err) => {
+                loading.value = false
+                console.log('Lưu overview data thất bại ', err)
+                showToast('error', 'Lưu cài đặt thất bại');
+            })
+    }
+    ModalConfirm("Lưu bài viết", "Hành động này sẽ lưu dữ liệu và cập nhật dữ liệu này trên website. Bạn chắc chắn muốn thực hiện chứ!", callback)
 }
 </script>
 
@@ -99,19 +95,6 @@ const handleSubmit = () => {
                                   content-type="html"/>
                 </div>
             </a-form-item>
-<!--            <DividerWithTitle label="Mục tiêu của chúng tôi"/>-->
-<!--            <a-form-item name="content"-->
-<!--                         label="Nội dung"-->
-<!--                         :rules="[{required: true, message: 'Nội dung không được để trống'}]">-->
-<!--                <div class="w-full">-->
-<!--                    <quill-editor ref="quillMission"-->
-<!--                                  v-model:content="formState.contentMission"-->
-<!--                                  class="min-h-[300px] max-h-[700px] overflow-x-scroll"-->
-<!--                                  :modules="ModulesEditor"-->
-<!--                                  :toolbar="toolbarMission"-->
-<!--                                  content-type="html"/>-->
-<!--                </div>-->
-<!--            </a-form-item>-->
             <div class="text-right space-x-2">
                 <a-button @click.prevent="open(formState.contentAbout, 'HTML')">
                     Xem trước kết quả
