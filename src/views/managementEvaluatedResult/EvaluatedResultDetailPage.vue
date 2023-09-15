@@ -184,7 +184,7 @@ const createPdf = async ({doc, elements}) => {
                 <ResultEvaluatedContent :form-id="resultData.formId"
                                         :data-source="resultAndQaA.result"
                                         :total-point="resultData.total"
-                                        :rate="resultData.rate"/>
+                                        :rate="resultData.result.rate"/>
             </div>
         </div>
         <div class="text-right">

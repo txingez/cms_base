@@ -63,6 +63,7 @@ const getTableData = async (options) => {
         .then((response) => {
             const responseData = handleResponse(response.status, response.data);
             tableData.value = responseData.data.results.map((r, index) => {
+
                 const formData = JSON.parse(Buffer.from(r.data.split('.')[1], 'base64').toString());
                 return {
                     ...formData.data,

@@ -74,7 +74,7 @@ const config = computed(() => {
                 rateInfo: props.rate,
                 showConclude: false,
                 summaryTableConfig: {title: 3, value: 1},
-                chartLabels: ['Nhóm tiêu chí 1: Tầm nhìn và chiến lược của doanh nghiệp', 'Nhóm tiêu chí 2: Áp dụng nguyên tắc tuần hoàn trong công đoạn sản xuất và tiền sản xuất', 'Nhóm tiêu chí 3: Áp dụng nguyên tắc tuần hoàn trong công đoạn sau bán hàng'],
+                chartLabels: ['Nhóm tiêu chí 1', 'Nhóm tiêu chí 2', 'Nhóm tiêu chí 3'],
                 chartData: props.dataSource.map(d => d.sum),
                 chartTitle: 'ĐÁNH GIÁ MỨC ĐỘ ÁP DỤNG NGUYÊN TẮC KINH TẾ TUẦN HOÀN CỦA DOANH NGHIỆP TẠI VIỆT NAM'
             }
