@@ -66,20 +66,6 @@ defineProps({
             </div>
         </a-col>
     </a-row>
-    <a-row :gutter="[10, 10]">
-        <a-col :xs="24" :md="12">
-            <div class="flex gap-2">
-                <div>Tổng số nhân viên thời vụ:</div>
-                <div class="font-bold">{{ organizationProfile.seasonalEmployees }}</div>
-            </div>
-        </a-col>
-        <a-col :xs="24" :md="12">
-            <div class="flex gap-2">
-                <div>trong đó: tổng số nhân viên nữ:</div>
-                <div class="font-bold">{{ organizationProfile.femaleSeasonalEmployees }}</div>
-            </div>
-        </a-col>
-    </a-row>
     <div class="flex gap-2">
         <div>Tổng số lao động vị thành niên (nếu có) - từ đủ 15 tuối đến dưới 18 tuổi:</div>
         <div class="font-bold">
