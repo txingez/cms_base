@@ -16,6 +16,7 @@ import DividerWithTitle from "../../components/DividerWithTitle.vue";
 import {FirstCriteria} from "../../constants/firstCriteria";
 import {SecondCriteria} from "../../constants/secondCriteria";
 import {ThirdCriteria} from "../../constants/thirdCriteria";
+import {ENUM} from "../../constants/enum";
 
 const resultPinia = resultStore()
 const router = useRouter()
@@ -29,7 +30,7 @@ const routes = computed(() => [
 const resultData = computed(() => resultPinia.data)
 const resultAndQaA = computed(() => {
     switch (resultData.value.formId) {
-        case 'ESG':
+        case ENUM.FORM_ID.ESG:
             return {
                 firstPart: {
                     answers: resultData.value.answers.filter(a => a.question.startsWith('E')),
@@ -59,10 +60,12 @@ const resultAndQaA = computed(() => {
                         point: resultData.value.result.governance.point,
                         distribution: resultData.value.result.governance.distribution
                     }
-                ]
+                ],
+                total: resultData.value.result.total,
+                rate: resultData.value.result.rate
             }
 
-        case 'NEC':
+        case ENUM.FORM_ID.NEC:
             return {
                 firstPart: {
                     answers: resultData.value.answers.filter(a => a.question.startsWith('FC')),
@@ -78,21 +81,26 @@ const resultAndQaA = computed(() => {
                 },
                 result: [
                     {
-                        name: 'Nhóm tiêu chí 1',
+                        name: 'Nhóm tiêu chí 1: Tầm nhìn và chiến lược của doanh nghiệp',
                         point: resultData.value.result.first_criteria.point,
-                        distribution: resultData.value.result.first_criteria.distribution
+                        max: resultData.value.result.first_criteria.max,
+                        sum: resultData.value.result.first_criteria.sum
                     },
                     {
-                        name: 'Nhóm tiêu chí 2',
+                        name: 'Nhóm tiêu chí 2: Áp dụng nguyên tắc tuần hoàn trong công đoạn sản xuất và tiền sản xuất',
                         point: resultData.value.result.second_criteria.point,
-                        distribution: resultData.value.result.second_criteria.distribution
+                        max: resultData.value.result.second_criteria.max,
+                        sum: resultData.value.result.second_criteria.sum
                     },
                     {
-                        name: 'Nhóm tiêu chí 3',
+                        name: 'Nhóm tiêu chí 3: Áp dụng nguyên tắc tuần hoàn trong công đoạn sau bán hàng',
                         point: resultData.value.result.third_criteria.point,
-                        distribution: resultData.value.result.third_criteria.distribution
+                        max: resultData.value.result.third_criteria.max,
+                        sum: resultData.value.result.third_criteria.sum
                     }
-                ]
+                ],
+                total: resultData.value.result.total,
+                rate: resultData.value.result.rate
             }
     }
 })
@@ -173,9 +181,10 @@ const createPdf = async ({doc, elements}) => {
 
             <div class="print">
                 <DividerWithTitle label="Kết quả cuối cùng" place="center"/>
-                <ResultEvaluatedContent :data-source="resultAndQaA.result"
-                                        :total-point="resultData.result.total"
-                                        :rate="resultData.result.rate"/>
+                <ResultEvaluatedContent :form-id="resultData.formId"
+                                        :data-source="resultAndQaA.result"
+                                        :total-point="resultData.total"
+                                        :rate="resultData.rate"/>
             </div>
         </div>
         <div class="text-right">

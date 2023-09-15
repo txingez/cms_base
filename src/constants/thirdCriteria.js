@@ -3,8 +3,8 @@ export const ThirdCriteria = {
         question: 'Doanh nghiệp sử dụng bao nhiêu % năng lượng là năng lượng tái tạo trong hoạt động giao hàng?',
         answers: {
             A: {answer: 'Dưới 25%', point: 0},
-            B: {answer: 'Trong khoảng 25% - 49%', point: 1},
-            C: {answer: 'Trong khoảng 50% -74%', point: 2},
+            B: {answer: 'Trong khoảng 25%-49%', point: 1},
+            C: {answer: 'Trong khoảng 50%-74%', point: 2},
             D: {answer: 'Từ 75% trở lên', point: 3}
         }
     },
@@ -12,16 +12,16 @@ export const ThirdCriteria = {
         question: 'Trong năm ngay trước năm đánh giá, doanh nghiệp đã tái chế/tái sử dụng bao nhiêu % các vật liệu tiêu hao, công cụ để phục vụ vận chuyển và giao hàng?',
         answers: {
             A: {answer: 'Dưới 25%', point: 0},
-            B: {answer: 'Trong khoảng 25% - 49%', point: 1},
-            C: {answer: 'Trong khoảng 50% -74%', point: 2},
+            B: {answer: 'Trong khoảng 25%-49%', point: 1},
+            C: {answer: 'Trong khoảng 50%-74%', point: 2},
             D: {answer: 'Từ 75% trở lên', point: 3}
         }
     },
     TC3: {
-        question: 'Doanh nghiệp có cung cấp/hỗ trợ dịch vụ sửa hoặc bảo trì sản phẩm sau khi bán hàng không? ',
+        question: 'Doanh nghiệp có cung cấp/hỗ trợ dịch vụ sửa hoặc bảo trì sản phẩm sau khi bán hàng không?',
         answers: {
             A: {
-                answer: 'Không,không có dịch vụ bảo trì sản phẩm/dịch vụ vì chúng vốn có tuổi thọ ngắn (sản phẩm tiêu dùng nhanh, dùng một lần)',
+                answer: 'Không, không có dịch vụ bảo trì sản phẩm/dịch vụ vì chúng vốn có tuổi thọ ngắn (sản phẩm tiêu dùng nhanh, dùng một lần)',
                 point: 0
             },
             B: {
@@ -63,7 +63,7 @@ export const ThirdCriteria = {
         }
     },
     TC8: {
-        question: 'Doanh nghiệp có số liệu thống kê theo dõi tỷ lệ tái chế sản phẩm của mình không? ',
+        question: 'Doanh nghiệp có số liệu thống kê theo dõi tỷ lệ tái chế sản phẩm của mình không?',
         answers: {
             A: {answer: 'Có', point: 1},
             B: {answer: 'Không', point: 0}
@@ -80,7 +80,7 @@ export const ThirdCriteria = {
         question: 'Trong năm ngay trước năm đánh giá, doanh nghiệp thu hồi bao nhiêu % sản phẩm và bao bì (để tái chế, tái sử dụng, sửa chữa, tái sản xuất, bán lại để tái chế, trực tiếp xử lý bằng biện pháp sinh học như hẩm ủ khí sinh học hoặc làm phân bón vi sinh compost...)?',
         answers: {
             A: {answer: 'Dưới 10%', point: 0},
-            B: {answer: 'Trong khoảng 10% - 30%', point: 1},
+            B: {answer: 'Trong khoảng 10%-30%', point: 1},
             C: {answer: 'Trong khoảng 30%-50%', point: 2},
             D: {answer: 'Từ 50% trở lên', point: 3}
         }

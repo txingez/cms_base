@@ -23,7 +23,7 @@ export const SecondCriteria = {
     SC4: {
         question: 'Sản phẩm và/hoặc bao bì sản phẩm của doanh nghiệp có chứa các hóa chất độc hại theo phân loại tại Nghị định số 82/2022/NĐ-CP không?',
         answers: {
-            A: {answer: 'Có', point: 4},
+            A: {answer: 'Không', point: 4},
             B: {
                 answer: 'Có, sản phẩm có thể chứa một số hóa chất độc hại dưới mức cho phép theo Tiêu chuẩn/Quy chuẩn quốc gia và doanh nghiệp đã có biện pháp phòng ngừa việc hoá chất đó có thể rò rỉ ra môi trường',
                 point: 2
@@ -81,34 +81,34 @@ export const SecondCriteria = {
     SC10: {
         question: 'Doanh nghiệp có lựa chọn các nguyên vật liệu có khả năng tái chế/tái sử dụng được không?',
         answers: {
-            A: {answer: 'Có', point: 1},
+            A: {answer: 'Có', point: 2},
             B: {answer: 'Không', point: 0}
         }
     },
     SC11: {
-        question: 'Tỷ trọng vật liệu (tính theo khối lượng) cấu thành sản phẩm có thể tái chế/tái sử dụng được',
+        question: 'Tỷ trọng vật liệu (tính theo khối lượng) cấu thành sản phẩm có thể tái chế',
         answers: {
             A: {answer: 'Dưới 25%', point: 0},
-            B: {answer: 'Trong khoảng 25% - 49%', point: 2},
-            C: {answer: 'Trong khoảng 50% -74%', point: 4},
+            B: {answer: 'Trong khoảng 25%-49%', point: 2},
+            C: {answer: 'Trong khoảng 50%-74%', point: 4},
             D: {answer: 'Từ 75% trở lên', point: 6}
         }
     },
     SC12: {
-        question: 'Tỷ trọng vật liệu (tính theo khối lượng) cấu thành sản phẩm từ các vật liệu tái chế/tái sử dụng',
+        question: 'Tỷ trọng vật liệu (tính theo khối lượng) cấu thành sản phẩm có thể tái sử dụng',
         answers: {
             A: {answer: 'Dưới 25%', point: 0},
-            B: {answer: 'Trong khoảng 25% - 49%', point: 1},
-            C: {answer: 'Trong khoảng 50% -74%', point: 2},
-            D: {answer: 'Từ 75% trở lên', point: 3}
+            B: {answer: 'Trong khoảng 25%-49%', point: 2},
+            C: {answer: 'Trong khoảng 50%-74%', point: 4},
+            D: {answer: 'Từ 75% trở lên', point: 6}
         }
     },
     SC13: {
         question: 'Tỷ trọng thành phần bao bì từ các nguồn vật liệu tái chế hoặc tái sử dụng',
         answers: {
             A: {answer: 'Dưới 25%', point: 0},
-            B: {answer: 'Trong khoảng 25% - 49%', point: 1},
-            C: {answer: 'Trong khoảng 50% -74%', point: 2},
+            B: {answer: 'Trong khoảng 25%-49%', point: 1},
+            C: {answer: 'Trong khoảng 50%-74%', point: 2},
             D: {answer: 'Từ 75% trở lên', point: 3}
         }
     },
@@ -123,14 +123,14 @@ export const SecondCriteria = {
     SC15: {
         question: 'Tỷ trọng (theo khối lượng) vật liệu bị thất thoát trong quá trình sản xuất trong năm trước đó là bao nhiêu?',
         answers: {
-            A: {answer: 'Dưới 10%', point: 6},
-            B: {answer: 'Trong khoảng 10% - 30%', point: 4},
-            C: {answer: 'Trong khoảng 30%-50%', point: 2},
+            A: {answer: 'Dưới 10%', point: 3},
+            B: {answer: 'Trong khoảng 10%-30%', point: 2},
+            C: {answer: 'Trong khoảng 30%-50%', point: 1},
             D: {answer: 'Từ 50% trở lên', point: 0}
         }
     },
     SC16: {
-        question: 'Doanh nghiệp có thể tái sử dụng được nước thải sau khi xử lý không?',
+        question: 'Doanh nghiệp có tái sử dụng được nước thải sau khi xử lý không?',
         answers: {
             A: {answer: 'Có', point: 2},
             B: {answer: 'Không', point: 0}
@@ -140,7 +140,7 @@ export const SecondCriteria = {
         question: 'Tỷ lệ tái sử dụng nước thải của doanh nghiệp trong năm trước năm đánh giá là bao nhiêu?',
         answers: {
             A: {answer: 'Dưới 10%', point: 0},
-            B: {answer: 'Trong khoảng 10% - 30%', point: 2},
+            B: {answer: 'Trong khoảng 10%-30%', point: 2},
             C: {answer: 'Trong khoảng 30%-50%', point: 4},
             D: {answer: 'Từ 50% trở lên', point: 6}
         }
@@ -156,9 +156,9 @@ export const SecondCriteria = {
         question: 'Trong năm ngay trước năm đánh giá, doanh nghiệp đã sử dụng bao nhiêu % năng lượng từ năng lượng tái tạo trong sản xuất ra sản phẩm/dịch vụ?',
         answers: {
             A: {answer: 'Dưới 25%', point: 0},
-            B: {answer: 'Trong khoảng 25% - 49%', point: 2},
-            C: {answer: 'Trong khoảng 50% -74%', point: 4},
-            D: {answer: 'Từ 75% trở lên', point: 6}
+            B: {answer: 'Trong khoảng 25%-49%', point: 1},
+            C: {answer: 'Trong khoảng 50%-74%', point: 2},
+            D: {answer: 'Từ 75% trở lên', point: 3}
         }
     }
 }

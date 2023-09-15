@@ -1,6 +1,7 @@
 <script setup>
 import ProfileESG from "./profiles/ProfileESG.vue";
 import ProfileNEC from "./profiles/ProfileNEC.vue";
+import {ENUM} from "../../constants/enum";
 
 defineProps({
     organizationProfile: {},
@@ -10,8 +11,8 @@ defineProps({
 
 <template>
     <div class="flex flex-col gap-3">
-        <ProfileESG v-if="formId === 'ESG'" :organization-profile="organizationProfile"/>
-        <ProfileNEC v-else-if="formId === 'NEC'" :organization-profile="organizationProfile"/>
+        <ProfileESG v-if="formId === ENUM.FORM_ID.ESG" :organization-profile="organizationProfile"/>
+        <ProfileNEC v-else-if="formId === ENUM.FORM_ID.NEC" :organization-profile="organizationProfile"/>
 
         <div class="font-bold text-lg">Thông tin 01 lãnh đạo doanh nghiệp (để liên hệ)</div>
         <a-row :gutter="[10, 10]">
