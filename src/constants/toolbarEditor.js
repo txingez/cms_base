@@ -24,7 +24,7 @@ export const ToolbarEditor = (quillRef) => {
                         for (let i = 0; i < fileInput.files.length; i++) {
                             uploadImage(fileInput.files[i]).then((res) => {
                                 const range = quillRef.value.getQuill().getSelection();
-                                quillRef.value.getQuill().insertEmbed(range.index, 'image', res.data.data.url);
+                                quillRef.value.getQuill().insertEmbed(range.index, 'image', res.data.data.file_url);
                             });
                         }
                         fileInput.value = '';
