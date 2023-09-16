@@ -1,6 +1,6 @@
 <script setup>
 import Chart from 'chart.js/auto'
-import {computed, onMounted} from "vue";
+import {computed, onMounted, watch} from "vue";
 import {RatingClassification} from "../../constants/ratingClassification";
 import {ENUM} from "../../constants/enum";
 
@@ -38,10 +38,7 @@ const config = computed(() => {
                 summaryPoint: props.totalPoint,
                 rateInfo: props.rate,
                 showConclude: true,
-                summaryTableConfig: {title: 2, value: 1},
-                chartLabels: ['E-Môi trường', 'S-Xã hội', 'G-Quản trị'],
-                chartData: props.dataSource.map(d => d.point),
-                chartTitle: 'ĐÁNH GIÁ THỰC HÀNH ESG'
+                summaryTableConfig: {title: 2, value: 1}
             }
         case ENUM.FORM_ID.NEC:
             return {
@@ -74,24 +71,37 @@ const config = computed(() => {
                 summaryPoint: props.totalPoint,
                 rateInfo: props.rate,
                 showConclude: false,
-                summaryTableConfig: {title: 3, value: 1},
-                chartLabels: ['Nhóm tiêu chí 1', 'Nhóm tiêu chí 2', 'Nhóm tiêu chí 3'],
-                chartData: props.dataSource.map(d => d.sum),
-                chartTitle: 'ĐÁNH GIÁ MỨC ĐỘ ÁP DỤNG NGUYÊN TẮC KINH TẾ TUẦN HOÀN CỦA DOANH NGHIỆP TẠI VIỆT NAM'
+                summaryTableConfig: {title: 3, value: 1}
             }
     }
 })
 
-onMounted(() => {
+watch(props, (p) => {
+    const configChart = (() => {
+        switch (p.formId) {
+            case ENUM.FORM_ID.ESG:
+                return {
+                    chartLabels: ['E-Môi trường', 'S-Xã hội', 'G-Quản trị'],
+                    chartData: props.dataSource.map(d => d.point),
+                    chartTitle: 'ĐÁNH GIÁ THỰC HÀNH ESG'
+                }
+            case ENUM.FORM_ID.NEC:
+                return {
+                    chartLabels: ['Nhóm tiêu chí 1', 'Nhóm tiêu chí 2', 'Nhóm tiêu chí 3'],
+                    chartData: props.dataSource.map(d => d.sum),
+                    chartTitle: 'ĐÁNH GIÁ MỨC ĐỘ ÁP DỤNG NGUYÊN TẮC KINH TẾ TUẦN HOÀN CỦA DOANH NGHIỆP TẠI VIỆT NAM'
+                }
+        }
+    })()
     const ctx = document.getElementById('chart')
     new Chart(ctx, {
             type: 'radar',
             data: {
-                labels: config.value.chartLabels,
+                labels: configChart.chartLabels,
                 datasets: [
                     {
                         label: 'Điểm đánh giá',
-                        data: config.value.chartData,
+                        data: configChart.chartData,
                         fill: true,
                         borderColor: 'rgb(160, 210, 109)',
                         backgroundColor: 'rgba(160, 210, 109, 0.1)',
@@ -108,7 +118,7 @@ onMounted(() => {
                 plugins: {
                     title: {
                         display: true,
-                        text: config.value.chartTitle
+                        text: configChart.chartTitle
                     }
                 },
                 scales: {

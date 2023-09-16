@@ -57,7 +57,6 @@ onMounted(() => {
         dataInfo.formId = responseData.form_id
 
         const formData = JSON.parse(Buffer.from(responseData.data.split('.')[1], 'base64').toString());
-        console.log(formData)
         dataInfo.profile = formData.data.organizationProfile
         const resultHandled = resultAndQaA(responseData.form_id, formData.data.result, formData.data.answers)
         dataInfo.firstPart = resultHandled.firstPart
