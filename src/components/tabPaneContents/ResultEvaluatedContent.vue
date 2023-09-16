@@ -10,6 +10,7 @@ const props = defineProps({
     totalPoint: String,
     rate: String
 })
+
 const config = computed(() => {
     switch (props.formId) {
         case ENUM.FORM_ID.ESG:

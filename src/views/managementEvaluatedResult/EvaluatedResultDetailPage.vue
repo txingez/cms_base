@@ -1,14 +1,11 @@
 <script setup>
-import {computed} from "vue";
+import {computed, onMounted} from "vue";
 import OrganizationProfileContent from "../../components/tabPaneContents/OrganizationProfileContent.vue";
-import EvaluatedQuestionsContent from "../../components/tabPaneContents/EvaluatedQuestionsContent.vue";
 import {EnvironmentQuestions} from "../../constants/environmentQuestions";
 import {SocialQuestions} from "../../constants/socialQuestions";
 import {GovernanceQuestions} from "../../constants/governanceQuestions";
-import ResultEvaluatedContent from "../../components/tabPaneContents/ResultEvaluatedContent.vue";
 import * as htmlToImage from "html-to-image";
 import jsPDF from "jspdf";
-import {resultStore} from "../../stores/resultStore";
 import BreadCrumb from "../../components/breadcrumb/BreadCrumb.vue";
 import TitlePage from "../../components/TitlePage.vue";
 import {useRouter} from "vue-router";
@@ -17,8 +14,12 @@ import {FirstCriteria} from "../../constants/firstCriteria";
 import {SecondCriteria} from "../../constants/secondCriteria";
 import {ThirdCriteria} from "../../constants/thirdCriteria";
 import {ENUM} from "../../constants/enum";
+import {reactive} from "@vue/reactivity";
+import {getFormDataById} from "../../services/evaluatedResult";
+import {Buffer} from "buffer";
+import EvaluatedQuestionsContent from "../../components/tabPaneContents/EvaluatedQuestionsContent.vue";
+import ResultEvaluatedContent from "../../components/tabPaneContents/ResultEvaluatedContent.vue";
 
-const resultPinia = resultStore()
 const router = useRouter()
 
 const routes = computed(() => [
@@ -27,83 +28,138 @@ const routes = computed(() => [
     {name: 'Kết quả đánh giá', to: `/result_detail/${router.currentRoute.value.params.id}`}
 ]);
 
-const resultData = computed(() => resultPinia.data)
-const resultAndQaA = computed(() => {
-    switch (resultData.value.formId) {
+const dataInfo = reactive({
+    id: 0,
+    formId: ENUM.FORM_ID.ESG,
+    profile: {},
+    firstPart: {
+        questions: [],
+        answers: []
+    },
+    secondPart: {
+        questions: [],
+        answers: []
+    },
+    thirdPart: {
+        questions: [],
+        answers: []
+    },
+    result: [],
+    rate: 'A',
+    totalPoint: '0'
+})
+
+onMounted(() => {
+    const id = router.currentRoute.value.params.id
+    getFormDataById(id).then((response) => {
+        const responseData = response.data
+        dataInfo.id = responseData.id
+        dataInfo.formId = responseData.form_id
+
+        const formData = JSON.parse(Buffer.from(responseData.data.split('.')[1], 'base64').toString());
+        console.log(formData)
+        dataInfo.profile = formData.data.organizationProfile
+        const resultHandled = resultAndQaA(responseData.form_id, formData.data.result, formData.data.answers)
+        dataInfo.firstPart = resultHandled.firstPart
+        dataInfo.secondPart = resultHandled.secondPart
+        dataInfo.thirdPart = resultHandled.thirdPart
+        dataInfo.result = resultHandled.result
+        dataInfo.rate = resultHandled.rate
+        dataInfo.totalPoint = resultHandled.total
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+const resultAndQaA = (formId, result, answers) => {
+    switch (formId) {
         case ENUM.FORM_ID.ESG:
             return {
                 firstPart: {
-                    answers: resultData.value.answers.filter(a => a.question.startsWith('E')),
+                    answers: answers.filter(a => a.question.startsWith('E')),
                     questions: EnvironmentQuestions,
                 },
                 secondPart: {
-                    answers: resultData.value.answers.filter(a => a.question.startsWith('S')),
+                    answers: answers.filter(a => a.question.startsWith('S')),
                     questions: SocialQuestions
                 },
                 thirdPart: {
-                    answers: resultData.value.answers.filter(a => a.question.startsWith('G')),
+                    answers: answers.filter(a => a.question.startsWith('G')),
                     questions: GovernanceQuestions
                 },
                 result: [
                     {
                         name: 'E - Môi trường',
-                        point: resultData.value.result.environment.point,
-                        distribution: resultData.value.result.environment.distribution
+                        point: result.environment.point,
+                        distribution: result.environment.distribution
                     },
                     {
                         name: 'S - Xã hội',
-                        point: resultData.value.result.social.point,
-                        distribution: resultData.value.result.social.distribution
+                        point: result.social.point,
+                        distribution: result.social.distribution
                     },
                     {
                         name: 'G - Quản trị',
-                        point: resultData.value.result.governance.point,
-                        distribution: resultData.value.result.governance.distribution
+                        point: result.governance.point,
+                        distribution: result.governance.distribution
                     }
                 ],
-                total: resultData.value.result.total,
-                rate: resultData.value.result.rate
+                total: result.total,
+                rate: result.rate
             }
 
         case ENUM.FORM_ID.NEC:
             return {
                 firstPart: {
-                    answers: resultData.value.answers.filter(a => a.question.startsWith('FC')),
+                    answers: answers.filter(a => a.question.startsWith('FC')),
                     questions: FirstCriteria
                 },
                 secondPart: {
-                    answers: resultData.value.answers.filter(a => a.question.startsWith('SC')),
+                    answers: answers.filter(a => a.question.startsWith('SC')),
                     questions: SecondCriteria
                 },
                 thirdPart: {
-                    answers: resultData.value.answers.filter(a => a.question.startsWith('TC')),
+                    answers: answers.filter(a => a.question.startsWith('TC')),
                     questions: ThirdCriteria
                 },
                 result: [
                     {
                         name: 'Nhóm tiêu chí 1: Tầm nhìn và chiến lược của doanh nghiệp',
-                        point: resultData.value.result.first_criteria.point,
-                        max: resultData.value.result.first_criteria.max,
-                        sum: resultData.value.result.first_criteria.sum
+                        point: result.first_criteria.point,
+                        max: result.first_criteria.max,
+                        sum: result.first_criteria.sum
                     },
                     {
                         name: 'Nhóm tiêu chí 2: Áp dụng nguyên tắc tuần hoàn trong công đoạn sản xuất và tiền sản xuất',
-                        point: resultData.value.result.second_criteria.point,
-                        max: resultData.value.result.second_criteria.max,
-                        sum: resultData.value.result.second_criteria.sum
+                        point: result.second_criteria.point,
+                        max: result.second_criteria.max,
+                        sum: result.second_criteria.sum
                     },
                     {
                         name: 'Nhóm tiêu chí 3: Áp dụng nguyên tắc tuần hoàn trong công đoạn sau bán hàng',
-                        point: resultData.value.result.third_criteria.point,
-                        max: resultData.value.result.third_criteria.max,
-                        sum: resultData.value.result.third_criteria.sum
+                        point: result.third_criteria.point,
+                        max: result.third_criteria.max,
+                        sum: result.third_criteria.sum
                     }
                 ],
-                total: resultData.value.result.total,
-                rate: resultData.value.result.rate
+                total: result.total,
+                rate: result.rate
+            }
+        default:
+            return {
+                firstPart: {answers: [], questions: []},
+                secondPart: {answers: [], questions: []},
+                thirdPart: {answers: [], questions: []},
+                result: [
+                    {name: '', point: 100, max: 100, sum: 100},
+                    {name: '', point: 100, max: 100, sum: 100}, ,
+                    {name: '', point: 100, max: 100, sum: 100},
+                ],
+                total: 100,
+                rate: 'A'
             }
     }
-})
+}
 
 const exportHTMLToPDF = async () => {
     const doc = new jsPDF({
@@ -162,29 +218,29 @@ const createPdf = async ({doc, elements}) => {
         <div class="space-y-5">
             <div class="print">
                 <DividerWithTitle label="Hồ sơ doanh nghiệp/tổ chức" place="center"/>
-                <OrganizationProfileContent :organization-profile="resultData.organizationProfile"
-                                            :form-id="resultData.formId"/>
+                <OrganizationProfileContent :organization-profile="dataInfo.profile"
+                                            :form-id="dataInfo.formId"/>
             </div>
 
             <div class="print">
                 <DividerWithTitle label="Đáp án lựa chọn" place="center"/>
                 <EvaluatedQuestionsContent
-                        :result-data="resultAndQaA.firstPart.answers"
-                        :questions="resultAndQaA.firstPart.questions"/>
+                    :result-data="dataInfo.firstPart.answers"
+                    :questions="dataInfo.firstPart.questions"/>
                 <EvaluatedQuestionsContent
-                        :result-data="resultAndQaA.secondPart.answers"
-                        :questions="resultAndQaA.secondPart.questions"/>
+                    :result-data="dataInfo.secondPart.answers"
+                    :questions="dataInfo.secondPart.questions"/>
                 <EvaluatedQuestionsContent
-                        :result-data="resultAndQaA.thirdPart.answers"
-                        :questions="resultAndQaA.thirdPart.questions"/>
+                    :result-data="dataInfo.thirdPart.answers"
+                    :questions="dataInfo.thirdPart.questions"/>
             </div>
 
             <div class="print">
                 <DividerWithTitle label="Kết quả cuối cùng" place="center"/>
-                <ResultEvaluatedContent :form-id="resultData.formId"
-                                        :data-source="resultAndQaA.result"
-                                        :total-point="resultData.total"
-                                        :rate="resultData.result.rate"/>
+                <ResultEvaluatedContent :form-id="dataInfo.formId"
+                                        :data-source="dataInfo.result"
+                                        :total-point="dataInfo.totalPoint"
+                                        :rate="dataInfo.rate"/>
             </div>
         </div>
         <div class="text-right">

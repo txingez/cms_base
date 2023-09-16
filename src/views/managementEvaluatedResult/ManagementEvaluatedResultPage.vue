@@ -4,13 +4,11 @@ import TitlePage from "../../components/TitlePage.vue";
 import BreadCrumb from "../../components/breadcrumb/BreadCrumb.vue";
 import {onMounted, ref} from "vue";
 import {numberWithComma} from "../../utils/formatNumber";
-import {resultStore} from "../../stores/resultStore";
 import {getFormData} from "../../services/activity";
 import {handleResponse} from "../../services/commonService";
 import {Buffer} from "buffer";
 import {useRouter} from "vue-router";
 
-const result = resultStore()
 const router = useRouter()
 
 const routes = [
@@ -83,7 +81,6 @@ const getTableData = async (options) => {
 }
 
 const showResult = data => {
-    result.setData(data)
     router.push(`/result_detail/${data.key}`)
 }
 </script>
