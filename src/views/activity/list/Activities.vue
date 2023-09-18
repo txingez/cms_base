@@ -41,6 +41,7 @@
                 </a-form-item>
                 <a-form-item>
                     <a-button key="find"
+                              class="bg-[#1677ff]"
                               type="primary"
                               @click="handleTableChange(1)">
                         Tìm kiếm
@@ -69,8 +70,8 @@
                 Tìm kiếm
             </a-button>
             <a-button key="openDrawer"
-                      class="bg-[#1677ff]"
-                      type="primary flex justify-center items-center"
+                      class="bg-[#1677ff] flex justify-center items-center"
+                      type="primary"
                       @click="navigate('/activity/editor')">
                 <plus-outlined/>
                 Tạo
@@ -281,15 +282,15 @@ const onShowSizeChange = (currentPage, size) => {
 };
 
 const getFilterQuery = () => {
-    const filterByWord = filterForm.findByWord !== '' ? filterForm.findByWord : '';
-    const filterByStatus = filterForm.status !== '' ? filterForm.status : '';
-    const filterByCategory = filterForm.category !== 'all' ? filterForm.category : '';
-
-    const query = {};
-    return query;
+    return {
+        ...(filterForm.findByWord.length !== 0 && {query: filterForm.findByWord}),
+        ...(filterForm.status !== '' && {status: filterForm.status}),
+        ...(filterForm.category && {category: filterForm.category})
+    };
 };
 
 const handleTableChange = page => {
+    console.log(page)
     getTableData({
             targetPage: page,
             pageSize: pageSize.value,
@@ -304,9 +305,10 @@ const getTableData = (options) => {
 
     const body = {
         limit: pageSize,
-        offset: targetPage - 1,
+        offset: (targetPage - 1) * pageSize,
         additional_params: otherFilter
     }
+    console.log(body)
     getAll(body)
         .then(response => {
             const responseData = handleResponse(response.status, response.data);
