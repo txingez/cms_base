@@ -30,7 +30,7 @@ const previewerStore = previewer()
                             <div class="flex gap-5 items-center"
                                  v-for="mission in previewerStore.previewerState.homePageContent.missions">
                                 <div class="basis-[5%] w-[25px] h-[30px] rounded-[5px] bg-emerald-700 text-base text-white font-medium flex justify-center items-center">
-                                    <font-awesome-icon icon="fa-solid fa-building"/>
+                                    <font-awesome-icon :icon="['fas', mission.icon]"/>
                                 </div>
                                 <div class="text-lg basis-[95%]">
                                     {{ mission.content }}

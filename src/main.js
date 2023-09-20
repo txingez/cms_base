@@ -10,12 +10,12 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import {faEye, faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
+import {faEye, faChevronLeft, faChevronRight, faMountainSun, faStar, faHouse} from "@fortawesome/free-solid-svg-icons";
 import {faBuilding} from "@fortawesome/free-solid-svg-icons";
 
 window.Buffer;
 
-library.add(faEye, faChevronLeft, faChevronRight, faBuilding)
+library.add(faEye, faChevronLeft, faChevronRight, faBuilding, faMountainSun, faStar, faHouse)
 const app = createApp(App);
 
 app.use(createPinia());

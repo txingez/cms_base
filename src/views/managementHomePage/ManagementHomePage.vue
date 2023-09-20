@@ -27,9 +27,13 @@ const toolbarIntroduction = computed(() => ToolbarEditor(introduction))
 const formState = reactive({
     introduction: '',
     titleMission: '',
-    missions: [],
+    missions: [
+        {id: 0, content: '', icon: ''}
+    ],
     descriptionEvaluate: '',
-    evaluateSlides: []
+    evaluateSlides: [
+        {id: 0, title: '', target: '', image: []}
+    ]
 })
 
 const otherState = reactive({
@@ -136,6 +140,12 @@ const handleSubmit = () => {
     }
     ModalConfirm("Lưu bài viết", "Hành động này sẽ lưu dữ liệu và cập nhật dữ liệu này trên website. Bạn chắc chắn muốn thực hiện chứ!", callback)
 }
+
+const icons = ['mountain-sun', 'house', 'star']
+
+const handleClick = (index, icon) => {
+    formState.missions[index].icon = icon
+}
 </script>
 
 <template>
@@ -172,12 +182,28 @@ const handleSubmit = () => {
             </a-form-item>
             <div v-for="(mission, index) in formState.missions"
                  class="flex items-center">
-                <a-form-item :label="['Nhiệm vụ ', index + 1]"
-                             :name="['missions', index, 'content']"
-                             class="basis-full"
-                             :rules="[{required: true}]">
-                    <a-input v-model:value="mission.content" placeholder="Nội dung nhiệm vụ"/>
-                </a-form-item>
+                <div class="basis-full">
+                    <a-form-item :label="['Nhiệm vụ ', index + 1]"
+                                 :name="['missions', index, 'content']"
+                                 :rules="[{required: true}]">
+                        <a-input v-model:value="mission.content" placeholder="Nội dung nhiệm vụ"/>
+                    </a-form-item>
+                    <a-form-item :label="['Icon ', index + 1]"
+                                 :name="['missions', index, 'icon']"
+                                 :rules="[{required: true}]">
+                        <a-dropdown-button>
+                            <font-awesome-icon v-if="mission.icon !== ''" :icon="['fas', mission.icon]"/>
+                            <span v-else>Icon</span>
+                            <template #overlay>
+                                <a-space>
+                                    <font-awesome-icon v-for="icon in icons"
+                                                       :icon="['fas', icon]"
+                                                       @click="handleClick(index, icon)"/>
+                                </a-space>
+                            </template>
+                        </a-dropdown-button>
+                    </a-form-item>
+                </div>
                 <a-button :disabled="formState.missions.length === 1"
                           class="flex items-center justify-center"
                           danger
