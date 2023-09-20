@@ -128,7 +128,7 @@ const handleSubmit = () => {
             .then((response) => {
                 const handledResponse = handleResponse(response.status, response.data)
                 if (handledResponse) {
-                    getContentOverview(handledResponse)
+                    // getContentOverview(handledResponse)
                     showToast('success', 'Success')
                 }
             }).catch((err) => {

@@ -326,7 +326,7 @@ const getTableData = (options) => {
                             image: n.image,
                             category: n.category,
                             content: n.content,
-                            content_type: n.content_type,
+                            content_type: n.content_type === "LINK" ? "Nôị dung đính kèm" : "Nội dung soạn thảo",
                             page_id: n.page_id,
                             status: n.status
                         }
