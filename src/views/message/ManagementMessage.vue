@@ -16,8 +16,8 @@
             <a-pagination v-model:current="current"
                           v-model:pageSize="pageSizeState"
                           :pageSizeOptions="['10', '20']"
-                          :total="total"
                           :show-total="t => `Total ${numberWithComma(t)} items`"
+                          :total="total"
                           show-size-changer
                           @change="handleTableChange"
                           @showSizeChange="onShowSizeChange"/>

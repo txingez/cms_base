@@ -1,17 +1,16 @@
-import {headers} from "../commonService";
+import {commonHeader} from "../commonService";
 import axios from "axios";
 
 const URL = import.meta.env.ENV_CMS_SERVICE;
-const config = {headers: headers()};
 
 export const createPopup = body => {
-    return axios.post(`${URL}/popup`, body, config);
+    return axios.post(`${URL}/popup`, body, commonHeader());
 };
 
 export const editPopup = (id, body) => {
-    return axios.patch(`${URL}/popup/update/${id}`, body, config);
+    return axios.patch(`${URL}/popup/update/${id}`, body, commonHeader());
 };
 
 export const getPopups = (page, pageSize) => {
-    return axios.get(`${URL}/popup?page=${page}&perPage=${pageSize}`, config);
+    return axios.get(`${URL}/popup?page=${page}&perPage=${pageSize}`, commonHeader());
 };

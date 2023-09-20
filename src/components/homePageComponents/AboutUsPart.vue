@@ -52,31 +52,31 @@ const handleSubmit = () => {
 <template>
     <DividerWithTitle label="Hiểu thêm về chúng tôi"/>
 
-    <a-form :model="formState"
-            :label-col="{ span: 2 }"
-            labelAlign="left"
+    <a-form :label-col="{ span: 2 }"
             :label-wrap="true"
+            :model="formState"
+            labelAlign="left"
             @finish="handleSubmit">
-        <a-form-item name="title"
+        <a-form-item :rules="[{required: true, message: 'Nội dung không được để trống'},{max: 100, message: 'Nội dung quá dài'}]"
                      label="Tiêu đề"
-                     :rules="[{required: true, message: 'Nội dung không được để trống'},{max: 100, message: 'Nội dung quá dài'}]">
+                     name="title">
             <a-input v-model:value="formState.title"
                      allow-clear
                      placeholder="Tiêu đề"/>
         </a-form-item>
-        <a-form-item name="description"
+        <a-form-item :rules="[{required: true, message: 'Nội dung không được để trống'}]"
                      label="Mô tả"
-                     :rules="[{required: true, message: 'Nội dung không được để trống'}]">
+                     name="description">
             <a-textarea v-model:value="formState.description"
-                        placeholder="Mô tả"
-                        allow-clear
-                        show-count
                         :maxlength="500"
-                        :rows="5"/>
+                        :rows="5"
+                        allow-clear
+                        placeholder="Mô tả"
+                        show-count/>
         </a-form-item>
 
         <a-form-item class="text-right">
-            <a-button html-type="submit" type="primary" class="bg-[#1677ff]" :loading="loading">
+            <a-button :loading="loading" class="bg-[#1677ff]" html-type="submit" type="primary">
                 Lưu cài đặt
             </a-button>
         </a-form-item>

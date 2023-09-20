@@ -1,7 +1,5 @@
 import {createRouter, createWebHistory} from "vue-router";
 import Default from "@/layouts/Default.vue";
-import {ACCESS_TOKEN_KEY} from "@/constants/constants";
-import {decodeJWT} from "../utils/decodeJWT";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -99,26 +97,10 @@ router.beforeEach((to, from) => {
     if (isAuthenticated() && to.name === "login") {
         return {name: "home"};
     }
-
-    // if (to.name !== 'login') {
-    //     const policies = getPolicies();
-    //     const newsPages = ['news', 'editor_news', 'view_news'];
-    //     if (((to.name === 'banner' || to.name === 'popup') && (policies === null || !policies.map(p => p.name).some(p => p.includes('MANAGE_BANNER_POPUP')))) ||
-    //         ((to.name === 'management_policy') && (policies === null || !policies.map(p => p.name).some(p => p.includes('MANAGE_POLICY')))) ||
-    //         ((to.name === 'category') && (policies === null || !policies.map(p => p.name).some(p => p.includes('MANAGE_CATEGORY')))) ||
-    //         ((to.name === 'comment') && (policies === null || !policies.map(p => p.name).some(p => p.includes('MANAGE_COMMENT')))) ||
-    //         ((newsPages.includes(to.name)) && (policies === null || !policies.map(p => p.name).some(p => p.includes('NEWS'))))) {
-    //         return {name: 'Forbidden'};
-    //     }
-    // }
 });
 
 const isAuthenticated = () => {
-    return sessionStorage.getItem(ACCESS_TOKEN_KEY) !== null;
-};
-
-const getPolicies = () => {
-    return JSON.parse(decodeJWT(sessionStorage.getItem(ACCESS_TOKEN_KEY)).policies);
+    return localStorage.getItem(import.meta.env.ENV_TOKEN_KEY) !== null;
 };
 
 export default router;

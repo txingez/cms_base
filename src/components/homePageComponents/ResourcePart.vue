@@ -123,41 +123,41 @@ const uploadFile = (options) => {
 <template>
     <DividerWithTitle label="Nguồn lực"/>
 
-    <a-form :label-wrap="true"
-            label-align="left"
-            :label-col="{span: 3}"
+    <a-form :label-col="{span: 3}"
+            :label-wrap="true"
             :model="formState"
+            label-align="left"
             @finish="handleSubmit">
         <div class="space-y-5 mb-5">
             <div v-for="(resource, index) in formState.resources"
                  :key="resource.id"
                  class="flex items-center gap-5">
                 <div class="basis-full">
-                    <a-form-item :name="['resources', index, 'title']"
-                                 :label="['Tiêu đề ', index + 1]"
+                    <a-form-item :label="['Tiêu đề ', index + 1]"
+                                 :name="['resources', index, 'title']"
                                  :rules="[{required: true, message: 'Nội dung không được để trống'}]">
                         <a-input v-model:value="resource.title" placeholder="Tiêu đề nguồn lực"/>
                     </a-form-item>
-                    <a-form-item :name="['resources', index, 'description']"
-                                 :label="['Mô tả ', index + 1]"
+                    <a-form-item :label="['Mô tả ', index + 1]"
+                                 :name="['resources', index, 'description']"
                                  :rules="[{required: true, message: 'Nội dung không được để trống'}]">
                         <a-textarea v-model:value="resource.description"
-                                    placeholder="Mô tả nguồn lực"
-                                    allow-clear
-                                    show-count
                                     :maxlength="250"
-                                    :rows="5"/>
+                                    :rows="5"
+                                    allow-clear
+                                    placeholder="Mô tả nguồn lực"
+                                    show-count/>
                     </a-form-item>
-                    <a-form-item :name="['resources', index, 'image']"
-                                 :label="['Ảnh ', index + 1]"
+                    <a-form-item :label="['Ảnh ', index + 1]"
+                                 :name="['resources', index, 'image']"
                                  :rules="[{required: true, message: 'Ảnh chưa được upload'}]">
                         <a-upload v-model:file-list="resource.image"
+                                  :custom-request="uploadFile"
                                   :data="{index: index}"
+                                  :max-count="1"
                                   accept=".png, .jpg, .jpeg"
                                   list-type="picture-card"
-                                  :max-count="1"
-                                  @preview="open"
-                                  :custom-request="uploadFile">
+                                  @preview="open">
                             <div v-if="resource.image.length < 2">
                                 <plus-outlined/>
                                 <div>Upload</div>
@@ -166,19 +166,19 @@ const uploadFile = (options) => {
                     </a-form-item>
                 </div>
                 <a-form-item>
-                    <a-button type="text"
-                              shape="circle"
+                    <a-button :disabled="formState.resources.length === 1"
                               danger
-                              @click="removeRow(resource)"
-                              :disabled="formState.resources.length === 1">
+                              shape="circle"
+                              type="text"
+                              @click="removeRow(resource)">
                         <minus-circle-outlined/>
                     </a-button>
                 </a-form-item>
             </div>
             <a-form-item>
                 <a-button v-if="formState.resources.length < 6"
-                          type="dashed"
                           class="flex items-center"
+                          type="dashed"
                           @click="addRow">
                     <plus-outlined/>
                     Thêm mục
@@ -187,7 +187,7 @@ const uploadFile = (options) => {
         </div>
 
         <a-form-item class="text-right">
-            <a-button html-type="submit" type="primary" class="bg-[#1677ff]" :loading="otherState.loading">
+            <a-button :loading="otherState.loading" class="bg-[#1677ff]" html-type="submit" type="primary">
                 Lưu cài đặt
             </a-button>
         </a-form-item>

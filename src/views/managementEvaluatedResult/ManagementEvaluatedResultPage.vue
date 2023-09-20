@@ -98,7 +98,7 @@ const showResult = data => {
                  :scroll="{ x: 1500, y: 1000 }">
             <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'view'">
-                    <div @click.prevent="showResult(record)" class="hover:cursor-pointer text-blue-500">
+                    <div class="hover:cursor-pointer text-blue-500" @click.prevent="showResult(record)">
                         <font-awesome-icon icon="fa-solid fa-eye"/>
                     </div>
                 </template>
@@ -106,7 +106,7 @@ const showResult = data => {
         </a-table>
         <div class="flex justify-end mt-2.5">
             <a-pagination v-model:current="current" v-model:pageSize="pageSizeState" :pageSizeOptions="['10', '20']"
-                          :total="total" :show-total="t => `Total ${numberWithComma(t)} items`" show-size-changer
+                          :show-total="t => `Total ${numberWithComma(t)} items`" :total="total" show-size-changer
                           @change="handleTableChange" @showSizeChange="onShowSizeChange"/>
         </div>
     </div>

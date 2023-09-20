@@ -122,26 +122,26 @@ const addRow = () => {
 <template>
     <DividerWithTitle label="Hành động"/>
 
-    <a-form :model="formState"
-            label-align="left"
+    <a-form :label-col="{span: 4}"
             :label-wrap="true"
-            :label-col="{span: 4}"
+            :model="formState"
+            label-align="left"
             @finish="handleSubmit">
-        <a-form-item name="title"
+        <a-form-item :rules="[{required: true, message: 'Nội dung không được để trống'},{max: 100, message: 'Nội dung không được quá 100 kí tự'}]"
                      label="Tiêu đề khối"
-                     :rules="[{required: true, message: 'Nội dung không được để trống'},{max: 100, message: 'Nội dung không được quá 100 kí tự'}]">
+                     name="title">
             <a-input v-model:value="formState.title" placeholder="Tiêu đề"/>
         </a-form-item>
-        <a-form-item label="Ảnh"
-                     name="image"
-                     :rules="[{required: true, message: 'Chưa upload ảnh'}]">
-            <a-upload name="image"
-                      v-model:file-list="formState.image"
+        <a-form-item :rules="[{required: true, message: 'Chưa upload ảnh'}]"
+                     label="Ảnh"
+                     name="image">
+            <a-upload v-model:file-list="formState.image"
+                      :custom-request="uploadFile"
+                      :max-count="1"
                       accept=".png, .jpg, .jpeg"
                       list-type="picture-card"
-                      :max-count="1"
-                      @preview="open"
-                      :custom-request="uploadFile">
+                      name="image"
+                      @preview="open">
                 <div v-if="formState.image.length < 2">
                     <plus-outlined/>
                     <div>Upload</div>
@@ -153,37 +153,37 @@ const addRow = () => {
             <div v-for="(contentBlock, index) in formState.contents"
                  class="flex items-center gap-5">
                 <div class="basis-full">
-                    <a-form-item :name="['contents', index, 'label']"
-                                 :label="['Tiêu đề mục ', index + 1]"
+                    <a-form-item :label="['Tiêu đề mục ', index + 1]"
+                                 :name="['contents', index, 'label']"
                                  :rules="[{required: true, message: 'Nội dung không được để trống'}]">
                         <a-input v-model:value="contentBlock.label" placeholder="Tiêu đề của mục"/>
                     </a-form-item>
-                    <a-form-item :name="['contents', index, 'text']"
-                                 :label="['Nội dung mục ', index + 1]"
+                    <a-form-item :label="['Nội dung mục ', index + 1]"
+                                 :name="['contents', index, 'text']"
                                  :rules="[{required: true, message: 'Nội dung không được để trống'}]">
                         <a-textarea v-model:value="contentBlock.text"
-                                    placeholder="Nội dung của mục con"
-                                    allow-clear
-                                    show-count
                                     :maxlength="250"
-                                    :rows="5"/>
+                                    :rows="5"
+                                    allow-clear
+                                    placeholder="Nội dung của mục con"
+                                    show-count/>
                     </a-form-item>
                 </div>
                 <a-form-item>
-                    <a-button type="text"
-                              shape="circle"
+                    <a-button :disabled="formState.contents.length === 1"
                               class="flex items-center justify-center"
                               danger
-                              @click="removeRow(contentBlock)"
-                              :disabled="formState.contents.length === 1">
+                              shape="circle"
+                              type="text"
+                              @click="removeRow(contentBlock)">
                         <minus-circle-outlined/>
                     </a-button>
                 </a-form-item>
             </div>
             <a-form-item>
                 <a-button v-if="formState.contents.length < 10"
-                          type="dashed"
                           class="flex items-center"
+                          type="dashed"
                           @click="addRow">
                     <plus-outlined/>
                     Thêm mục
@@ -192,7 +192,7 @@ const addRow = () => {
         </div>
 
         <a-form-item class="text-right">
-            <a-button html-type="submit" type="primary" class="bg-[#1677ff]" :loading="otherState.loading">
+            <a-button :loading="otherState.loading" class="bg-[#1677ff]" html-type="submit" type="primary">
                 Lưu cài đặt
             </a-button>
         </a-form-item>

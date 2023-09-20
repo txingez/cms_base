@@ -28,7 +28,8 @@
         <!--            </a-dropdown>-->
         <!--        </div>-->
         <a-dropdown :trigger="['click']">
-            <a-avatar class="cursor-pointer bg-blue-500 flex justify-center items-center" :size="{ xs: 18, sm: 20, md: 36, lg: 40, xl: 40, xxl: 40 }">
+            <a-avatar :size="{ xs: 18, sm: 20, md: 36, lg: 40, xl: 40, xxl: 40 }"
+                      class="cursor-pointer bg-blue-500 flex justify-center items-center">
                 <template #icon>
                     <user-outlined/>
                 </template>
@@ -58,8 +59,9 @@ import {LogoutOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons-v
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 import {handleResponse} from "@/services/commonService";
-import {clearStorage} from "../utils/clearStorage";
 import {getNotifications, updateReadNotification} from "../services/notification";
+import {logout} from "../services/authentication";
+import {clearStorage} from "../utils/clearStorage";
 // import {onMessage} from "firebase/messaging";
 // import {firebaseMessaging} from "../services/firebaseMessaging";
 
@@ -75,8 +77,13 @@ const notifications = ref([]);
 // });
 
 const handleLogOut = () => {
-    clearStorage();
-    router.push("/login");
+    const body = {
+        email: localStorage.getItem(import.meta.env.ENV_EMAIL_KEY)
+    }
+    logout(body).finally(() => {
+        clearStorage()
+        router.push('/login')
+    })
 };
 
 const handleClickBell = () => {

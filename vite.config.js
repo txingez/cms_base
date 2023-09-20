@@ -5,7 +5,7 @@ import vue from "@vitejs/plugin-vue";
 import svgLoader from "vite-svg-loader";
 import {nodePolyfills} from "vite-plugin-node-polyfills";
 import inject from "@rollup/plugin-inject";
-import { VitePWA } from 'vite-plugin-pwa';
+import {VitePWA} from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
 export default defineConfig(({command, mode}) => {

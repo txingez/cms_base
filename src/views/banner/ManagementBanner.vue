@@ -7,13 +7,13 @@
         <div class="text-2xl font-bold mb-5">
             Quản lý Banner
         </div>
-        <a-form name="form_banners"
+        <a-form :model="formDataBanners"
                 layout="vertical"
-                :model="formDataBanners"
+                name="form_banners"
                 @finish="handleOk">
             <a-row v-for="(banner, index) in formDataBanners.banners"
-                   :gutter="{ xs: 8, sm: 16, md: 24, lg: 32 }"
                    :key="banner.id"
+                   :gutter="{ xs: 8, sm: 16, md: 24, lg: 32 }"
                    class="mb-5">
                 <a-col :md="6" :xs="24" class="items-end justify-start flex">
                     <a-form-item :name="['banners', index, 'fileList']"
@@ -21,13 +21,13 @@
                         <div>
                             <div>
                                 <a-upload v-model:file-list="banner.fileList"
-                                          accept=".png, .jpg, .jpeg"
-                                          name="file_upload"
-                                          list-type="picture-card"
-                                          :data="{index: index}"
-                                          :max-count="1"
                                           :before-upload="(file) => beforeUpload(file, index)"
                                           :custom-request="uploadFile"
+                                          :data="{index: index}"
+                                          :max-count="1"
+                                          accept=".png, .jpg, .jpeg"
+                                          list-type="picture-card"
+                                          name="file_upload"
                                           @preview="handlePreview"
                                           @remove="handleRemoveBanner">
                                     <div>
@@ -60,11 +60,11 @@
                                  label="Chọn bài viết"
                                  name="post">
                         <a-select v-model:value="banner.news"
-                                  placeholder="Nhập và chọn bài viết"
-                                  showSearch
                                   :filter-option="false"
                                   :not-found-content="state.fetchingData ? undefined : null"
                                   :options="banner.optionsNews"
+                                  placeholder="Nhập và chọn bài viết"
+                                  showSearch
                                   @search="(e) => fetchNews(e, index)">
                             <template v-if="state.fetchingData" #notFoundContent>
                                 <a-spin size="small"/>
@@ -75,38 +75,38 @@
                 <a-col :md="6" :xs="24">
                     <a-form-item label="Từ ngày">
                         <a-date-picker v-model:value="banner.activeTime"
-                                       class="w-full"
-                                       show-time
                                        :showNow="false"
+                                       class="w-full"
                                        format="YYYY-MM-DD HH:mm"
-                                       placeholder="Ngày bắt đầu"/>
+                                       placeholder="Ngày bắt đầu"
+                                       show-time/>
                     </a-form-item>
                     <a-form-item label="Đến ngày">
                         <a-date-picker v-model:value="banner.deactivateTime"
-                                       class="w-full"
-                                       show-time
                                        :showNow="false"
+                                       class="w-full"
                                        format="YYYY-MM-DD HH:mm"
-                                       placeholder="Ngày kết thúc"/>
+                                       placeholder="Ngày kết thúc"
+                                       show-time/>
                     </a-form-item>
                 </a-col>
                 <a-col :md="3" :xs="24">
-                    <a-form-item label="Thứ tự hiển thị"
-                                 :name="['banners', index, 'orderNo']"
-                                 :rules="[{trigger: ['change', 'blur'], validator: validateOrderNo}]">
+                    <a-form-item :name="['banners', index, 'orderNo']"
+                                 :rules="[{trigger: ['change', 'blur'], validator: validateOrderNo}]"
+                                 label="Thứ tự hiển thị">
                         <a-input-number v-model:value="banner.orderNo"
-                                        :min="1"
                                         :max="5"
+                                        :min="1"
                                         placeholder="Thứ tự"/>
                     </a-form-item>
                 </a-col>
                 <a-col :md="1" :xs="24" class="items-center justify-start flex">
                     <a-form-item>
-                        <a-button type="text"
-                                  shape="circle"
+                        <a-button :disabled="formDataBanners.banners.length === 1"
                                   danger
-                                  @click="removeRow(banner)"
-                                  :disabled="formDataBanners.banners.length === 1">
+                                  shape="circle"
+                                  type="text"
+                                  @click="removeRow(banner)">
                             <minus-circle-outlined/>
                         </a-button>
                     </a-form-item>
@@ -123,17 +123,17 @@
             <div class="flex justify-end space-x-2">
                 <a-button key="back" @click="handleCancel">Huỷ</a-button>
                 <a-button key="submit"
-                          type="primary"
+                          :loading="state.loading"
                           html-type="submit"
-                          :loading="state.loading">
+                          type="primary">
                     Lưu
                 </a-button>
             </div>
         </a-form>
     </div>
 
-    <a-modal :visible="state.previewVisible" title="Preview" :footer="null" @cancel="cancelPreview">
-        <img alt="preview" class="w-full" :src="state.previewImage"/>
+    <a-modal :footer="null" :visible="state.previewVisible" title="Preview" @cancel="cancelPreview">
+        <img :src="state.previewImage" alt="preview" class="w-full"/>
     </a-modal>
 </template>
 

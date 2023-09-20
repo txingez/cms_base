@@ -1,12 +1,12 @@
 <template>
-    <a-drawer title="Tìm kiếm"
-              placement="right"
-              :width="500"
+    <a-drawer :get-container="false"
               :visible="state.visibleDrawer"
-              :get-container="false"
+              :width="500"
+              placement="right"
+              title="Tìm kiếm"
               @close="closeDrawer">
-        <a-form name="banner-filter-form"
-                :model="filterForm" layout="vertical">
+        <a-form :model="filterForm"
+                layout="vertical" name="banner-filter-form">
             <a-row :gutter="[10, 10]">
                 <a-col :span="24">
                     <a-form-item label="Tìm kiếm"
@@ -57,15 +57,15 @@
     <div class="flex justify-between">
         <TitlePage label="Danh sách bài viết"/>
         <div class="flex justify-end space-x-2">
-            <a-button key="deleteButton"
-                      v-if="selectedRowKeys.length !== 0"
+            <a-button v-if="selectedRowKeys.length !== 0"
+                      key="deleteButton"
                       danger
                       @click="showConfirm">
                 Xoá
             </a-button>
             <a-button key="openDrawer"
-                      @click="showDrawer"
-                      class="flex justify-center items-center">
+                      class="flex justify-center items-center"
+                      @click="showDrawer">
                 <search-outlined/>
                 Tìm kiếm
             </a-button>
@@ -83,13 +83,13 @@
     <div class="mt-5">
         <a-table :columns="columns"
                  :data-source="tableData"
-                 :pagination="false"
                  :loading="state.tableLoading"
+                 :pagination="false"
                  :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
                  :scroll="{ x: 1300, y: 1000 }">
             <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'title'">
-                    <a @click="showActivityNews(record.id)" class="text-blue-400 hover:text-blue-500 hover:underline">
+                    <a class="text-blue-400 hover:text-blue-500 hover:underline" @click="showActivityNews(record.id)">
                         {{ record.title }}
                     </a>
                 </template>
@@ -104,7 +104,7 @@
                     <span>{{ handleCategory(record.category) }}</span>
                 </template>
                 <template v-else-if="column.key === 'image'">
-                    <a-image :width="150" :height="100" :src="record.image" alt="image"/>
+                    <a-image :height="100" :src="record.image" :width="150" alt="image"/>
                 </template>
                 <template v-else-if="column.key === 'action'">
                     <span @click="showActivityNews(record.id)">
@@ -121,8 +121,8 @@
             <a-pagination v-model:current="current"
                           v-model:pageSize="pageSize"
                           :pageSizeOptions="['10', '20']"
-                          :total="total"
                           :show-total="t => `Total ${numberWithComma(t)} items`"
+                          :total="total"
                           show-size-changer
                           @change="handleTableChange"
                           @showSizeChange="onShowSizeChange"/>

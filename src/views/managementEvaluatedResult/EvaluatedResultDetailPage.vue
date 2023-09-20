@@ -217,33 +217,33 @@ const createPdf = async ({doc, elements}) => {
         <div class="space-y-5">
             <div class="print">
                 <DividerWithTitle label="Hồ sơ doanh nghiệp/tổ chức" place="center"/>
-                <OrganizationProfileContent :organization-profile="dataInfo.profile"
-                                            :form-id="dataInfo.formId"/>
+                <OrganizationProfileContent :form-id="dataInfo.formId"
+                                            :organization-profile="dataInfo.profile"/>
             </div>
 
             <div class="print">
                 <DividerWithTitle label="Đáp án lựa chọn" place="center"/>
                 <EvaluatedQuestionsContent
-                    :result-data="dataInfo.firstPart.answers"
-                    :questions="dataInfo.firstPart.questions"/>
+                        :questions="dataInfo.firstPart.questions"
+                        :result-data="dataInfo.firstPart.answers"/>
                 <EvaluatedQuestionsContent
-                    :result-data="dataInfo.secondPart.answers"
-                    :questions="dataInfo.secondPart.questions"/>
+                        :questions="dataInfo.secondPart.questions"
+                        :result-data="dataInfo.secondPart.answers"/>
                 <EvaluatedQuestionsContent
-                    :result-data="dataInfo.thirdPart.answers"
-                    :questions="dataInfo.thirdPart.questions"/>
+                        :questions="dataInfo.thirdPart.questions"
+                        :result-data="dataInfo.thirdPart.answers"/>
             </div>
 
             <div class="print">
                 <DividerWithTitle label="Kết quả cuối cùng" place="center"/>
-                <ResultEvaluatedContent :form-id="dataInfo.formId"
-                                        :data-source="dataInfo.result"
-                                        :total-point="dataInfo.totalPoint"
-                                        :rate="dataInfo.rate"/>
+                <ResultEvaluatedContent :data-source="dataInfo.result"
+                                        :form-id="dataInfo.formId"
+                                        :rate="dataInfo.rate"
+                                        :total-point="dataInfo.totalPoint"/>
             </div>
         </div>
         <div class="text-right">
-            <a-button type="primary" class="bg-blue-500" @click.prevent="exportHTMLToPDF">Xuất file</a-button>
+            <a-button class="bg-blue-500" type="primary" @click.prevent="exportHTMLToPDF">Xuất file</a-button>
         </div>
     </div>
 </template>

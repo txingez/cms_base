@@ -5,7 +5,18 @@ export const previewer = defineStore('preview', () => {
     const previewerState = reactive({
         isPreview: false,
         previewContent: '',
-        type: ''
+        type: '',
+        homePageContent: {
+            introduction: '',
+            titleMission: '',
+            missions: [
+                {id: 0, content: ''}
+            ],
+            descriptionEvaluate: '',
+            evaluateSlides: [
+                {id: 0, title: '', target: '', image: []}
+            ]
+        }
     })
 
     const updateIsPreview = newVal => {
@@ -17,5 +28,9 @@ export const previewer = defineStore('preview', () => {
         previewerState.type = type
     }
 
-    return {previewerState, updateIsPreview, updatePreviewContent}
+    const updatePreviewHomePage = newVal => {
+        previewerState.homePageContent = Object.assign(previewerState.homePageContent, newVal)
+    }
+
+    return {previewerState, updateIsPreview, updatePreviewContent, updatePreviewHomePage}
 })

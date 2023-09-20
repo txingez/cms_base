@@ -1,15 +1,15 @@
 <template>
-    <a-layout-sider :width="250"
+    <a-layout-sider v-model:collapsed="collapsed"
+                    :width="250"
                     breakpoint="xl"
-                    theme="light"
-                    v-model:collapsed="collapsed"
-                    collapsible>
+                    collapsible
+                    theme="light">
         <div class="flex items-center justify-center h-16">
             <div v-if="collapsed">L</div>
             <div v-else>Logo</div>
         </div>
-        <a-menu v-model:selectedKeys="selectedKeys"
-                v-model:open-keys="openKeys"
+        <a-menu v-model:open-keys="openKeys"
+                v-model:selectedKeys="selectedKeys"
                 mode="inline">
             <a-menu-item key="dashboard"
                          style="margin-top: 0 !important;"
@@ -31,13 +31,13 @@
                         <span>Quản lý Site</span>
                     </div>
                 </template>
-                <!--                <a-menu-item key="management_home"-->
-                <!--                             @click="navigate('/management_home')">-->
-                <!--                    <template #icon>-->
-                <!--                        <HomeOutlined/>-->
-                <!--                    </template>-->
-                <!--                    <span>Quản lý trang chủ</span>-->
-                <!--                </a-menu-item>-->
+                <a-menu-item key="management_home"
+                             @click="navigate('/management_home')">
+                    <template #icon>
+                        <HomeOutlined/>
+                    </template>
+                    <span>Quản lý trang chủ</span>
+                </a-menu-item>
                 <a-menu-item key="management_overview"
                              @click="navigate('/management_overview')">
                     <template #icon>
@@ -49,7 +49,7 @@
                     <template #title>
                         <div>
                             <menu-outlined/>
-                            <span>Quản lý hoạt động</span>
+                            <span>Quản lý bài viết</span>
                         </div>
                     </template>
                     <a-menu-item key="editor_activity" @click="navigate('/activity/editor')">
@@ -96,6 +96,7 @@ import Icon, {
     FormOutlined,
     FundProjectionScreenOutlined,
     FundViewOutlined,
+    HomeOutlined,
     MenuOutlined,
     MessageOutlined,
     ProfileOutlined,

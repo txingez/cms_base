@@ -1,8 +1,5 @@
 import dayjs from "dayjs";
 
-export const ACCESS_TOKEN_KEY = 'token'
-export const REFRESH_TOKEN_KEY = '__refreshToken'
-
 export const MAP_KEY_TREE_WITH_NAME = {
     'par_0': 'MANAGE_POLICY',
     'par_1': 'MANAGE_CATEGORY',

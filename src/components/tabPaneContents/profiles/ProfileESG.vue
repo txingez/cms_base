@@ -6,19 +6,19 @@ defineProps({
 
 <template>
     <a-row :gutter="[10, 10]">
-        <a-col :xs="24" :md="12">
+        <a-col :md="12" :xs="24">
             <div class="flex gap-2">
                 <div>Tên doanh nghiệp/tổ chức:</div>
                 <div class="font-bold">{{ organizationProfile.companyName }}</div>
             </div>
         </a-col>
-        <a-col :xs="24" :md="6">
+        <a-col :md="6" :xs="24">
             <div class="flex gap-2">
                 <div>Năm thành lập:</div>
                 <div class="font-bold">{{ organizationProfile.foundedYear }}</div>
             </div>
         </a-col>
-        <a-col :xs="24" :md="6">
+        <a-col :md="6" :xs="24">
             <div class="flex gap-2">
                 <div>Mã số thuế:</div>
                 <div class="font-bold">{{ organizationProfile.taxCode }}</div>
@@ -27,7 +27,7 @@ defineProps({
     </a-row>
 
     <a-row :gutter="[10, 10]">
-        <a-col :xs="24" :md="24">
+        <a-col :md="24" :xs="24">
             <div class="flex gap-2">
                 <div>Địa điểm trụ sở chính:</div>
                 <div class="font-bold">{{ organizationProfile.addressCompany }}</div>
@@ -36,7 +36,7 @@ defineProps({
     </a-row>
 
     <a-row :gutter="[10, 10]">
-        <a-col :xs="24" :md="24">
+        <a-col :md="24" :xs="24">
             <div class="flex gap-2">
                 <div>Địa điểm cơ sở sản xuất chính thứ nhất:</div>
                 <div class="font-bold">{{ organizationProfile.firstManufactureFactory }}</div>
@@ -45,16 +45,19 @@ defineProps({
     </a-row>
 
     <a-row :gutter="[10, 10]">
-        <a-col :xs="24" :md="24">
+        <a-col :md="24" :xs="24">
             <div class="flex gap-2">
                 <div>Địa điểm cơ sở sản xuất chính thứ hai (nếu có):</div>
-                <div class="font-bold">{{ organizationProfile.secondManufactureFactory ? organizationProfile.secondManufactureFactory : '-' }}</div>
+                <div class="font-bold">{{
+                    organizationProfile.secondManufactureFactory ? organizationProfile.secondManufactureFactory : '-'
+                    }}
+                </div>
             </div>
         </a-col>
     </a-row>
 
     <a-row :gutter="[10, 10]">
-        <a-col :xs="24" :md="24">
+        <a-col :md="24" :xs="24">
             <div class="flex gap-2">
                 <div>Loại hình đăng ký:</div>
                 <div class="font-bold">
@@ -67,7 +70,7 @@ defineProps({
     </a-row>
 
     <a-row :gutter="[10, 10]">
-        <a-col :xs="24" :md="24">
+        <a-col :md="24" :xs="24">
             <div class="flex gap-2">
                 <div>Loại hình Doanh nghiệp:</div>
                 <div class="font-bold">{{ organizationProfile.businessType }}</div>
@@ -77,13 +80,13 @@ defineProps({
 
     <div class="font-bold text-lg">Thông tin lao động</div>
     <a-row :gutter="[10, 10]">
-        <a-col :xs="24" :md="12">
+        <a-col :md="12" :xs="24">
             <div class="flex gap-2">
                 <div>Tổng số nhân viên toàn thời gian:</div>
                 <div class="font-bold">{{ organizationProfile.fullTimeEmployees }}</div>
             </div>
         </a-col>
-        <a-col :xs="24" :md="12">
+        <a-col :md="12" :xs="24">
             <div class="flex gap-2">
                 <div>trong đó: tổng số nhân viên nữ:</div>
                 <div class="font-bold">{{ organizationProfile.femaleFullTimeEmployees }}</div>
@@ -91,13 +94,13 @@ defineProps({
         </a-col>
     </a-row>
     <a-row :gutter="[10, 10]">
-        <a-col :xs="24" :md="12">
+        <a-col :md="12" :xs="24">
             <div class="flex gap-2">
                 <div>Tổng số nhân viên bán thời gian:</div>
                 <div class="font-bold">{{ organizationProfile.partTimeEmployees }}</div>
             </div>
         </a-col>
-        <a-col :xs="24" :md="12">
+        <a-col :md="12" :xs="24">
             <div class="flex gap-2">
                 <div>trong đó: tổng số nhân viên nữ:</div>
                 <div class="font-bold">{{ organizationProfile.femalePartTimeEmployees }}</div>
@@ -105,13 +108,13 @@ defineProps({
         </a-col>
     </a-row>
     <a-row :gutter="[10, 10]">
-        <a-col :xs="24" :md="12">
+        <a-col :md="12" :xs="24">
             <div class="flex gap-2">
                 <div>Tổng số nhân viên thời vụ:</div>
                 <div class="font-bold">{{ organizationProfile.seasonalEmployees }}</div>
             </div>
         </a-col>
-        <a-col :xs="24" :md="12">
+        <a-col :md="12" :xs="24">
             <div class="flex gap-2">
                 <div>trong đó: tổng số nhân viên nữ:</div>
                 <div class="font-bold">{{ organizationProfile.femaleSeasonalEmployees }}</div>
@@ -119,13 +122,13 @@ defineProps({
         </a-col>
     </a-row>
     <a-row :gutter="[10, 10]">
-        <a-col :xs="24" :md="12">
+        <a-col :md="12" :xs="24">
             <div class="flex gap-2">
                 <div>Tổng số cán bộ cấp quản lý (từ trưởng phòng trở lên):</div>
                 <div class="font-bold">{{ organizationProfile.numberManagers }}</div>
             </div>
         </a-col>
-        <a-col :xs="24" :md="12">
+        <a-col :md="12" :xs="24">
             <div class="flex gap-2">
                 <div>trong đó: Tổng số cán bộ cấp quản lý là nữ:</div>
                 <div class="font-bold">{{ organizationProfile.numberFemaleManagers }}</div>
@@ -155,11 +158,13 @@ defineProps({
     <div class="flex gap-2">
         <div>Mô hình kinh doanh thuộc Lĩnh vực kinh doanh nào:</div>
         <div class="font-bold">
-            {{ organizationProfile.businessModel === 'other' ? organizationProfile.businessModelOtherInput : organizationProfile.businessModel }}
+            {{
+            organizationProfile.businessModel === 'other' ? organizationProfile.businessModelOtherInput : organizationProfile.businessModel
+            }}
         </div>
     </div>
     <a-row :gutter="[10, 10]">
-        <a-col :xs="24" :md="12">
+        <a-col :md="12" :xs="24">
             <div class="flex gap-2">
                 <div>Năm bắt đầu triển khai ESG (nếu đã triển khai):</div>
                 <div class="font-bold">
@@ -169,7 +174,7 @@ defineProps({
                 </div>
             </div>
         </a-col>
-        <a-col :xs="24" :md="12">
+        <a-col :md="12" :xs="24">
             <div class="flex gap-2">
                 <div>Địa chỉ website:</div>
                 <div class="font-bold">{{ organizationProfile.websiteCompany }}</div>

@@ -1,6 +1,6 @@
 <script setup>
 import Chart from 'chart.js/auto'
-import {computed, onMounted, watch} from "vue";
+import {computed, watch} from "vue";
 import {RatingClassification} from "../../constants/ratingClassification";
 import {ENUM} from "../../constants/enum";
 
@@ -146,7 +146,7 @@ watch(props, (p) => {
 
 <template>
     <div>
-        <a-table :data-source="config.dataSource" :columns="config.columns" :pagination="false" :bordered="true">
+        <a-table :bordered="true" :columns="config.columns" :data-source="config.dataSource" :pagination="false">
             <template #headerCell="{title, column}" class="bg-green-400">
                 <div class="text-center">{{ title }}</div>
             </template>
@@ -177,7 +177,7 @@ watch(props, (p) => {
                         {{ config.rateInfo }}
                     </a-table-summary-cell>
                 </a-table-summary-row>
-                <a-table-summary-row class="bg-[#FAFAFA]" v-if="config.showConclude">
+                <a-table-summary-row v-if="config.showConclude" class="bg-[#FAFAFA]">
                     <a-table-summary-cell :col-span="2" class="font-bold">
                         Doanh nghiệp có tiềm năng đạt tiêu chuẩn nhận
                         hỗ trợ của CP Doanh nghiệp đủ điều kiện tiếp cận các hỗ trợ chính sách theo Quyết định số

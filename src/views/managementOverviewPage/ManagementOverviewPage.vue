@@ -6,7 +6,7 @@ import {QuillEditor} from "@vueup/vue-quill";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import DividerWithTitle from "../../components/DividerWithTitle.vue";
 import {reactive} from "@vue/reactivity";
-import {computed, onMounted, ref} from "vue";
+import {computed, ref} from "vue";
 import {ToolbarEditor} from "../../constants/toolbarEditor";
 import {saveData} from "../../services/overviewPage";
 import {handleResponse} from "../../services/commonService";
@@ -16,17 +16,14 @@ import {open} from "../../utils/previewerUtils";
 import {ModalConfirm} from "../../components/ModalConfirm"
 
 const quillAbout = ref()
-const quillMission = ref()
 
 const toolbarAbout = computed(() => ToolbarEditor(quillAbout))
-const toolbarMission = computed(() => ToolbarEditor(quillMission))
 
 const loading = ref(false)
 
 const formState = reactive({
     id: "",
     contentAbout: ''
-    // contentMission: ''
 })
 
 const pid = 'ESG'
@@ -36,8 +33,8 @@ const routes = [
 ];
 
 const getContentOverview = (response) => {
-  formState.id = response.data.page_id;
-  formState.contentAbout = response.data.content;
+    formState.id = response.data.page_id;
+    formState.contentAbout = response.data.content;
 };
 
 // onMounted(() => {
@@ -61,10 +58,10 @@ const handleSubmit = () => {
                     showToast('success', 'Success')
                 }
             }).catch((err) => {
-                loading.value = false
-                console.log('Lưu overview data thất bại ', err)
-                showToast('error', 'Lưu cài đặt thất bại');
-            })
+            loading.value = false
+            console.log('Lưu overview data thất bại ', err)
+            showToast('error', 'Lưu cài đặt thất bại');
+        })
     }
     ModalConfirm("Lưu bài viết", "Hành động này sẽ lưu dữ liệu và cập nhật dữ liệu này trên website. Bạn chắc chắn muốn thực hiện chứ!", callback)
 }
@@ -79,19 +76,19 @@ const handleSubmit = () => {
         <TitlePage label="QUẢN LÝ NỘI DUNG TRANG TỔNG QUAN"/>
 
         <a-form :model="formState"
-                layout="vertical"
                 label-align="left"
+                layout="vertical"
                 @finish="handleSubmit">
             <DividerWithTitle label="Tổng quan"/>
-            <a-form-item name="contentAbout"
+            <a-form-item :rules="[{required: true, message: 'Nội dung không được để trống'}]"
                          label="Nội dung"
-                         :rules="[{required: true, message: 'Nội dung không được để trống'}]">
+                         name="contentAbout">
                 <div class="w-full">
                     <quill-editor ref="quillAbout"
                                   v-model:content="formState.contentAbout"
-                                  class="min-h-[300px] max-h-[700px] overflow-x-scroll"
                                   :modules="ModulesEditor"
                                   :toolbar="toolbarAbout"
+                                  class="min-h-[300px] max-h-[700px] overflow-x-scroll"
                                   content-type="html"/>
                 </div>
             </a-form-item>
@@ -99,7 +96,7 @@ const handleSubmit = () => {
                 <a-button @click.prevent="open(formState.contentAbout, 'HTML')">
                     Xem trước kết quả
                 </a-button>
-                <a-button html-type="submit" type="primary" class="bg-[#1677ff]" :loading="loading">
+                <a-button :loading="loading" class="bg-[#1677ff]" html-type="submit" type="primary">
                     Lưu cài đặt
                 </a-button>
             </div>

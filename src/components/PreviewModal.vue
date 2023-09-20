@@ -7,12 +7,12 @@ const previewerStore = previewer()
 </script>
 
 <template>
-    <a-modal :open="previewerStore.previewerState.isPreview"
+    <a-modal :footer="null"
+             :open="previewerStore.previewerState.isPreview"
              title="Preview"
-             :footer="null"
              @cancel="close">
-        <img v-if="previewerStore.previewerState.type === 'IMAGE_URL'" alt="preview" class="w-full"
-             :src="previewerStore.previewerState.previewContent"/>
+        <img v-if="previewerStore.previewerState.type === 'IMAGE_URL'" :src="previewerStore.previewerState.previewContent" alt="preview"
+             class="w-full"/>
         <div v-else v-html="previewerStore.previewerState.previewContent"/>
     </a-modal>
 </template>

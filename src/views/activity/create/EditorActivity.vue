@@ -5,56 +5,71 @@
 
     <div class="bg-white p-10">
         <TitlePage label="Sự kiện - Tin tức - Thư viện"/>
-        <a-form autocomplete="off"
-                name="form_data"
-                layout="vertical"
-                :model="formData"
+        <a-form :model="formData"
                 :validate-messages="validateMessages"
+                autocomplete="off"
+                layout="vertical"
+                name="form_data"
                 @finish="onFinish">
             <a-row :gutter="[50]">
-                <a-col :xs="24" :md="12">
-                    <a-form-item label="Tiêu đề"
-                                 name="title"
-                                 :rules="[{required: true}]">
+                <a-col :md="12" :xs="24">
+                    <a-form-item :rules="[{required: true}]"
+                                 label="Tiêu đề"
+                                 name="title">
                         <a-input v-model:value="formData.title"
                                  :maxlength="255"
                                  placeholder="Tiêu đề"/>
                     </a-form-item>
                 </a-col>
-                <a-col :xs="24" :md="12">
-                    <a-form-item label="Chuyên mục"
-                                 name="category"
-                                 :rules="[{required: true}]">
+                <a-col :md="12" :xs="24">
+                    <a-form-item :rules="[{required: true}]"
+                                 label="Chuyên mục"
+                                 name="category">
                         <a-select v-model:value="formData.category"
                                   :options="optionsCategory"
                                   allow-clear
                                   placeholder="Chuyên mục"/>
                     </a-form-item>
                 </a-col>
-                <a-col :xs="24" :md="12">
-                    <a-form-item label="Ngày đăng"
-                                 name="releaseDate"
-                                 :rules="[{required: true}]">
-                        <a-date-picker class="w-full"
-                                       v-model:value="formData.releaseDate"
-                                       format="YYYY-MM-DD"
-                                       valueFormat="YYYY-MM-DD"
-                                       placeholder="Chọn ngày đăng"/>
+                <a-col :md="12" :xs="24">
+                    <a-form-item label="Tin nổi bật"
+                                 name="hotNews">
+                        <a-checkbox v-model:checked="formData.hotNews"/>
                     </a-form-item>
                 </a-col>
-                <a-col :xs="24" :md="12">
-                    <a-form-item label="Ảnh"
-                                 name="image"
-                                 :rules="[{required: true}]">
+                <a-col :md="12" :xs="24" v-if="formData.hotNews">
+                    <a-form-item :rules="[{required: formData.hotNews}]"
+                                 label="Mô tả"
+                                 name="description">
+                        <a-textarea v-model:value="formData.description"
+                                    :rows="4"
+                                    placeholder="Mô tả bài viết"/>
+                    </a-form-item>
+                </a-col>
+                <a-col :md="12" :xs="24">
+                    <a-form-item :rules="[{required: true}]"
+                                 label="Ngày đăng"
+                                 name="releaseDate">
+                        <a-date-picker v-model:value="formData.releaseDate"
+                                       class="w-full"
+                                       format="YYYY-MM-DD"
+                                       placeholder="Chọn ngày đăng"
+                                       valueFormat="YYYY-MM-DD"/>
+                    </a-form-item>
+                </a-col>
+                <a-col :md="12" :xs="24">
+                    <a-form-item :rules="[{required: true}]"
+                                 label="Ảnh"
+                                 name="image">
                         <div>
-                            <a-upload name="bigImage"
-                                      v-model:file-list="formData.image"
+                            <a-upload v-model:file-list="formData.image"
+                                      :before-upload="file => beforeUpload(file)"
+                                      :custom-request="uploadFile"
+                                      :max-count="1"
                                       accept=".png, .jpg, .jpeg"
                                       list-type="picture-card"
-                                      :max-count="1"
-                                      :before-upload="file => beforeUpload(file)"
-                                      @preview="file => open(file, 'IMAGE_URL')"
-                                      :custom-request="uploadFile">
+                                      name="bigImage"
+                                      @preview="file => open(file, 'IMAGE_URL')">
                                 <div v-if="formData.image.length < 2">
                                     <plus-outlined/>
                                     <div>Upload</div>
@@ -70,44 +85,44 @@
                         </div>
                     </a-form-item>
                 </a-col>
-                <a-col :xs="24" :md="12">
-                    <a-form-item label="Loại nội dung"
-                                 name="contentType"
-                                 :rules="[{required: true}]">
+                <a-col :md="12" :xs="24">
+                    <a-form-item :rules="[{required: true}]"
+                                 label="Loại nội dung"
+                                 name="contentType">
                         <a-select v-model:value="formData.contentType"
                                   :options="optionContentType"
                                   placeholder="Loại nội dung">
                         </a-select>
                     </a-form-item>
                 </a-col>
-                <a-col :xs="24" :md="12">
-                    <a-form-item label="Nguồn"
-                                 name="source"
-                                 :rules="[{required: true}]">
+                <a-col :md="12" :xs="24">
+                    <a-form-item :rules="[{required: true}]"
+                                 label="Nguồn"
+                                 name="source">
                         <a-input v-model:value="formData.source"
                                  :maxlength="255"
                                  placeholder="Nguồn"/>
                     </a-form-item>
                 </a-col>
-                <a-col :xs="24" :md="24">
-                    <a-form-item label="Nội dung"
-                                 v-if="formData.contentType === contentTypeEnum.HTML"
-                                 name="content"
-                                 :rules="[{required: true}]">
+                <a-col :md="24" :xs="24">
+                    <a-form-item v-if="formData.contentType === contentTypeEnum.HTML"
+                                 :rules="[{required: true}]"
+                                 label="Nội dung"
+                                 name="content">
                         <div class="w-full">
                             <quill-editor ref="quill"
                                           v-model:content="formData.content"
-                                          class="min-h-[300px] max-h-[700px] overflow-x-scroll"
                                           :modules="ModulesEditor"
                                           :toolbar="toolbar"
+                                          class="min-h-[300px] max-h-[700px] overflow-x-scroll"
                                           content-type="html">
                             </quill-editor>
                         </div>
                     </a-form-item>
-                    <a-form-item label="Nội dung"
-                                 v-else
-                                 name="link"
-                                 :rules="[{required: true}]">
+                    <a-form-item v-else
+                                 :rules="[{required: true}]"
+                                 label="Nội dung"
+                                 name="link">
                         <a-input v-model:value="formData.link" placeholder="Link (https:www.content.com)"/>
                     </a-form-item>
                 </a-col>
@@ -116,22 +131,22 @@
                 <a-button @click="handleCancel">
                     Huỷ
                 </a-button>
-                <a-button danger
-                          v-if="state.isEdit"
+                <a-button v-if="state.isEdit"
+                          danger
                           @click="showConfirm({title: 'Xoá hoạt động', type: 'DELETE'})">
                     Xoá
                 </a-button>
-                <a-button type="dashed"
-                          v-if="formData.status === '' || formData.status === statusEnum.DRAFT"
-                          @click="handleDraft"
-                          :loading="state.loadingDraft">
+                <a-button v-if="formData.status === '' || formData.status === statusEnum.DRAFT"
+                          :loading="state.loadingDraft"
+                          type="dashed"
+                          @click="handleDraft">
                     Lưu nháp
                 </a-button>
                 <a-form-item>
-                    <a-button type="primary"
-                              :loading="state.loading"
+                    <a-button :loading="state.loading"
+                              class="bg-[#1677ff]"
                               html-type="submit"
-                              class="bg-[#1677ff]">
+                              type="primary">
                         {{ formData.status === '' || formData.status === statusEnum.DRAFT ? 'Đăng tin' : 'Lưu' }}
                     </a-button>
                 </a-form-item>
@@ -148,8 +163,8 @@
         </template>
         <template #footer>
             <a-button @click="handleConfirm(false)">Huỷ</a-button>
-            <a-button type="primary"
-                      class="bg-[#1677ff]"
+            <a-button class="bg-[#1677ff]"
+                      type="primary"
                       @click="handleConfirm(true)">
                 Xác nhận
             </a-button>
@@ -218,6 +233,8 @@ const formData = reactive({
     title: '',
     status: '',
     category: null,
+    hotNews: false,
+    description: '',
     image: [],
     content: '',
     link: '',
@@ -261,6 +278,8 @@ const resetForm = () => {
     formData.link = '';
     formData.errorImage = '';
     formData.source = '';
+    formData.hotNews = false;
+    formData.description = '';
 
     state.disableEdit = false;
 };
@@ -293,6 +312,8 @@ watch(router.currentRoute, (route) => {
                     formData.content = responseData.content_type === contentTypeEnum.HTML ? responseData.content : '';
                     formData.link = responseData.content_type === contentTypeEnum.LINK ? responseData.content : '';
                     formData.errorImage = '';
+                    formData.hotNews = responseData.hot_news ? responseData.hot_news : false;
+                    formData.description = responseData.description
                 }
             });
     }
@@ -329,6 +350,8 @@ const getDetail = (activityId) => {
                 formData.content = responseData.content_type === 'HTML' ? responseData.content : '';
                 formData.link = responseData.content_type === 'LINK' ? responseData.content : '';
                 formData.errorImage = '';
+                formData.hotNews = responseData.hot_news ? responseData.hot_news : false;
+                formData.description = responseData.description
             } else {
                 showToast('error', 'Không lấy được thông tin');
                 router.push('/activities');
@@ -367,7 +390,9 @@ const handleDraft = () => {
             image: formData.image.length !== 0 ? formData.image[0].url : null,
             content: formData.contentType === contentTypeEnum.HTML ? formData.content : formData.link,
             content_type: formData.contentType,
-            release_date: formData.releaseDate
+            release_date: formData.releaseDate,
+            ...(formData.hotNews && {hot_news: formData.hotNews}),
+            ...(formData.hotNews && {description: formData.description})
         }
     };
 
@@ -403,7 +428,9 @@ const onFinish = () => {
                 image: formData.image.length !== 0 ? formData.image[0].url : null,
                 content: formData.contentType === contentTypeEnum.HTML ? formData.content : formData.link,
                 content_type: formData.contentType,
-                release_date: formData.releaseDate
+                release_date: formData.releaseDate,
+                ...(formData.hotNews && {hot_news: formData.hotNews}),
+                ...(formData.hotNews && {description: formData.description})
             }
         };
 

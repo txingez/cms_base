@@ -1,7 +1,7 @@
 @import "./tailwind.css";
 
 iframe {
-  width: 60%;
-  height: 100%;
-  min-height: 400px;
+    width: 60%;
+    height: 100%;
+    min-height: 400px;
 }
