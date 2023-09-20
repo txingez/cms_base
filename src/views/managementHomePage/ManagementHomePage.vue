@@ -15,7 +15,7 @@ import {uploadImage} from "../../services/uploadFile";
 import {handleResponse} from "../../services/commonService";
 import {previewer} from "../../stores/previewer";
 import PreviewHomePage from "../../components/PreviewHomePage.vue";
-import {saveData} from "../../services/overviewPage";
+import {saveData} from "../../services/homePage";
 import {showToast} from "../../utils/showToast";
 import {ModalConfirm} from "../../components/ModalConfirm";
 
@@ -46,7 +46,7 @@ const routes = [
     {name: 'Home', to: '/'},
     {name: 'Quản lý trang chủ', to: '/management_home'}
 ];
-const pid = 'home_page_pid'
+const pid = 'HOME'
 
 const validateMessages = {
     required: "${label} là bắt buộc",
@@ -119,7 +119,7 @@ const handleSubmit = () => {
     //todo: sua lai body
     const body = {
         page_id: pid,
-        content: formState.contentAbout,
+        content: formState,
     };
 
     const callback = () => {
