@@ -19,6 +19,7 @@ import {getFormDataById} from "../../services/evaluatedResult";
 import {Buffer} from "buffer";
 import EvaluatedQuestionsContent from "../../components/tabPaneContents/EvaluatedQuestionsContent.vue";
 import ResultEvaluatedContent from "../../components/tabPaneContents/ResultEvaluatedContent.vue";
+import {handleResponse} from "../../services/commonService";
 
 const router = useRouter()
 
@@ -66,6 +67,7 @@ onMounted(() => {
         dataInfo.rate = resultHandled.rate
         dataInfo.totalPoint = resultHandled.total
     }).catch((err) => {
+        handleResponse(err.response.status, err.response.data)
         console.log(err)
     })
 })

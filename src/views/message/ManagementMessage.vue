@@ -77,6 +77,7 @@ const getTableData = options => {
                 : tableData.value = [];
         })
         .catch(error => {
+            handleResponse(error.response.status, error.response.data)
             console.log('Lỗi khi lấy danh sách tin nhắn,', error);
             showToast('error', 'Lấy danh sách thất bại');
         });

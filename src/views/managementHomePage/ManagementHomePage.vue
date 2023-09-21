@@ -28,11 +28,11 @@ const formState = reactive({
     introduction: '',
     titleMission: '',
     missions: [
-        {id: 0, content: '', icon: ''}
+        {content: '', icon: ''}
     ],
     descriptionEvaluate: '',
     evaluateSlides: [
-        {id: 0, title: '', target: '', image: []}
+        {title: '', target: '', image: []}
     ]
 })
 
@@ -61,7 +61,7 @@ const removeMission = (item) => {
 }
 
 const addMission = () => {
-    formState.missions.push({id: 0, content: ''});
+    formState.missions.push({content: '', icon: ''});
 };
 
 const removeEvaluateSlide = (item) => {
@@ -73,7 +73,7 @@ const removeEvaluateSlide = (item) => {
 }
 
 const addEvaluateSlide = () => {
-    formState.evaluateSlides.push({id: 0, title: '', target: '', image: []});
+    formState.evaluateSlides.push({title: '', target: '', image: []});
 };
 
 const uploadFile = (options) => {
@@ -116,24 +116,22 @@ const handlePreview = () => {
 const handleSubmit = () => {
     otherState.loading = true;
 
-    //todo: sua lai body
     const body = {
         page_id: pid,
         content: formState,
     };
 
     const callback = () => {
-        //todo: ghep api cho nay
         saveData(body)
             .then((response) => {
                 const handledResponse = handleResponse(response.status, response.data)
                 if (handledResponse) {
-                    // getContentOverview(handledResponse)
                     showToast('success', 'Success')
                 }
             }).catch((err) => {
-            console.log('Lưu overview data thất bại ', err)
+            console.log('Lưu home page data thất bại ', err)
             showToast('error', 'Lưu cài đặt thất bại');
+            handleResponse(err.response.status, err.response.data)
         }).finally(() => {
             otherState.loading = false;
         })

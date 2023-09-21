@@ -263,6 +263,7 @@ const showConfirm = activityId => {
             }).catch(err => {
                 console.log('Có lỗi xảy ra khi xoá ', err)
                 showToast('error', 'Có lỗi xảy ra khi xoá');
+                handleResponse(err.response.status, err.response.data)
             })
         },
         onCancel() {
@@ -312,8 +313,6 @@ const getTableData = (options) => {
     getAll(body)
         .then(response => {
             const responseData = handleResponse(response.status, response.data);
-            state.visibleDrawer = false;
-            state.tableLoading = false;
             responseData !== null
                 ? (() => {
                     tableData.value = responseData.data.results.map(n => {
@@ -335,10 +334,15 @@ const getTableData = (options) => {
                     current.value = responseData.data.page;
                 })()
                 : tableData.value = [];
-        }).catch((err) => {
-        console.log('Lấy dữ liệu thất bại ', err)
-        state.tableLoading = false;
-    })
+        })
+        .catch((err) => {
+            console.log('Lấy dữ liệu thất bại ', err)
+            handleResponse(err.response.status, err.response.data)
+        })
+        .finally(() => {
+            state.visibleDrawer = false;
+            state.tableLoading = false;
+        })
 };
 
 const onSelectChange = selectedKeys => {

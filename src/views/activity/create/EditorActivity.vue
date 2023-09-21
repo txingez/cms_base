@@ -441,19 +441,23 @@ const onFinish = () => {
 const executeActivityAPI = (body) => {
     state.loading = true;
     const request = formData.id !== 0 ? updatePost({...body, id: formData.id}) : createPost(body);
-    request.then(response => {
-        const responseData = handleResponse(response.status, response.data);
-        state.loading = false;
-        if (responseData) {
-            showToast('success', formData.id !== 0 ? 'Chỉnh sửa thành công' : 'Tạo mới thành công');
-            resetForm();
-            router.push('/activities')
-        }
-    }).catch(error => {
-        console.log('Lỗi khi tạo hoạt động', error);
-        state.loading = false;
-        showToast('error', formData.id !== 0 ? 'Chỉnh sửa thất bại' : 'Tạo mới thất bại');
-    });
+    request
+        .then(response => {
+            const responseData = handleResponse(response.status, response.data);
+            if (responseData) {
+                showToast('success', formData.id !== 0 ? 'Chỉnh sửa thành công' : 'Tạo mới thành công');
+                resetForm();
+                router.push('/activities')
+            }
+        })
+        .catch(error => {
+            console.log('Lỗi khi tạo hoạt động', error);
+            showToast('error', formData.id !== 0 ? 'Chỉnh sửa thất bại' : 'Tạo mới thất bại');
+            handleResponse(error.response.status, error.response.data)
+        })
+        .finally(() => {
+            state.loading = false;
+        })
 };
 
 const beforeUpload = (file) => {
@@ -543,15 +547,22 @@ const handleConfirm = confirmed => {
                 return;
         }
     })();
-    request.then(response => {
-        const responseData = handleResponse(response.status, response.data);
-        state.confirmLoading = false;
-        if (responseData) {
-            showToast('success', 'Thao tác thành công');
-            router.push('/activities');
-            resetModal();
-        }
-    })
+    request
+        .then(response => {
+            const responseData = handleResponse(response.status, response.data);
+            if (responseData) {
+                showToast('success', 'Thao tác thành công');
+                router.push('/activities');
+                resetModal();
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+            handleResponse(err.response.status, err.response.data)
+        })
+        .finally(() => {
+            state.confirmLoading = false;
+        })
 };
 
 const handleImageCssInContent = content => {

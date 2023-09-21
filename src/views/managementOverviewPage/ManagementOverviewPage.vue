@@ -53,15 +53,18 @@ const handleSubmit = () => {
             .then((response) => {
                 const handledResponse = handleResponse(response.status, response.data)
                 if (handledResponse) {
-                    loading.value = false
                     getContentOverview(handledResponse)
                     showToast('success', 'Success')
                 }
-            }).catch((err) => {
-            loading.value = false
-            console.log('Lưu overview data thất bại ', err)
-            showToast('error', 'Lưu cài đặt thất bại');
-        })
+            })
+            .catch((err) => {
+                console.log('Lưu overview data thất bại ', err)
+                showToast('error', 'Lưu cài đặt thất bại');
+                handleResponse(err.response.status, err.response.data)
+            })
+            .finally(() => {
+                loading.value = false
+            })
     }
     ModalConfirm("Lưu bài viết", "Hành động này sẽ lưu dữ liệu và cập nhật dữ liệu này trên website. Bạn chắc chắn muốn thực hiện chứ!", callback)
 }
