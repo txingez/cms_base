@@ -139,7 +139,12 @@ const handleSubmit = () => {
     ModalConfirm("Lưu bài viết", "Hành động này sẽ lưu dữ liệu và cập nhật dữ liệu này trên website. Bạn chắc chắn muốn thực hiện chứ!", callback)
 }
 
-const icons = ['mountain-sun', 'house', 'star']
+
+const icons = ['mountain-sun', 'house', 'star', 'cloud', 'face-smile', 'shield-halved', 'bolt', 'umbrella', 'gift', 'gear',
+    'trash', 'droplet', 'fire', 'thumbs-up', 'thumbs-down', 'globe', 'truck', 'city', 'bicycle', 'flask', 'person', 'handshake',
+    'earth-asia', 'users', 'feather', 'sun', 'fish', 'shop', 'chart-simple', 'gauge', 'hand-holding-heart', 'location-pin',
+    'network-wired', 'rocket', 'water', 'sitemap', 'moon', 'leaf', 'seedling', 'trophy', 'hammer', 'recycle', 'wind', 'virus',
+    'chart-line']
 
 const handleClick = (index, icon) => {
     formState.missions[index].icon = icon
@@ -193,7 +198,7 @@ const handleClick = (index, icon) => {
                             <font-awesome-icon v-if="mission.icon !== ''" :icon="['fas', mission.icon]"/>
                             <span v-else>Icon</span>
                             <template #overlay>
-                                <a-space>
+                                <a-space :wrap="true" class="w-[250px] flex justify-around">
                                     <font-awesome-icon v-for="icon in icons"
                                                        :icon="['fas', icon]"
                                                        @click="handleClick(index, icon)"/>
