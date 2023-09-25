@@ -7,6 +7,7 @@ export const previewer = defineStore('preview', () => {
         previewContent: '',
         type: '',
         homePageContent: {
+            banner: '',
             introduction: '',
             titleMission: '',
             missions: [

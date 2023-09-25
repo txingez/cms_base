@@ -147,7 +147,7 @@ import TitlePage from "../../../components/TitlePage.vue";
 const columns = [
     {title: 'Tiêu đề', dataIndex: 'title', key: 'title', fixed: 'left', width: 300, ellipsis: true},
     {title: 'Ngày đăng', dataIndex: 'release_date', key: 'release_date', width: 130},
-    {title: 'Nguồn', dataIndex: 'source', key: 'source'},
+    {title: 'Nguồn', dataIndex: 'source', key: 'source', fixed: 'left', width: 150, ellipsis: true},
     {title: 'Chuyên mục', dataIndex: 'category', key: 'category', width: 150},
     {title: 'Ảnh', dataIndex: 'image', key: 'image', width: 200},
     {title: 'Loại nội dung', dataIndex: 'content_type', key: 'content_type', width: 130},

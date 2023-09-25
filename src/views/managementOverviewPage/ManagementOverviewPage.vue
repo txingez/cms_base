@@ -6,9 +6,9 @@ import {QuillEditor} from "@vueup/vue-quill";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import DividerWithTitle from "../../components/DividerWithTitle.vue";
 import {reactive} from "@vue/reactivity";
-import {computed, ref} from "vue";
+import {computed, ref, onMounted} from "vue";
 import {ToolbarEditor} from "../../constants/toolbarEditor";
-import {saveData} from "../../services/overviewPage";
+import {saveData, getByPageID} from "../../services/overviewPage";
 import {handleResponse} from "../../services/commonService";
 import {showToast} from "../../utils/showToast";
 import PreviewModal from "../../components/PreviewModal.vue";
@@ -37,9 +37,21 @@ const getContentOverview = (response) => {
     formState.contentAbout = response.data.content;
 };
 
-// onMounted(() => {
-//     getContentOverview()
-// })
+const getContent = () => {
+    getByPageID(pid)
+        .then(response => {
+            const responseData = handleResponse(response.status, response.data);
+            getContentOverview(responseData)
+        })
+        .catch((err) => {
+            console.log('Lấy dữ liệu thất bại ', err)
+            handleResponse(err.response.status, err.response.data)
+        })
+}
+
+onMounted(() => {
+    getContent()
+})
 const handleSubmit = () => {
     loading.value = true;
 
