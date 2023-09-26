@@ -2,22 +2,22 @@
 
 import BreadCrumb from "../../components/breadcrumb/BreadCrumb.vue";
 import TitlePage from "../../components/TitlePage.vue";
-import { reactive } from "@vue/reactivity";
+import {reactive} from "@vue/reactivity";
 import DividerWithTitle from "../../components/DividerWithTitle.vue";
-import { QuillEditor } from "@vueup/vue-quill";
+import {QuillEditor} from "@vueup/vue-quill";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import { ModulesEditor } from "../../constants/modulesEditor";
-import { ToolbarEditor } from "../../constants/toolbarEditor";
-import { computed, ref, onMounted } from "vue";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons-vue";
-import { open } from "../../utils/previewerUtils";
-import { uploadImage } from "../../services/uploadFile";
-import { handleResponse } from "../../services/commonService";
-import { previewer } from "../../stores/previewer";
+import {ModulesEditor} from "../../constants/modulesEditor";
+import {ToolbarEditor} from "../../constants/toolbarEditor";
+import {computed, onMounted, ref} from "vue";
+import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons-vue";
+import {open} from "../../utils/previewerUtils";
+import {uploadImage} from "../../services/uploadFile";
+import {handleResponse} from "../../services/commonService";
+import {previewer} from "../../stores/previewer";
 import PreviewHomePage from "../../components/PreviewHomePage.vue";
-import { saveData, getByPageID } from "../../services/homePage";
-import { showToast } from "../../utils/showToast";
-import { ModalConfirm } from "../../components/ModalConfirm";
+import {getByPageID, saveData} from "../../services/homePage";
+import {showToast} from "../../utils/showToast";
+import {ModalConfirm} from "../../components/ModalConfirm";
 import {Buffer} from "buffer";
 
 const previewerStore = previewer()
@@ -25,18 +25,25 @@ const previewerStore = previewer()
 const introduction = ref(null);
 const toolbarIntroduction = computed(() => ToolbarEditor(introduction))
 
+const ICONS_MISSION = [
+    'https://lh3.googleusercontent.com/pw/AIL4fc92P1hsYz1B1HrZGloCO4Vl-uylzW_NojqXDFFHdCoPdITZZh2zy7_IU4iedZGBDwxdP4fl29usb1aFqNoH1yXJUEHAOMNUs0If04ZC6cvsytd95KhHvsldVctuREiljFeOJ-jIPCOPUOSkcnzvt9GN=w249-h256-s-no?authuser=0',
+    'https://lh3.googleusercontent.com/pw/AIL4fc9SZVX44PkbLTDWFQdGFt58Hs9n5WW4yOVj8RFqKpzTDBawzoHEp4Sbz5B2avJvEh4krJismHBLfADwAejQwpR4-Wf2y-2CM50ERRbl-yNDXZiRMBK15HQqeLTkKs5WFe5kumpBK6ZyIs44_1ZpIGHi=w256-h256-s-no?authuser=0',
+    'https://lh3.googleusercontent.com/pw/AIL4fc-vuqx4NdQb9LsnkMpNAT0HYYQi84EJ6ORCvfLBxWQ-mlwF7XMv8_8VHZVBXncRxHw35VJKz3Eq2rDK7RCvcSLw-jNqXDWtnanC5JgJNl2CNU_z2WosOL8QSClPsNncNkj45NkOR0XzDKtH8krRHQp7=w246-h256-s-no?authuser=0',
+    'https://lh3.googleusercontent.com/pw/AIL4fc9-Uq_LYLtlIoDHqOgxz89mMzB5Uts2ero9SGVGDLMopMSs3u-1VTDPVWur03cPu5XsFi0nshTD24gSdZbUyG13NajHEYf4oGrMfUQzsKetM8Mb4tWjMPhxSOkkY47JbO7h0V0Ba5jsdCt75DtaXs5c=w500-h500-s-no?authuser=0'
+]
+
 const formState = reactive({
     bannerSlides: [
-        { title: '', description: '', target: '', image: [] }
+        {title: '', description: '', target: '', image: []}
     ],
     introduction: '',
     titleMission: '',
     missions: [
-        { title: '', content: '', icon: '' }
+        {content: '', icon: ''}
     ],
     descriptionEvaluate: '',
     evaluateSlides: [
-        { title: '', target: '', image: [] }
+        {title: '', target: '', image: []}
     ]
 })
 
@@ -48,8 +55,8 @@ const otherState = reactive({
 })
 
 const routes = [
-    { name: 'Home', to: '/' },
-    { name: 'Quản lý trang chủ', to: '/management_home' }
+    {name: 'Home', to: '/'},
+    {name: 'Quản lý trang chủ', to: '/management_home'}
 ];
 const pid = 'HOME'
 
@@ -66,7 +73,7 @@ const removeMission = (item) => {
 }
 
 const addMission = () => {
-    formState.missions.push({ content: '', icon: '' });
+    formState.missions.push({content: '', icon: ''});
 };
 
 const removeEvaluateSlide = (item) => {
@@ -85,23 +92,22 @@ const removeBannerSlide = (item) => {
     }
 }
 
-
 const addEvaluateSlide = () => {
-    formState.evaluateSlides.push({ title: '', target: '', image: [] });
+    formState.evaluateSlides.push({title: '', target: '', image: []});
 };
 
 const addBannerSlide = () => {
-    formState.bannerSlides.push({ title: '', description: '', target: '', image: [] });
+    formState.bannerSlides.push({title: '', description: '', target: '', image: []});
 };
 
 const uploadFile = (options) => {
-    const { onError, data, file, onProgress } = options;
+    const {onError, data, file, onProgress} = options;
 
     uploadImage(file, onProgress)
         .then(response => {
             const responseData = handleResponse(response.status, response.data);
             console.log(responseData)
-            if(!responseData) {
+            if (!responseData) {
                 const error = new Error('Uploaded Failed');
                 onError(error);
             }
@@ -155,7 +161,7 @@ const handlePreview = () => {
         banner: formState.bannerSlides,
         introduction: formState.introduction,
         titleMission: formState.titleMission,
-        missions: formState.missions,
+        missions: formState.missions.map((mission, index) => ({...mission, ...{icon: ICONS_MISSION[index]}})),
         descriptionEvaluate: formState.descriptionEvaluate,
         evaluateSlides: formState.evaluateSlides
     }
@@ -168,7 +174,7 @@ const handleSubmit = () => {
 
     const body = {
         page_id: pid,
-        content: formState,
+        content: {...formState, ...{missions: formState.missions.map((mission, index) => ({...mission, ...{icon: ICONS_MISSION[index]}}))}},
     };
 
     const callback = () => {
@@ -179,12 +185,12 @@ const handleSubmit = () => {
                     showToast('success', 'Success')
                 }
             }).catch((err) => {
-                console.log('Lưu home page data thất bại ', err)
-                showToast('error', 'Lưu cài đặt thất bại');
-                handleResponse(err.response.status, err.response.data)
-            }).finally(() => {
-                otherState.loading = false;
-            })
+            console.log('Lưu home page data thất bại ', err)
+            showToast('error', 'Lưu cài đặt thất bại');
+            handleResponse(err.response.status, err.response.data)
+        }).finally(() => {
+            otherState.loading = false;
+        })
     }
     ModalConfirm("Lưu bài viết", "Hành động này sẽ lưu dữ liệu và cập nhật dữ liệu này trên website. Bạn chắc chắn muốn thực hiện chứ!", callback)
 }
@@ -203,72 +209,75 @@ const handleSubmit = () => {
 
 <template>
     <div class="mb-5">
-        <BreadCrumb :routes="routes" />
+        <BreadCrumb :routes="routes"/>
     </div>
 
     <div class="bg-white p-10">
-        <TitlePage label="QUẢN LÝ NỘI DUNG TRANG CHỦ" />
+        <TitlePage label="QUẢN LÝ NỘI DUNG TRANG CHỦ"/>
         <a-form :model="formState" :validate-messages="validateMessages" layout="vertical" @finish="handleSubmit">
-            <DividerWithTitle label="Chỉnh sửa banner" />
+            <DividerWithTitle label="Chỉnh sửa banner"/>
             <div v-for="(slide, index) in formState.bannerSlides" class="flex items-center">
                 <div class="basis-full">
                     <a-form-item :label="['Tiêu đề ', index + 1]" :name="['bannerSlides', index, 'title']"
-                        :rules="[{ required: true }]">
-                        <a-input v-model:value="slide.title" placeholder="Tiêu đề slide" />
+                                 :rules="[{ required: true }]">
+                        <a-input v-model:value="slide.title" placeholder="Tiêu đề slide"/>
                     </a-form-item>
                     <a-form-item :label="['Nội dung ', index + 1]" :name="['bannerSlides', index, 'description']"
-                        :rules="[{ required: true }]">
-                        <a-input v-model:value="slide.description" placeholder="Nội dung slide" />
+                                 :rules="[{ required: true }]">
+                        <a-input v-model:value="slide.description" placeholder="Nội dung slide"/>
                     </a-form-item>
                     <a-form-item :label="['Đích đến  ', index + 1]" :name="['bannerSlides', index, 'target']"
-                        :rules="[{ required: true }]">
-                        <a-input v-model:value="slide.target" placeholder="Đường dẫn (Bỏ trống nếu không đặt đường dẫn cho banner)" />
+                                 :rules="[{ required: true }]">
+                        <a-input v-model:value="slide.target"
+                                 placeholder="Đường dẫn (Bỏ trống nếu không đặt đường dẫn cho banner)"/>
                     </a-form-item>
                     <a-form-item :label="['Ảnh nền slide ', index + 1]" :name="['bannerSlides', index, 'image']"
-                        :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
-                        <a-upload v-model:file-list="slide.image" :custom-request="uploadFile" :data="{ index: index, type: pid }"
-                            :max-count="1" accept=".png, .jpg, .jpeg" list-type="picture-card" @preview="open">
+                                 :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
+                        <a-upload v-model:file-list="slide.image" :custom-request="uploadFile"
+                                  :data="{ index: index, type: pid }"
+                                  :max-count="1" accept=".png, .jpg, .jpeg" list-type="picture-card" @preview="open">
                             <div v-if="slide.image.length < 2">
-                                <plus-outlined />
+                                <plus-outlined/>
                                 <div>Upload</div>
                             </div>
                         </a-upload>
                     </a-form-item>
                 </div>
-                <a-button :disabled="formState.bannerSlides.length === 1" class="flex items-center justify-center" danger
-                    shape="circle" type="text" @click="removeBannerSlide(slide)">
-                    <minus-circle-outlined />
+                <a-button :disabled="formState.bannerSlides.length === 1" class="flex items-center justify-center"
+                          danger
+                          shape="circle" type="text" @click="removeBannerSlide(slide)">
+                    <minus-circle-outlined/>
                 </a-button>
             </div>
             <a-button v-if="formState.bannerSlides.length < 3" class="flex items-center" type="dashed"
-                @click="addBannerSlide">
-                <plus-outlined />
+                      @click="addBannerSlide">
+                <plus-outlined/>
                 Thêm slide
             </a-button>
-            <DividerWithTitle label="Phần giới thiệu" />
+            <DividerWithTitle label="Phần giới thiệu"/>
             <a-form-item :rules="[{ required: true }]" label="Nội dung phần giới thiệu" name="introduction">
                 <div class="w-full">
                     <quill-editor ref="introduction" v-model:content="formState.introduction" :modules="ModulesEditor"
-                        :toolbar="toolbarIntroduction" class="min-h-[300px] max-h-[700px] overflow-x-scroll"
-                        content-type="html">
+                                  :toolbar="toolbarIntroduction" class="min-h-[300px] max-h-[700px] overflow-x-scroll"
+                                  content-type="html">
                     </quill-editor>
                 </div>
             </a-form-item>
 
-            <DividerWithTitle label="Phần mục tiêu" />
+            <DividerWithTitle label="Phần mục tiêu"/>
             <a-form-item :rules="[{ required: true }]" label="Tiêu đề mục tiêu" name="titleMission"
-                style="font-weight: bold;">
-                <a-input v-model:value="formState.titleMission" placeholder="Nhập tiêu đề phần mục tiêu" />
+                         style="font-weight: bold;">
+                <a-input v-model:value="formState.titleMission" placeholder="Nhập tiêu đề phần mục tiêu"/>
             </a-form-item>
             <div v-for="(mission, index) in formState.missions" class="flex items-center">
                 <div class="basis-full">
                     <a-form-item :label="['Tiêu đề nhiệm vụ ', index + 1]" :name="['missions', index, 'title']"
-                        :rules="[{ required: true }]">
-                        <a-input v-model:value="mission.title" placeholder="Tiêu đề nhiệm vụ" />
+                                 :rules="[{ required: true }]">
+                        <a-input v-model:value="mission.title" placeholder="Tiêu đề nhiệm vụ"/>
                     </a-form-item>
                     <a-form-item :label="['Nội dung nhiệm vụ ', index + 1]" :name="['missions', index, 'content']"
-                        :rules="[{ required: true }]">
-                        <a-input v-model:value="mission.content" placeholder="Nội dung nhiệm vụ" />
+                                 :rules="[{ required: true }]">
+                        <a-input v-model:value="mission.content" placeholder="Nội dung nhiệm vụ"/>
                     </a-form-item>
                     <!-- <a-form-item :label="['Icon ', index + 1]"
                                  :name="['missions', index, 'icon']"
@@ -287,50 +296,51 @@ const handleSubmit = () => {
                     </a-form-item> -->
                 </div>
                 <a-button :disabled="formState.missions.length === 1" class="flex items-center justify-center" danger
-                    shape="circle" type="text" @click="removeMission(mission)">
-                    <minus-circle-outlined />
+                          shape="circle" type="text" @click="removeMission(mission)">
+                    <minus-circle-outlined/>
                 </a-button>
             </div>
             <a-button v-if="formState.missions.length < 4" class="flex items-center" type="dashed" @click="addMission">
-                <plus-outlined />
+                <plus-outlined/>
                 Thêm nhiệm vụ
             </a-button>
 
-            <DividerWithTitle label="Phần công cụ đánh giá" />
+            <DividerWithTitle label="Phần công cụ đánh giá"/>
             <a-form-item label="Mô tả công cụ đánh giá" name="descriptionEvaluate" class="basis-full"
-                :rules="[{ required: true }]">
+                         :rules="[{ required: true }]">
                 <a-textarea v-model:value="formState.descriptionEvaluate" :rows="5"
-                    placeholder="Nhập mô tả công cụ đánh giá" />
+                            placeholder="Nhập mô tả công cụ đánh giá"/>
             </a-form-item>
             <div v-for="(slide, index) in formState.evaluateSlides" class="flex items-center">
                 <div class="basis-full">
                     <a-form-item :label="['Tiêu đề ', index + 1]" :name="['evaluateSlides', index, 'title']"
-                        :rules="[{ required: true }]">
-                        <a-input v-model:value="slide.title" placeholder="Tiêu đề slide" />
+                                 :rules="[{ required: true }]">
+                        <a-input v-model:value="slide.title" placeholder="Tiêu đề slide"/>
                     </a-form-item>
                     <a-form-item :label="['Đích đến  ', index + 1]" :name="['evaluateSlides', index, 'target']"
-                        :rules="[{ required: true }]">
-                        <a-input v-model:value="slide.target" placeholder="Đường dẫn đến biểu mãu đánh giá" />
+                                 :rules="[{ required: true }]">
+                        <a-input v-model:value="slide.target" placeholder="Đường dẫn đến biểu mãu đánh giá"/>
                     </a-form-item>
                     <a-form-item :label="['Ảnh nền slide ', index + 1]" :name="['evaluateSlides', index, 'image']"
-                        :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
+                                 :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
                         <a-upload v-model:file-list="slide.image" :custom-request="uploadFile" :data="{ index: index }"
-                            :max-count="1" accept=".png, .jpg, .jpeg" list-type="picture-card" @preview="open">
+                                  :max-count="1" accept=".png, .jpg, .jpeg" list-type="picture-card" @preview="open">
                             <div v-if="slide.image.length < 2">
-                                <plus-outlined />
+                                <plus-outlined/>
                                 <div>Upload</div>
                             </div>
                         </a-upload>
                     </a-form-item>
                 </div>
-                <a-button :disabled="formState.evaluateSlides.length === 1" class="flex items-center justify-center" danger
-                    shape="circle" type="text" @click="removeEvaluateSlide(slide)">
-                    <minus-circle-outlined />
+                <a-button :disabled="formState.evaluateSlides.length === 1" class="flex items-center justify-center"
+                          danger
+                          shape="circle" type="text" @click="removeEvaluateSlide(slide)">
+                    <minus-circle-outlined/>
                 </a-button>
             </div>
             <a-button v-if="formState.evaluateSlides.length < 2" class="flex items-center" type="dashed"
-                @click="addEvaluateSlide">
-                <plus-outlined />
+                      @click="addEvaluateSlide">
+                <plus-outlined/>
                 Thêm slide
             </a-button>
 
@@ -345,5 +355,5 @@ const handleSubmit = () => {
         </a-form>
     </div>
 
-    <PreviewHomePage />
+    <PreviewHomePage/>
 </template>

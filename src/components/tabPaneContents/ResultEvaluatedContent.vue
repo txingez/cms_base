@@ -148,58 +148,62 @@ watch(props, (p) => {
     <div>
         <a-table :bordered="true" :columns="config.columns" :data-source="config.dataSource" :pagination="false">
             <template #headerCell="{title, column}" class="bg-green-400">
-                <div class="text-center">{{ title }}</div>
+                <div class="text-center md:text-xl text-sm">{{ title }}</div>
             </template>
             <template #bodyCell="{column, text}">
                 <template v-if="column.key === 'name'">
-                    <div class="font-bold">{{ text }}</div>
+                    <div class="font-bold md:text-xl text-sm">{{ text }}</div>
                 </template>
                 <template v-else-if="column.key === 'distribution'">
-                    <div>{{ `${text}%` }}</div>
+                    <div class="md:text-xl text-sm">{{ `${text.toString().replace('.', ',')}%` }}</div>
                 </template>
                 <template v-else>
-                    <div>{{ text }}</div>
+                    <div class="md:text-xl text-sm">{{ text.toString().replace('.', ',') }}</div>
                 </template>
             </template>
             <template #summary>
                 <a-table-summary-row class="bg-[#FAFAFA]">
-                    <a-table-summary-cell :col-span="config.summaryTableConfig.title" class="font-bold">
+                    <a-table-summary-cell :col-span="config.summaryTableConfig.title"
+                                          class="font-bold md:text-xl text-sm">
                         Tổng điểm
                     </a-table-summary-cell>
-                    <a-table-summary-cell :col-span="config.summaryTableConfig.value" class="text-right font-bold">
-                        {{ config.summaryPoint }}
+                    <a-table-summary-cell :col-span="config.summaryTableConfig.value"
+                                          class="text-right font-bold md:text-xl text-sm">
+                        {{ config.summaryPoint.toString().replace('.', ',') }}
                     </a-table-summary-cell>
                 </a-table-summary-row>
                 <a-table-summary-row class="bg-[#FAFAFA]">
-                    <a-table-summary-cell :col-span="config.summaryTableConfig.title" class="font-bold">Xếp hạng
+                    <a-table-summary-cell :col-span="config.summaryTableConfig.title"
+                                          class="font-bold md:text-xl text-sm">
+                        Xếp hạng
                     </a-table-summary-cell>
-                    <a-table-summary-cell :col-span="config.summaryTableConfig.value" class="text-right font-bold">
+                    <a-table-summary-cell :col-span="config.summaryTableConfig.value"
+                                          class="text-right font-bold md:text-xl text-sm">
                         {{ config.rateInfo }}
                     </a-table-summary-cell>
                 </a-table-summary-row>
                 <a-table-summary-row v-if="config.showConclude" class="bg-[#FAFAFA]">
-                    <a-table-summary-cell :col-span="2" class="font-bold">
+                    <a-table-summary-cell :col-span="2" class="font-bold md:text-xl text-sm">
                         Doanh nghiệp có tiềm năng đạt tiêu chuẩn nhận
                         hỗ trợ của CP Doanh nghiệp đủ điều kiện tiếp cận các hỗ trợ chính sách theo Quyết định số
                         167/QĐ-TTg ngày 8/2/2022 về Chương trình hỗ trợ doanh nghiệp khu vực tư nhân kinh doanh bền vững
                         giai đoạn 2022 -2025 hay không?
                     </a-table-summary-cell>
-                    <a-table-summary-cell class="text-right font-bold">
+                    <a-table-summary-cell class="text-right font-bold md:text-xl text-sm">
                         {{ config.summaryPoint < 50 ? 'Không đạt' : 'Đạt' }}
                     </a-table-summary-cell>
                 </a-table-summary-row>
             </template>
         </a-table>
 
-        <div class="flex justify-center">
-            <div class="xl:w-1/2 xl:h-1/2 md:w-2/3 md:h-2/3 w-full h-full">
+        <div class="flex xl:flex-row flex-col-reverse justify-between items-center">
+            <div class="flex gap-5 flex-col py-5 xl:basis-1/2">
+                <div class="font-bold text-xl">Đề xuất cho doanh nghiệp</div>
+                <div v-html="RatingClassification[formId][config.rateInfo].suggest"/>
+            </div>
+            <div class="xl:basis-1/2 xl:w-1/2 xl:h-1/2 md:w-2/3 md:h-2/3 w-full h-full flex justify-end">
                 <canvas id="chart"></canvas>
             </div>
-        </div>
-
-        <div class="flex gap-5 flex-col py-5">
-            <div class="font-bold text-xl">Đề xuất cho doanh nghiệp</div>
-            <div v-html="RatingClassification[formId][config.rateInfo].suggest"></div>
         </div>
     </div>
 </template>
