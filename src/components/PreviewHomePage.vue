@@ -11,6 +11,8 @@ const previewerStore = previewer()
              :open="previewerStore.previewerState.isPreview"
              title="BỐ CỤC TRANG CHỦ"
              width="100%"
+             class="top-0 max-w-full"
+             wrap-class-name="full-modal"
              @cancel="close">
         <a-carousel arrows class="h-full"
                     v-if="previewerStore.previewerState.homePageContent.banner?.filter(b => b.title !== '' && b.image.length !== 0).length !== 0">
@@ -171,7 +173,6 @@ const previewerStore = previewer()
 </template>
 
 <style scoped>
-
 :deep(.slick-slide) {
     height: calc(100vh - 152px);
 }
