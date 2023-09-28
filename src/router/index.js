@@ -69,7 +69,13 @@ const router = createRouter({
                     path: "/result_detail/:id",
                     name: "evaluated_result_detail",
                     component: () => import("../views/managementEvaluatedResult/EvaluatedResultDetailPage.vue")
-                }
+                },
+                {
+                    id: 11,
+                    path: "/management_evaluated_page",
+                    name: "management_evaluated_page",
+                    component: () => import("../views/managementEvaluatedPage/ManagementEvaluatedPage.vue")
+                },
             ],
         },
         {

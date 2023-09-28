@@ -17,6 +17,11 @@ export const previewer = defineStore('preview', () => {
             evaluateSlides: [
                 {id: 0, title: '', target: '', image: []}
             ]
+        },
+        evaluatedPageContent: {
+            introduction: '',
+            esg: {title: '', image: [], labelBtn: '', targetBtn: '', document: []},
+            nec: {title: '', image: [], labelBtn: '', targetBtn: '', document: []}
         }
     })
 
@@ -33,5 +38,9 @@ export const previewer = defineStore('preview', () => {
         previewerState.homePageContent = Object.assign(previewerState.homePageContent, newVal)
     }
 
-    return {previewerState, updateIsPreview, updatePreviewContent, updatePreviewHomePage}
+    const updatePreviewEvaluatedPage = newVal => {
+        previewerState.evaluatedPageContent = Object.assign(previewerState.evaluatedPageContent, newVal)
+    }
+
+    return {previewerState, updateIsPreview, updatePreviewContent, updatePreviewHomePage, updatePreviewEvaluatedPage}
 })

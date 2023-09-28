@@ -38,6 +38,13 @@
                     </template>
                     <span>Quản lý trang chủ</span>
                 </a-menu-item>
+                <a-menu-item key="management_evaluated_page"
+                             @click="navigate('/management_evaluated_page')">
+                    <template #icon>
+                        <HomeOutlined/>
+                    </template>
+                    <span>Quản lý trang công cụ đánh giá</span>
+                </a-menu-item>
                 <a-menu-item key="management_overview"
                              @click="navigate('/management_overview')">
                     <template #icon>
@@ -122,6 +129,7 @@ watch(() => router.currentRoute,
             switch (router.currentRoute.value.name) {
                 case 'management_home':
                 case 'management_overview':
+                case 'management_evaluated_page':
                 case 'banner':
                     return ['submenu_1'];
 

@@ -136,39 +136,6 @@ const previewerStore = previewer()
                 </div>
             </div>
         </div>
-
-        <!--        <div class="bg-[#46c585]">-->
-        <!--            <DividerWithName label="tin tức và sự kiện"/>-->
-        <!--            <div class=" space-y-5 mb-10">-->
-        <!--                <div class="flex gap-5 md:flex-row flex-col">-->
-        <!--                    <a-card v-for="news in newsArray"-->
-        <!--                            class="basis-1/3"-->
-        <!--                            data-aos="fade-down"-->
-        <!--                            data-aos-easing="ease-in-out"-->
-        <!--                            data-aos-duration="500">-->
-        <!--                        <template #cover>-->
-        <!--                            <a class="overflow-hidden rounded-t-[10px] opacity-[0.85] hover:opacity-100 transition-all"-->
-        <!--                               :href="news.href" target="_blank">-->
-        <!--                                <img class="lg:h-[200px] md:h-[150px] h-[200px] w-full hover:scale-110 transition-all"-->
-        <!--                                     :src="news.thumbnail"-->
-        <!--                                     loading="lazy"-->
-        <!--                                     :alt="news.thumbnail">-->
-        <!--                            </a>-->
-        <!--                        </template>-->
-        <!--                        <div class="space-y-2">-->
-        <!--                            <a :href="news.href" target="_blank"-->
-        <!--                               class="font-bold line-clamp-2 text-ellipsis text-base">-->
-        <!--                                {{ news.title }}-->
-        <!--                            </a>-->
-        <!--                            <div class="text-[14px] line-clamp-4 text-ellipsis text-justify">{{-->
-        <!--                                news.description-->
-        <!--                                }}-->
-        <!--                            </div>-->
-        <!--                        </div>-->
-        <!--                    </a-card>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
     </a-modal>
 </template>
 
