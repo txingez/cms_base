@@ -24,7 +24,7 @@ const previewerStore = previewer()
                      data-aos-duration="500">
                     <img class="rounded-[10px] w-full h-full"
                          loading="lazy"
-                         :src="previewerStore.previewerState.evaluatedPageContent.esg.image[0].url"
+                         :src="previewerStore.previewerState.evaluatedPageContent.esg.image[0]?.url"
                          alt="business7">
                 </div>
                 <div class="flex flex-col gap-3 lg:col-span-2 col-span-4 justify-center"
@@ -56,7 +56,7 @@ const previewerStore = previewer()
                      data-aos-duration="500">
                     <img class="rounded-[10px] w-full h-full"
                          loading="lazy"
-                         :src="previewerStore.previewerState.evaluatedPageContent.nec.image[0].url"
+                         :src="previewerStore.previewerState.evaluatedPageContent.nec.image[0]?.url"
                          alt="manufacture_evaluate">
                 </div>
                 <div class="flex flex-col gap-3 lg:col-span-2 col-span-4 justify-center"

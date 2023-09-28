@@ -29,13 +29,14 @@ const previewerStore = previewer()
             <div v-for="banner in previewerStore.previewerState.homePageContent.banner" class="relative h-full">
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
             flex flex-col lg:gap-5 md:gap-2.5 gap-2 w-full h-full justify-end items-start lg:p-14 md:p-8 p-5">
-                    <div class="p-1.5 break-after-auto font-bold whitespace-pre-wrap
-                text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-500 w-full"
+                    <div class="p-1.5 break-after-auto font-bold whitespace-pre-wrap text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-500 w-full"
                          :class="banner.placeTitle === 'center' ? 'text-center lg:-translate-y-1/3 xl:-translate-y-[150%] xl:text-8xl lg:text-7xl md:text-5xl text-4xl' : 'md:text-5xl lg:text-6xl xl:text-7xl text-2xl'">
-                        {{ banner.title }}
+                        <!-- {{ banner.title }} -->
+                        <div v-html="banner.title"/>
                     </div>
                     <div class="xl:text-2xl lg:text-lg md:text-base text-xs italic xl:pr-72 lg:pr-32 md:pr-28 pr-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-500">
-                        {{ banner.description }}
+                        <!-- {{ banner.description }} -->
+                        <div v-html="banner.description"/>
                     </div>
                     <div style="border-image: linear-gradient(45deg, #60a5fa, #22c55e) 1"
                          class="md:px-6 px-3 md:py-2 lg:py-3 md:text-base xl:text-2xl md:min-h-[50px] min-h-[30px] flex justify-center items-center border rounded border-image hover:bg-gradient-to-r hover:from-blue-400 hover:to-green-500 hover:cursor-pointer
@@ -47,7 +48,7 @@ const previewerStore = previewer()
                 <div class="h-full">
                     <img class="w-full h-full"
                          loading="lazy"
-                         :src="banner.image[0].url"
+                         :src="banner.image[0]?.url"
                          alt="carousel">
                 </div>
             </div>
@@ -55,6 +56,7 @@ const previewerStore = previewer()
 
         <div v-if="previewerStore.previewerState.homePageContent.introduction !== ''" class="px-5">
             <DividerWithName label="GIỚI THIỆU"/>
+            <!-- <div class="mb-10" v-html="previewerStore.previewerState.homePageContent.introduction"/> -->
             <div class="mb-10" v-html="previewerStore.previewerState.homePageContent.introduction"/>
         </div>
 
@@ -65,7 +67,8 @@ const previewerStore = previewer()
                     <DividerWithName label="mục tiêu"/>
                     <div class="space-y-14">
                         <div class="text-2xl font-bold">
-                            <div>{{ previewerStore.previewerState.homePageContent.titleMission }}</div>
+                            <!-- <div>{{ previewerStore.previewerState.homePageContent.titleMission }}</div> -->
+                            <div v-html="previewerStore.previewerState.homePageContent.titleMission"/>
                         </div>
                         <div class="flex gap-5 flex-wrap">
                             <div v-for="mission in previewerStore.previewerState.homePageContent.missions"
@@ -78,13 +81,14 @@ const previewerStore = previewer()
                                          class="md:w-[100px] w-[70px] md:h-[100px] h-[70px] relative left-[-7px]"
                                          alt="icon">
                                 </div>
-                                <div class="md:text-xl text-base text-stone-800">{{ mission.content }}</div>
+                                <!-- <div class="md:text-xl text-base text-stone-800">{{ mission.content }}</div> -->
+                                <div v-html="mission.content"/>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="basis-1/2">
-                    <img src="https://lh3.googleusercontent.com/pw/AIL4fc96QJ-o5znFN8yP41V0vHSi6fjRuu0kejymzIPIw0FO8g-D70NfLfmJgbHXl1s4q9KIcVWR4Q0b-VRqPwikZFSQDbim1zs_B_iU0gl2hUwRXOAIBeLYV60uAI5UUfs-Fqdixt2MI-GfMv0lzWNVcjDj=w1060-h1060-s-no?authuser=0"
+                    <img :src="previewerStore.previewerState.homePageContent.imageMission[0]?.url"
                          class="h-full w-full"
                          alt="mission_block_image">
                 </div>
@@ -95,10 +99,11 @@ const previewerStore = previewer()
              class="px-5">
             <DividerWithName label="CÔNG CỤ ĐÁNH GIÁ KINH DOANH BỀN VỮNG"/>
             <div class=" space-y-10 mb-10">
-                <div class="grid md:grid-cols-2 grid-cols-1 xl:gap-20 gap-5 items-center">
+                <div class="grid md:grid-cols-2 grid-cols-1 xl:gap-20 gap-5">
                     <div class="text-justify"
                          v-if="previewerStore.previewerState.descriptionEvaluate !== ''">
-                        {{ previewerStore.previewerState.homePageContent.descriptionEvaluate }}
+                        <!-- {{ previewerStore.previewerState.homePageContent.descriptionEvaluate }} -->
+                        <div v-html="previewerStore.previewerState.homePageContent.descriptionEvaluate"/>
                     </div>
                     <div class="rounded-[10px]"
                          v-if="previewerStore.previewerState.homePageContent.evaluateSlides.filter(s => s.title !== '' && s.image.length !== 0).length !== 0">
@@ -124,7 +129,8 @@ const previewerStore = previewer()
 
                                 <div class="rounded-[10px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full bg-[rgba(0,0,0,0.4)] flex flex-col gap-5 justify-center items-center">
                                     <div class="text-white slide-name xl:text-2xl lg:text-xl text-lg text-center">
-                                        {{ slide.title }}
+                                        <!-- {{ slide.title }} -->
+                                        <div v-html="slide.title"/>
                                     </div>
                                     <a-button class="text-white h-fit min-h-[50px] md:text-base xl:text-lg">
                                         Đánh giá ngay
