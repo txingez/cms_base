@@ -34,7 +34,7 @@ const ICONS_MISSION = [
 
 const formState = reactive({
     bannerSlides: [
-        {title: '', description: '', target: '', image: []}
+        {title: '', description: '', target: '', image: [], placeTitle: 'center', labelBtn: 'Thông tin chi tiết'}
     ],
     introduction: '',
     titleMission: '',
@@ -97,7 +97,14 @@ const addEvaluateSlide = () => {
 };
 
 const addBannerSlide = () => {
-    formState.bannerSlides.push({title: '', description: '', target: '', image: []});
+    formState.bannerSlides.push({
+        title: '',
+        description: '',
+        target: '',
+        image: [],
+        placeTitle: 'center',
+        labelBtn: 'Thông tin chi tiết'
+    });
 };
 
 const uploadFile = (options) => {
