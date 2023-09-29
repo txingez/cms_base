@@ -36,7 +36,7 @@ const previewerStore = previewer()
                     </div>
                     <div class="flex gap-2.5 xl:flex-row flex-col">
                         <a-button class="min-h-[50px] md:text-base xl:text-lg">
-                            {{ previewerStore.previewerState.evaluatedPageContent.esg.labelBtn }}
+                            Thực hiện đánh giá
                         </a-button>
                         <a-button class="min-h-[50px] md:text-base xl:text-lg bg-blue-500"
                                   type="primary">
@@ -68,7 +68,7 @@ const previewerStore = previewer()
                     </div>
                     <div class="flex gap-2.5 xl:flex-row flex-col">
                         <a-button class="min-h-[50px] md:text-base xl:text-lg">
-                            {{ previewerStore.previewerState.evaluatedPageContent.nec.labelBtn }}
+                            Thực hiện đánh giá
                         </a-button>
                         <a-button class="min-h-[50px] md:text-base xl:text-lg bg-blue-500"
                                   type="primary">

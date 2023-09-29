@@ -28,8 +28,8 @@ const toolbarIntroduction = computed(() => ToolbarEditor(introduction))
 
 const formState = reactive({
     introduction: '',
-    esg: { title: '', image: [], labelBtn: '', targetBtn: '', document: [] },
-    nec: { title: '', image: [], labelBtn: '', targetBtn: '', document: [] },
+    esg: { title: '', image: [], document: [] },
+    nec: { title: '', image: [], document: [] },
 })
 
 const otherState = reactive({
@@ -103,13 +103,9 @@ const getContent = () => {
             const decodeContent = JSON.parse(Buffer.from(responseData.data.content.split('.')[1], 'base64').toString());
             formState.introduction = decodeContent.data.introduction
             formState.esg.title = decodeContent.data.esg.title
-            formState.esg.labelBtn = decodeContent.data.esg.labelBtn
-            formState.esg.targetBtn = decodeContent.data.esg.targetBtn
             formState.esg.image = decodeContent.data.esg.image
             formState.esg.document = decodeContent.data.esg.document
             formState.nec.title = decodeContent.data.nec.title
-            formState.nec.labelBtn = decodeContent.data.nec.labelBtn
-            formState.nec.targetBtn = decodeContent.data.nec.targetBtn
             formState.nec.image = decodeContent.data.nec.image
             formState.nec.document = decodeContent.data.nec.document
         })
@@ -173,16 +169,9 @@ const handleSubmit = () => {
                     </quill-editor>
                 </div>
             </a-form-item>
-
             <DividerWithTitle label="Chỉnh sửa công cụ ESG" />
             <a-form-item label="Tiêu đề" :name="['esg', 'title']" required>
                 <a-input v-model:value="formState.esg.title" placeholder="Tiêu đề" />
-            </a-form-item>
-            <a-form-item label="Chữ trên nút" :name="['esg', 'labelBtn']" required>
-                <a-input v-model:value="formState.esg.labelBtn" placeholder="Chữ trên nút" />
-            </a-form-item>
-            <a-form-item label="Đích đến của nút" :name="['esg', 'targetBtn']" required>
-                <a-input v-model:value="formState.esg.targetBtn" placeholder="Đích đến của nút" />
             </a-form-item>
             <a-row>
                 <a-col :xs="24" :md="12">
@@ -215,12 +204,6 @@ const handleSubmit = () => {
             <DividerWithTitle label="Chỉnh sửa công cụ NEC" />
             <a-form-item label="Tiêu đề" :name="['nec', 'title']" required>
                 <a-input v-model:value="formState.nec.title" placeholder="Tiêu đề" />
-            </a-form-item>
-            <a-form-item label="Chữ trên nút" :name="['nec', 'labelBtn']" required>
-                <a-input v-model:value="formState.nec.labelBtn" placeholder="Chữ trên nút" />
-            </a-form-item>
-            <a-form-item label="Đích đến của nút" :name="['nec', 'targetBtn']" required>
-                <a-input v-model:value="formState.nec.targetBtn" placeholder="Đích đến của nút" />
             </a-form-item>
             <a-row>
                 <a-col :xs="24" :md="12">

@@ -23,8 +23,8 @@ export const previewer = defineStore('preview', () => {
         },
         evaluatedPageContent: {
             introduction: '',
-            esg: {title: '', image: [], labelBtn: '', targetBtn: '', document: []},
-            nec: {title: '', image: [], labelBtn: '', targetBtn: '', document: []}
+            esg: {title: '', image: [], document: []},
+            nec: {title: '', image: [], document: []}
         }
     })
 
