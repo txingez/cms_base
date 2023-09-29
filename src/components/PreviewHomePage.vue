@@ -31,12 +31,10 @@ const previewerStore = previewer()
             flex flex-col lg:gap-5 md:gap-2.5 gap-2 w-full h-full justify-end items-start lg:p-14 md:p-8 p-5">
                     <div class="p-1.5 break-after-auto font-bold whitespace-pre-wrap text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-500 w-full"
                          :class="banner.placeTitle === 'center' ? 'text-center lg:-translate-y-1/3 xl:-translate-y-[150%] xl:text-8xl lg:text-7xl md:text-5xl text-4xl' : 'md:text-5xl lg:text-6xl xl:text-7xl text-2xl'">
-                        <!-- {{ banner.title }} -->
-                        <div v-html="banner.title"/>
+                         {{ banner.title }}
                     </div>
                     <div class="xl:text-2xl lg:text-lg md:text-base text-xs italic xl:pr-72 lg:pr-32 md:pr-28 pr-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-500">
-                        <!-- {{ banner.description }} -->
-                        <div v-html="banner.description"/>
+                         {{ banner.description }}
                     </div>
                     <div style="border-image: linear-gradient(45deg, #60a5fa, #22c55e) 1"
                          class="md:px-6 px-3 md:py-2 lg:py-3 md:text-base xl:text-2xl md:min-h-[50px] min-h-[30px] flex justify-center items-center border rounded border-image hover:bg-gradient-to-r hover:from-blue-400 hover:to-green-500 hover:cursor-pointer
