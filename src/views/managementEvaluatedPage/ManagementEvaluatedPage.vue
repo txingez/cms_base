@@ -41,14 +41,12 @@ const routes = [
     { name: 'Quản lý trang công cụ đánh giá', to: '/management_evaluated_page' }
 ];
 
-//todo: em update lại page id nhe
 const pid = 'EVALUATE'
 
 const validateMessages = {
     required: "${label} là bắt buộc",
 };
 
-//todo: anh đang để upload file tài liệu cũng đi vào đây, em dùng được thì sửa, không thì viết hàm mới
 const uploadFile = (options) => {
     const { onError, data, file, onProgress } = options;
 
@@ -63,6 +61,7 @@ const uploadFile = (options) => {
 
             const result = {
                 file: file,
+                name: file.name,
                 status: 'done',
                 response: responseData,
                 url: responseData.data.file_url
@@ -120,7 +119,6 @@ const handlePreview = () => {
         esg: formState.esg,
         nec: formState.nec
     }
-    console.log(JSON.stringify(dataPreview))
     previewerStore.updatePreviewEvaluatedPage(dataPreview)
     previewerStore.updateIsPreview(true)
 }
@@ -192,9 +190,9 @@ const handleSubmit = () => {
                         :rules="[{ required: true, message: 'Tài liệu chưa được upload' }]">
                         <a-upload v-model:file-list="formState.esg.document" :data="{ type: 'doc', form: 'ESG' }"
                             :max-count="1" accept=".docx, .pdf, .mp4, .csv, .xlsx, .pptx" :custom-request="uploadFile">
-                            <a-button v-if="formState.esg.document.length < 2">
+                            <a-button v-if="formState.esg.document.length < 1" class="flex justify-center items-center">
                                 <UploadOutlined />
-                                Upload
+                                <span>Upload</span>
                             </a-button>
                         </a-upload>
                     </a-form-item>
@@ -212,7 +210,7 @@ const handleSubmit = () => {
                         <a-upload v-model:file-list="formState.nec.image" :custom-request="uploadFile"
                             :data="{ type: 'image', form: 'NEC' }" :max-count="1" accept=".png, .jpg, .jpeg"
                             list-type="picture-card" @preview="open">
-                            <div v-if="formState.nec.image.length < 2">
+                            <div v-if="formState.nec.image.length < 1">
                                 <plus-outlined />
                                 <div>Upload</div>
                             </div>
@@ -224,9 +222,9 @@ const handleSubmit = () => {
                         :rules="[{ required: true, message: 'Tài liệu chưa được upload' }]">
                         <a-upload v-model:file-list="formState.nec.document" :data="{ type: 'doc', form: 'NEC' }"
                             :max-count="1" accept=".docx, .pdf, .mp4, .csv, .xlsx, .pptx" :custom-request="uploadFile">
-                            <a-button v-if="formState.nec.document.length < 2">
+                            <a-button v-if="formState.nec.document.length < 1" class="flex justify-center items-center">
                                 <UploadOutlined />
-                                Upload
+                                <span>Upload</span>
                             </a-button>
                         </a-upload>
                     </a-form-item>
