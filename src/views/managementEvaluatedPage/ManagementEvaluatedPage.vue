@@ -68,7 +68,7 @@ const uploadFile = (options) => {
             }
 
             switch (data.form) {
-                case ENUM.FORM_ID.ESG:        
+                case ENUM.FORM_ID.ESG:
                     if (data.type === 'image') {
                         formState.esg.image = [result]
                     } else {
@@ -173,7 +173,7 @@ const handleSubmit = () => {
             </a-form-item>
             <a-row>
                 <a-col :xs="24" :md="12">
-                    <a-form-item label="Thubmnail" :name="['esg', 'image']"
+                    <a-form-item label="Thumbnail" :name="['esg', 'image']"
                         :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
                         <a-upload v-model:file-list="formState.esg.image" :custom-request="uploadFile"
                             :data="{ type: 'image', form: 'ESG' }" :max-count="1" accept=".png, .jpg, .jpeg"
@@ -205,7 +205,7 @@ const handleSubmit = () => {
             </a-form-item>
             <a-row>
                 <a-col :xs="24" :md="12">
-                    <a-form-item label="Thubmnail" :name="['nec', 'image']"
+                    <a-form-item label="Thumbnail" :name="['nec', 'image']"
                         :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
                         <a-upload v-model:file-list="formState.nec.image" :custom-request="uploadFile"
                             :data="{ type: 'image', form: 'NEC' }" :max-count="1" accept=".png, .jpg, .jpeg"
