@@ -76,6 +76,12 @@ const router = createRouter({
                     name: "management_evaluated_page",
                     component: () => import("../views/managementEvaluatedPage/ManagementEvaluatedPage.vue")
                 },
+                {
+                    id: 12,
+                    path: "/management_esg",
+                    name: "management_esg",
+                    component: () => import("../views/managementESGPage/ManagementESGPage.vue")
+                }
             ],
         },
         {

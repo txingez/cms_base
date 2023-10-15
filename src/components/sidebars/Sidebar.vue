@@ -52,6 +52,13 @@
                     </template>
                     <span>Quản lý trang tổng quan</span>
                 </a-menu-item>
+                <a-menu-item key="management_esg"
+                             @click="navigate('/management_esg')">
+                    <template #icon>
+                        <ProfileOutlined/>
+                    </template>
+                    <span>Quản lý trang sáng kiến ESG</span>
+                </a-menu-item>
                 <a-sub-menu key="submenu_1_1">
                     <template #title>
                         <div>
@@ -129,6 +136,7 @@ watch(() => router.currentRoute,
             switch (router.currentRoute.value.name) {
                 case 'management_home':
                 case 'management_overview':
+                case 'management_esg':
                 case 'management_evaluated_page':
                 case 'banner':
                     return ['submenu_1'];

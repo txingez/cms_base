@@ -21,8 +21,8 @@ import {Buffer} from "buffer";
 
 const previewerStore = previewer()
 
-const introduction = ref(null);
-const toolbarIntroduction = computed(() => ToolbarEditor(introduction))
+// const introduction = ref(null);
+// const toolbarIntroduction = computed(() => ToolbarEditor(introduction))
 
 const ICONS_MISSION = [
     'https://lh3.googleusercontent.com/pw/AIL4fc92P1hsYz1B1HrZGloCO4Vl-uylzW_NojqXDFFHdCoPdITZZh2zy7_IU4iedZGBDwxdP4fl29usb1aFqNoH1yXJUEHAOMNUs0If04ZC6cvsytd95KhHvsldVctuREiljFeOJ-jIPCOPUOSkcnzvt9GN=w249-h256-s-no?authuser=0',
@@ -35,13 +35,17 @@ const formState = reactive({
     bannerSlides: [
         {title: '', description: '', target: '', image: [], placeTitle: '', labelBtn: 'Thông tin chi tiết'}
     ],
-    introduction: '',
+    introduction: {videoURL: '', description: ''},
+    homePageTitle: {title: '', description: ''},
     titleMission: '',
     imageMission: [],
     missions: [
-        {content: '', icon: ''}
+        {title: '', content: ''}
     ],
     descriptionEvaluate: '',
+    stories: [
+        {description: '', image: []}
+    ],
     evaluateSlides: [
         {title: '', target: '', image: []}
     ]
@@ -51,6 +55,7 @@ const otherState = reactive({
     missionsToDelete: [],
     slidesToDelete: [],
     bannerToDelete: [],
+    storyToDelete: [],
     loading: false
 })
 
@@ -85,6 +90,14 @@ const removeEvaluateSlide = (item) => {
     }
 }
 
+const removeStory = (item) => {
+    let index = formState.stories.indexOf(item);
+    if (index !== -1) {
+        otherState.storyToDelete.push(item)
+        formState.stories.splice(index, 1);
+    }
+}
+
 const removeBannerSlide = (item) => {
     let index = formState.bannerSlides.indexOf(item);
     if (index !== -1) {
@@ -108,6 +121,11 @@ const addBannerSlide = (index) => {
     });
 };
 
+const addStory = (index) => {
+    formState.stories.push({description: '', image: []});
+};
+
+
 const uploadFile = (options) => {
     const {onError, data, file, onProgress} = options;
 
@@ -127,8 +145,8 @@ const uploadFile = (options) => {
                     response: responseData,
                     url: responseData.data.file_url
                 }];
-            } else if (data.type === mission) {
-                formState.imageMission = [{
+            } else if (data.type === 'story') {
+                formState.stories[data.index].image = [{
                     file: file,
                     status: 'done',
                     response: responseData,
@@ -166,6 +184,8 @@ const getContent = () => {
             formState.missions = decodeContent.data.missions
             formState.descriptionEvaluate = decodeContent.data.descriptionEvaluate
             formState.evaluateSlides = decodeContent.data.evaluateSlides
+            formState.stories = decodeContent.data.stories
+            formState.homePageTitle = decodeContent.data.homePageTitle
         })
         .catch((err) => {
             console.log('Lấy dữ liệu thất bại ', err)
@@ -175,7 +195,7 @@ const getContent = () => {
 const handlePreview = () => {
     const dataPreview = {
         banner: formState.bannerSlides.map(bl => ({...bl, ...{description: bl.description === '<p><br></p>' ? '' : bl.description}})),
-        introduction: formState.introduction,
+        // introduction: formState.introduction,
         titleMission: formState.titleMission,
         imageMission: formState.imageMission,
         missions: formState.missions.map((mission, index) => ({...mission, ...{icon: ICONS_MISSION[index]}})),
@@ -188,7 +208,6 @@ const handlePreview = () => {
 
 const handleSubmit = () => {
     otherState.loading = true;
-
     const body = {
         page_id: pid,
         content: {
@@ -198,6 +217,7 @@ const handleSubmit = () => {
         },
     };
 
+    console.log(JSON.stringify(body));
     const callback = () => {
         saveData(body)
             .then((response) => {
@@ -213,7 +233,7 @@ const handleSubmit = () => {
             otherState.loading = false;
         })
     }
-    ModalConfirm("Lưu bài viết", "Hành động này sẽ lưu dữ liệu và cập nhật dữ liệu này trên website. Bạn chắc chắn muốn thực hiện chứ!", callback)
+    ModalConfirm("Lưu chỉnh sửa", "Hành động này sẽ lưu dữ liệu và cập nhật dữ liệu này trên website. Bạn chắc chắn muốn thực hiện chứ!", callback)
 }
 
 </script>
@@ -269,53 +289,35 @@ const handleSubmit = () => {
                 <plus-outlined/>
                 Thêm slide
             </a-button>
-            <DividerWithTitle label="Phần giới thiệu"/>
-            <a-form-item :rules="[{ required: true }]" label="Nội dung phần giới thiệu" name="introduction">
+            <DividerWithTitle label="Phần tiêu đề"/>
+            <a-form-item :rules="[{ required: true }]" label="Tiêu đề" name="homePageTitle">
                 <div class="w-full">
-                    <quill-editor ref="introduction" v-model:content="formState.introduction" :modules="ModulesEditor"
-                                  :toolbar="toolbarIntroduction" class="min-h-[300px] max-h-[700px] overflow-x-scroll"
-                                  content-type="html">
-                    </quill-editor>
+                    <a-textarea v-model:value="formState.homePageTitle.title" rows="5"/>
+                </div>
+            </a-form-item>
+            <a-form-item :rules="[{ required: true }]" label="Nội dung" name="homePageTitle">
+                <div class="w-full">
+                    <a-textarea v-model:value="formState.homePageTitle.description" rows="5"/>
                 </div>
             </a-form-item>
 
             <DividerWithTitle label="Phần mục tiêu"/>
-            <a-form-item :rules="[{ required: true }]" label="Tiêu đề mục tiêu" name="titleMission"
-                         style="font-weight: bold;">
-                <div class="w-full">
-                    <quill-editor ref="titleMission" v-model:content="formState.titleMission" :modules="ModulesEditor"
-                                  :toolbar="toolbarIntroduction" class="min-h-[300px] max-h-[700px] overflow-x-scroll"
-                                  content-type="html">
-                    </quill-editor>
-                </div>
-            </a-form-item>
-            <a-form-item label="Ảnh nền mục tiêu" name="imageMission"
-                         :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
-                <a-upload v-model:file-list="formState.imageMission" :custom-request="uploadFile"
-                          :data="{ type: mission }"
-                          :max-count="1" accept=".png, .jpg, .jpeg" list-type="picture-card">
-                    <div v-if="formState.imageMission.length < 2">
-                        <plus-outlined/>
-                        <div>Upload</div>
-                    </div>
-                </a-upload>
-                <div class="italic">Vui lòng sử dụng ảnh tỉ lệ: 1:1</div>
-            </a-form-item>
-
             <div v-for="(mission, index) in formState.missions" class="flex items-center">
                 <div class="basis-full">
                     <!-- <a-form-item :label="['Tiêu đề nhiệm vụ ', index + 1]" :name="['missions', index, 'title']"
                         :rules="[{ required: true }]">
                         <a-input v-model:value="mission.title" placeholder="Tiêu đề nhiệm vụ" />
                     </a-form-item> -->
-                    <a-form-item :label="['Nội dung nhiệm vụ ', index + 1]" :name="['missions', index, 'content']"
+                    <a-form-item :label="['Tiêu đề mục tiêu ', index + 1]" :name="['missions', index, 'title']"
                                  :rules="[{ required: true }]">
                         <div class="w-full">
-                            <quill-editor v-model:content="mission.content" :modules="ModulesEditor"
-                                          :toolbar="toolbarIntroduction"
-                                          class="min-h-[300px] max-h-[700px] overflow-x-scroll"
-                                          content-type="html">
-                            </quill-editor>
+                            <a-textarea v-model:value="mission.title" rows="3"/>
+                        </div>
+                    </a-form-item>
+                    <a-form-item :label="['Nội dung mục tiêu ', index + 1]" :name="['missions', index, 'content']"
+                                 :rules="[{ required: true }]">
+                        <div class="w-full">
+                            <a-textarea v-model:value="mission.content" rows="3"/>
                         </div>
                     </a-form-item>
                     <!-- <a-form-item :label="['Icon ', index + 1]"
@@ -334,10 +336,10 @@ const handleSubmit = () => {
                         </a-dropdown-button>
                     </a-form-item> -->
                 </div>
-                <a-button :disabled="formState.missions.length === 1" class="flex items-center justify-center" danger
+                <!-- <a-button :disabled="formState.missions.length === 1" class="flex items-center justify-center" danger
                           shape="circle" type="text" @click="removeMission(mission)">
                     <minus-circle-outlined/>
-                </a-button>
+                </a-button> -->
             </div>
             <a-button v-if="formState.missions.length < 4" class="flex items-center" type="dashed" @click="addMission">
                 <plus-outlined/>
@@ -347,20 +349,13 @@ const handleSubmit = () => {
             <DividerWithTitle label="Phần công cụ đánh giá"/>
             <a-form-item label="Mô tả công cụ đánh giá" name="descriptionEvaluate" class="basis-full"
                          :rules="[{ required: true }]">
-                <quill-editor ref="descriptionEvaluate" v-model:content="formState.descriptionEvaluate"
-                              :modules="ModulesEditor" :toolbar="toolbarIntroduction"
-                              class="min-h-[300px] max-h-[700px] overflow-x-scroll" content-type="html">
-                </quill-editor>
+                         <a-textarea v-model:value="formState.descriptionEvaluate" rows="3"/>
             </a-form-item>
             <div v-for="(slide, index) in formState.evaluateSlides" class="flex items-center">
                 <div class="basis-full">
                     <a-form-item :label="['Tiêu đề ', index + 1]" :name="['evaluateSlides', index, 'title']"
                                  :rules="[{ required: true }]">
-                        <quill-editor ref="title" v-model:content="slide.title" :modules="ModulesEditor"
-                                      :toolbar="toolbarIntroduction"
-                                      class="min-h-[300px] max-h-[700px] overflow-x-scroll"
-                                      content-type="html">
-                        </quill-editor>
+                                 <a-textarea v-model:value="slide.title" rows="3"/>
                     </a-form-item>
                     <a-form-item :label="['Đường dẫn ', index + 1]" :name="['evaluateSlides', index, 'target']"
                                  :rules="[{ required: true }]">
@@ -389,10 +384,52 @@ const handleSubmit = () => {
                 Thêm slide
             </a-button>
 
-            <div class="flex justify-end gap-2 mt-5">
-                <a-button @click.prevent="handlePreview">
-                    Xem trước kết quả
+            <DividerWithTitle label="Phần giới thiệu"/>
+            <a-form-item :rules="[{ required: true }]" label="Nội dung" name="introduction">
+                <div class="w-full">
+                    <a-textarea v-model:value="formState.introduction.description" rows="5"/>
+                </div>
+            </a-form-item>
+            <a-form-item :rules="[{ required: true }]" label="Đường dẫn video" name="introduction">
+                <div class="w-full">
+                    <a-textarea v-model:value="formState.introduction.videoURL" rows="1"/>
+                </div>
+            </a-form-item>
+
+            <DividerWithTitle label="Phần câu chuyện về kinh doanh bền vững"/>
+            <div v-for="(story, index) in formState.stories" class="flex items-center">
+                <div class="basis-full">
+                    <a-form-item :label="['Tóm tắt nội dung ', index + 1]" :name="['stories', index, 'description']"
+                                 :rules="[{ required: true }]">
+                        <a-input v-model:value="story.description" placeholder="Tóm tắt nội dung"/>
+                    </a-form-item>
+                    <a-form-item :label="['Hình ảnh ', index + 1]" :name="['stories', index, 'image']"
+                                 :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
+                        <a-upload v-model:file-list="story.image" :custom-request="uploadFile" :data="{ index: index, type: 'story' }"
+                                  :max-count="1" accept=".png, .jpg, .jpeg" list-type="picture-card">
+                            <div v-if="story.image.length < 2">
+                                <plus-outlined/>
+                                <div>Upload</div>
+                            </div>
+                        </a-upload>
+                    </a-form-item>
+                </div>
+                <a-button :disabled="formState.stories.length === 1" class="flex items-center justify-center"
+                          danger
+                          shape="circle" type="text" @click="removeStory(story)">
+                    <minus-circle-outlined/>
                 </a-button>
+            </div>
+            <a-button class="flex items-center" type="dashed"
+                      @click="addStory(formState.stories.length)">
+                <plus-outlined/>
+                Thêm nội dung
+            </a-button>
+
+            <div class="flex justify-end gap-2 mt-5">
+                <!-- <a-button @click.prevent="handlePreview">
+                    Xem trước kết quả
+                </a-button> -->
                 <a-button :loading="otherState.loading" class="bg-[#1677ff]" html-type="submit" type="primary">
                     Lưu cài đặt
                 </a-button>
