@@ -330,33 +330,33 @@ const handleSubmit = () => {
                 <plus-outlined/>
                 Thêm nội dung
             </a-button>
-            <DividerWithTitle label="Phần câu chuyện về kinh doanh bền vững"/>
-            <div v-for="(story, index) in formState.stories" class="flex items-center">
-                <div class="basis-full">
-                    <a-form-item :label="['Tóm tắt nội dung ', index + 1]" :name="['stories', index, 'description']">
-                        <a-input v-model:value="story.description" placeholder="Tóm tắt nội dung"/>
-                    </a-form-item>
-                    <a-form-item :label="['Hình ảnh ', index + 1]" :name="['stories', index, 'image']">
-                        <a-upload v-model:file-list="story.image" :custom-request="uploadFile" :data="{ index: index, type: 'Story' }"
-                                  :max-count="1" accept=".png, .jpg, .jpeg" list-type="picture-card">
-                            <div v-if="story.image.length < 2">
-                                <plus-outlined/>
-                                <div>Upload</div>
-                            </div>
-                        </a-upload>
-                    </a-form-item>
-                </div>
-                <a-button :disabled="formState.stories.length === 1" class="flex items-center justify-center"
-                          danger
-                          shape="circle" type="text" @click="removeStory(story)">
-                    <minus-circle-outlined/>
-                </a-button>
-            </div>
-            <a-button class="flex items-center" type="dashed"
-                      @click="addStory(formState.stories.length)">
-                <plus-outlined/>
-                Thêm nội dung
-            </a-button>
+<!--            <DividerWithTitle label="Phần câu chuyện về kinh doanh bền vững"/>-->
+<!--            <div v-for="(story, index) in formState.stories" class="flex items-center">-->
+<!--                <div class="basis-full">-->
+<!--                    <a-form-item :label="['Tóm tắt nội dung ', index + 1]" :name="['stories', index, 'description']">-->
+<!--                        <a-input v-model:value="story.description" placeholder="Tóm tắt nội dung"/>-->
+<!--                    </a-form-item>-->
+<!--                    <a-form-item :label="['Hình ảnh ', index + 1]" :name="['stories', index, 'image']">-->
+<!--                        <a-upload v-model:file-list="story.image" :custom-request="uploadFile" :data="{ index: index, type: 'Story' }"-->
+<!--                                  :max-count="1" accept=".png, .jpg, .jpeg" list-type="picture-card">-->
+<!--                            <div v-if="story.image.length < 2">-->
+<!--                                <plus-outlined/>-->
+<!--                                <div>Upload</div>-->
+<!--                            </div>-->
+<!--                        </a-upload>-->
+<!--                    </a-form-item>-->
+<!--                </div>-->
+<!--                <a-button :disabled="formState.stories.length === 1" class="flex items-center justify-center"-->
+<!--                          danger-->
+<!--                          shape="circle" type="text" @click="removeStory(story)">-->
+<!--                    <minus-circle-outlined/>-->
+<!--                </a-button>-->
+<!--            </div>-->
+<!--            <a-button class="flex items-center" type="dashed"-->
+<!--                      @click="addStory(formState.stories.length)">-->
+<!--                <plus-outlined/>-->
+<!--                Thêm nội dung-->
+<!--            </a-button>-->
             <div class="flex justify-end gap-2 mt-5">
                 <!-- <a-button @click.prevent="handlePreview">
                     Xem trước kết quả
