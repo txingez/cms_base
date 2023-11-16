@@ -1,62 +1,63 @@
 export const FirstCriteria = {
     FC1: {
-        question: 'Chiến lược kinh doanh của doanh nghiệp có đề cập đến áp dụng Kinh tế tuần hoàn (KTTH) không?',
+        question: 'Chiến lược kinh doanh của doanh nghiệp có đề cập đến áp dụng KTTH không?',
         answers: {
             A: {answer: 'Chưa đề cập', point: 0},
             B: {
-                answer: 'Chiến lược kinh doanh đã có đề cập đến một số khái niệm liên quan (Ví dụ: tuần hoàn vật liệu, hiệu quả tài nguyên…)',
+                answer: 'Có – chỉ đề cập một số khái niệm liên quan (ví dụ: tuần hoàn nhiên liệu, tái sử dụng sản phẩm thải bỏ, tái chế rác thải, dùng nguyên liệu tái sinh, có cam kết mức độ cải thiện sử dụng hiệu quả tài nguyên trong kinh doanh…)',
                 point: 2
             },
-            C: {answer: 'Chiến lược kinh doanh đã có đề cập cụ thể đến KTTH bằng văn bản cụ thể', point: 4}
+            C: {answer: 'Có - đề cập rõ ràng về việc áp dụng KTTH và được công bố (website, báo cáo thường niên…)', point: 4}
         }
     },
     FC2: {
-        question: 'Doanh nghiệp đã có đề ra các mục tiêu cụ thể về KTTH trong hoạt động sản xuất, kinh doanh không?',
+        question: 'Doanh nghiệp có đề ra các mục tiêu cụ thể về KTTH trong hoạt động sản xuất, kinh doanh không?',
         answers: {
             A: {answer: 'Chưa có', point: 0},
-            B: {answer: 'Đang tìm hiểu, nghiên cứu để xây dựng các mục tiêu về KTTH', point: 1},
-            C: {answer: 'Đã có đề ra các mục tiêu chung nhưng chưa phải là mục tiêu định lượng', point: 2},
-            D: {answer: 'Có đề ra các mục tiêu KTTH mang tính định lượng', point: 3}
+            B: {answer: 'Đang tìm hiểu, nghiên cứu để xây dựng', point: 1},
+            C: {answer: 'Có - mang tính mục tiêu chung, mang tính định tính', point: 2},
+            D: {answer: 'Có - mục tiêu cụ thể, có tính định lượng', point: 3}
         }
     },
     FC3: {
-        question: 'Doanh nghiệp đã có kế hoạch thực hiện KTTH chưa?',
+        question: 'Doanh nghiệp có kế hoạch thực hiện KTTH không?',
         answers: {
-            A: {answer: 'Chưa có', point: 0},
+            A: {answer: 'Không', point: 0},
             B: {answer: 'Đang xây dựng', point: 2},
-            C: {answer: 'Đã có', point: 4}
+            C: {answer: 'Có', point: 4}
         }
     },
     FC4: {
-        question: 'Doanh nghiệp có từng bị xử lý vì vi phạm các quy định pháp luật trong lĩnh vực môi trường trong 2 năm gần đây không?',
+        question: 'Trong vòng 2 năm gần đây, doanh nghiệp có từng bị xử lý hành chính do vi phạm quy định pháp luật trong lĩnh vực môi trường không?',
         answers: {
             A: {answer: 'Có', point: 0},
             B: {answer: 'Không', point: 4}
         }
     },
     FC5: {
-        question: 'Doanh nghiệp có thực hiện đánh giá vòng đời sản phẩm (LCA) để đánh giá tác động môi trường tổng thể không?',
+        question: 'Doanh nghiệp có thực hiện đánh giá vòng đời sản phẩm (LCA) theo ISO 14040 và ISO 14044 để đánh giá tác động môi trường tổng thể không?',
         answers: {
-            A: {answer: 'Có', point: 2},
-            B: {answer: 'Không', point: 0}
+            A: {answer: 'Không', point: 0},
+            B: {answer: 'Có', point: 2}
         }
     },
     FC6: {
-        question: 'Doanh nghiệp đã cử nhân viên tham gia/đăng ký các chương trình đào tạo, khoá học về KTTH không',
+        question: 'Doanh nghiệp có cử nhân viên tham gia các chương trình đào tạo, khoá học có liên quan về KTTH không?',
         answers: {
-            A: {answer: 'Đã tham gia đầy đủ trong khả năng có thể (ít nhất >5 khoá/năm)', point: 2},
+            A: {answer: 'Chưa cử nhân viên tham gia khoá học nào', point: 0},
             B: {
-                answer: 'Đang có kế hoạch tham gia hoặc mới tham gia một vài khoá học nhưng rất hạn chế về thông tin (<5 khoá/năm)',
+                answer: 'Đang có kế hoạch hoặc cử nhân viên tham gia một vài khoá học (<5 khoá/năm)',
                 point: 1
             },
-            C: {answer: 'Chưa từng cử nhân viên tham gia/đăng ký khoá học nào', point: 0}
+            C: {answer: 'Đã cử nhân viên tham gia (từ 5 khoá/năm trở lên)', point: 2}
         }
     },
     FC7: {
-        question: 'Doanh nghiệp có cán bộ chuyên trách về môi trường (tốt nghiệp bậc Cử nhân trở lên chuyên ngành môi trường) không?',
+        // (cho dấu ? vào câu này và hiện ra như sau: “Cán bộ chuyên trách phải ít nhất tốt nghiệp bậc cử nhân trở lên chuyên ngành môi trường”)
+        question: 'Doanh nghiệp có cán bộ chuyên trách về môi trường không?',
         answers: {
-            A: {answer: 'Có', point: 1},
-            B: {answer: 'Không', point: 0}
+            A: {answer: 'Không', point: 0},
+            B: {answer: 'Có', point: 1}
         }
     }
 }
