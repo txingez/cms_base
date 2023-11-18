@@ -95,8 +95,8 @@ export const ThirdCriteria = {
     TC12: {
         question: 'Sản phẩm và bao bì sản phẩm có chứa vi nhựa hoặc nhựa không tự phân hủy không?',
         answers: {
-            A: {answer: 'Không', point: 0},
-            B: {answer: 'Có', point: 2}
+            A: {answer: 'Có', point: 0},
+            B: {answer: 'Không', point: 2}
         }
     },
     TC13: {
