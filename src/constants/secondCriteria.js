@@ -153,7 +153,7 @@ export const SecondCriteria = {
         }
     },
     SC19: {
-        question: 'Trong năm ngay trước năm đánh giá, doanh nghiệp đã sử dụng bao nhiêu % năng lượng từ năng lượng tái trong sản xuất ra sản phẩm/dịch vụ?',
+        question: 'Trong năm ngay trước năm đánh giá, doanh nghiệp đã sử dụng bao nhiêu % năng lượng là năng lượng tái tạo cho hoạt động sản xuất',
         answers: {
             A: {answer: 'Dưới 25%', point: 0},
             B: {answer: '25% - dưới 50%', point: 1},

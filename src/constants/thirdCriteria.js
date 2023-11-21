@@ -77,7 +77,7 @@ export const ThirdCriteria = {
         }
     },
     TC10: {
-        question: 'Trong năm ngay trước năm đánh giá, doanh nghiệp thu hồi bao nhiêu % sản phẩm và bao bì (để tái chế, tái sử dụng, sửa chữa, tái sản xuất, bán lại để tái chế, trực tiếp xử lý bằng biện pháp sinh học như hẩm ủ khí sinh học hoặc làm phân bón vi sinh compost...)?',
+        question: 'Trong năm ngay trước năm đánh giá, doanh nghiệp thu hồi bao nhiêu % sản phẩm và bao bì (để tái chế, tái sử dụng, sửa chữa, tái sản xuất, bán lại để tái chế, trực tiếp xử lý bằng biện pháp sinh học như hầm ủ khí sinh học hoặc làm phân bón vi sinh compost...)?',
         answers: {
             A: {answer: 'Dưới 10%', point: 0},
             B: {answer: '10% - dưới 30%', point: 1},
