@@ -54,7 +54,7 @@ const getTableData = async (options) => {
     const {targetPage, pageSize} = options;
     const body = {
         limit: pageSize,
-        offset: targetPage - 1
+        offset: (targetPage - 1) * pageSize
     }
 
     getFormData(body)

@@ -53,7 +53,7 @@ const handleTableChange = page => {
 const getTableData = options => {
     const { targetPage, pageSize } = options;
 
-    getAll(pageSize, targetPage - 1)
+    getAll(pageSize, (targetPage - 1) * pageSize)
         .then(response => {
             const responseData = handleResponse(response.status, response.data);
             return responseData.data.results.length > 0

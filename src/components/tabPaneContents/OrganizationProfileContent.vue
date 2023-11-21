@@ -22,20 +22,20 @@ defineProps({
                     <div class="font-bold">{{ organizationProfile.fullNameManager }}</div>
                 </div>
             </a-col>
-            <a-col :md="12" :xs="24">
-                <div class="flex gap-2">
-                    <div>Giới tính:</div>
-                    <div class="font-bold">{{ organizationProfile.sexManager }}</div>
-                </div>
-            </a-col>
+<!--            <a-col :md="12" :xs="24">-->
+<!--                <div class="flex gap-2">-->
+<!--                    <div>Giới tính:</div>-->
+<!--                    <div class="font-bold">{{ organizationProfile.sexManager }}</div>-->
+<!--                </div>-->
+<!--            </a-col>-->
         </a-row>
         <a-row :gutter="[10, 10]">
-            <a-col :md="12" :xs="24">
-                <div class="flex gap-2">
-                    <div>Dân tộc:</div>
-                    <div class="font-bold">{{ organizationProfile.nationManager }}</div>
-                </div>
-            </a-col>
+<!--            <a-col :md="12" :xs="24">-->
+<!--                <div class="flex gap-2">-->
+<!--                    <div>Dân tộc:</div>-->
+<!--                    <div class="font-bold">{{ organizationProfile.nationManager }}</div>-->
+<!--                </div>-->
+<!--            </a-col>-->
             <a-col :md="12" :xs="24">
                 <div class="flex gap-2">
                     <div>Vị trí công tác:</div>
@@ -66,26 +66,26 @@ defineProps({
                     <div class="font-bold">{{ organizationProfile.fullName }}</div>
                 </div>
             </a-col>
-            <a-col :md="12" :xs="24">
-                <div class="flex gap-2">
-                    <div>Ngày thực hiện đánh giá:</div>
-                    <div class="font-bold">{{ organizationProfile.evaluatedDate }}</div>
-                </div>
-            </a-col>
+<!--            <a-col :md="12" :xs="24">-->
+<!--                <div class="flex gap-2">-->
+<!--                    <div>Ngày thực hiện đánh giá:</div>-->
+<!--                    <div class="font-bold">{{ organizationProfile.evaluatedDate }}</div>-->
+<!--                </div>-->
+<!--            </a-col>-->
         </a-row>
         <a-row :gutter="[10, 10]">
             <a-col :md="12" :xs="24">
                 <div class="flex gap-2">
-                    <div>Vị trí công tác:</div>
+                    <div>Vị trí và bộ phận công tác:</div>
                     <div class="font-bold">{{ organizationProfile.workPlace }}</div>
                 </div>
             </a-col>
-            <a-col :md="12" :xs="24">
-                <div class="flex gap-2">
-                    <div>Đơn vị công tác:</div>
-                    <div class="font-bold">{{ organizationProfile.workUnit }}</div>
-                </div>
-            </a-col>
+<!--            <a-col :md="12" :xs="24">-->
+<!--                <div class="flex gap-2">-->
+<!--                    <div>Đơn vị công tác:</div>-->
+<!--                    <div class="font-bold">{{ organizationProfile.workUnit }}</div>-->
+<!--                </div>-->
+<!--            </a-col>-->
         </a-row>
         <a-row :gutter="[10, 10]">
             <a-col :md="12" :xs="24">
