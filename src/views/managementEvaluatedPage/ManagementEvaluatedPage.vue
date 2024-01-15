@@ -20,6 +20,7 @@ import { ModalConfirm } from "../../components/ModalConfirm";
 import { Buffer } from "buffer";
 import { ENUM } from "../../constants/enum";
 import PreviewEvaluatedPage from "../../components/PreviewEvaluatedPage.vue";
+import { handleGoogleImageLink } from "../../utils/handleGoogleImageLink";
 
 const previewerStore = previewer()
 
@@ -64,7 +65,7 @@ const uploadFile = (options) => {
                 name: file.name,
                 status: 'done',
                 response: responseData,
-                url: responseData.data.file_url
+                url: handleGoogleImageLink(responseData.data.file_url)
             }
 
             switch (data.form) {
@@ -102,10 +103,14 @@ const getContent = () => {
             const decodeContent = JSON.parse(Buffer.from(responseData.data.content.split('.')[1], 'base64').toString());
             formState.introduction = decodeContent.data.introduction
             formState.esg.title = decodeContent.data.esg.title
-            formState.esg.image = decodeContent.data.esg.image
+            formState.esg.image = decodeContent.data.esg.image.map(i => {
+              return {...i, ...{url: handleGoogleImageLink(i.url)}}
+            })
             formState.esg.document = decodeContent.data.esg.document
             formState.nec.title = decodeContent.data.nec.title
-            formState.nec.image = decodeContent.data.nec.image
+            formState.nec.image = decodeContent.data.nec.image.map(i => {
+              return {...i, ...{url: handleGoogleImageLink(i.url)}}
+            })
             formState.nec.document = decodeContent.data.nec.document
         })
         .catch((err) => {

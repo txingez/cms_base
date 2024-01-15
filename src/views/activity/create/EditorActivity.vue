@@ -195,6 +195,7 @@ import TitlePage from "../../../components/TitlePage.vue";
 import {createPost, deletePost, getById, saveForm, updatePost} from "../../../services/activity";
 import PreviewModal from "../../../components/PreviewModal.vue";
 import {open} from "../../../utils/previewerUtils";
+import { handleGoogleImageLink } from "../../../utils/handleGoogleImageLink";
 
 const router = useRouter();
 const quill = ref(null);
@@ -341,12 +342,14 @@ const getDetail = (activityId) => {
                 formData.category = responseData.category;
                 formData.image = responseData.image ? [{
                     name: responseData.image,
-                    url: responseData.image,
+                    url: handleGoogleImageLink(responseData.image),
                     status: 'done'
                 }] : [];
                 formData.releaseDate = responseData.release_date;
                 formData.contentType = responseData.content_type;
                 formData.source = responseData.source
+              console.log(responseData.content_type)
+              console.log(responseData.content)
                 formData.content = responseData.content_type === 'HTML' ? responseData.content : '';
                 formData.link = responseData.content_type === 'LINK' ? responseData.content : '';
                 formData.errorImage = '';
@@ -502,7 +505,7 @@ const uploadFile = (options) => {
                     file: file,
                     status: 'done',
                     response: responseData,
-                    url: responseData.data.file_url
+                    url: handleGoogleImageLink(responseData.data.file_url)
                 }];
             } else {
                 const error = new Error('Uploaded Failed');

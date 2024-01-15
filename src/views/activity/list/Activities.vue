@@ -104,7 +104,7 @@
                     <span>{{ handleCategory(record.category) }}</span>
                 </template>
                 <template v-else-if="column.key === 'image'">
-                    <a-image :height="100" :src="record.image" :width="150" alt="image"/>
+                    <a-image :height="100" :src="handleGoogleImageLink(record.image)" :width="150" alt="image"/>
                 </template>
                 <template v-else-if="column.key === 'action'">
                     <span @click="showActivityNews(record.id)">
@@ -143,6 +143,7 @@ import axios from "axios";
 import {showToast} from "../../../utils/showToast";
 import {deletePost, getAll} from "../../../services/activity";
 import TitlePage from "../../../components/TitlePage.vue";
+import { handleGoogleImageLink } from "../../../utils/handleGoogleImageLink";
 
 const columns = [
     {title: 'Tiêu đề', dataIndex: 'title', key: 'title', fixed: 'left', width: 300, ellipsis: true},

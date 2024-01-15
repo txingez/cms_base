@@ -19,6 +19,7 @@ import { showToast } from "../../utils/showToast";
 import { ModalConfirm } from "../../components/ModalConfirm";
 import { Buffer } from "buffer";
 import { ENUM } from "../../constants/enum";
+import { handleGoogleImageLink } from "../../utils/handleGoogleImageLink";
 
 const previewerStore = previewer()
 
@@ -90,7 +91,7 @@ const uploadFile = (options) => {
                 name: file.name,
                 status: 'done',
                 response: responseData,
-                url: responseData.data.file_url
+                url: handleGoogleImageLink(responseData.data.file_url)
             }
 
             switch (data.type) {
@@ -123,7 +124,10 @@ const getContent = () => {
             console.log(JSON.stringify(response))
             const responseData = handleResponse(response.status, response.data);
             const decodeContent = JSON.parse(Buffer.from(responseData.data.content.split('.')[1], 'base64').toString());
-            formState.banner = decodeContent.data.banner
+          console.log(decodeContent.data.banner)
+            formState.banner = decodeContent.data.banner.map(b => {
+              return {...b, ...{url: handleGoogleImageLink(b.url)}}
+            })
             formState.introduction = decodeContent.data.introduction
             formState.benifit = decodeContent.data.benifit
             formState.condition = decodeContent.data.condition
