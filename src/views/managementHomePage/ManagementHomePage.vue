@@ -5,7 +5,7 @@ import TitlePage from "../../components/TitlePage.vue";
 import { reactive } from "@vue/reactivity";
 import DividerWithTitle from "../../components/DividerWithTitle.vue";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import { onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons-vue";
 import { uploadImage } from "../../services/uploadFile";
 import { handleResponse } from "../../services/commonService";
@@ -16,11 +16,14 @@ import { showToast } from "../../utils/showToast";
 import { ModalConfirm } from "../../components/ModalConfirm";
 import { Buffer } from "buffer";
 import { handleGoogleImageLink } from "../../utils/handleGoogleImageLink";
+import { QuillEditor } from "@vueup/vue-quill";
+import { ModulesEditor } from "../../constants/modulesEditor";
+import { ToolbarEditor } from "../../constants/toolbarEditor";
 
 const previewerStore = previewer()
 
-// const introduction = ref(null);
-// const toolbarIntroduction = computed(() => ToolbarEditor(introduction))
+const esgHomeQuill = ref(null);
+const toolbarESGHome = computed(() => ToolbarEditor(esgHomeQuill))
 
 const ICONS_MISSION = [
   'https://lh3.googleusercontent.com/pw/AIL4fc92P1hsYz1B1HrZGloCO4Vl-uylzW_NojqXDFFHdCoPdITZZh2zy7_IU4iedZGBDwxdP4fl29usb1aFqNoH1yXJUEHAOMNUs0If04ZC6cvsytd95KhHvsldVctuREiljFeOJ-jIPCOPUOSkcnzvt9GN=w249-h256-s-no?authuser=0',
@@ -418,7 +421,13 @@ const placeMissionByIndex = (index) => {
       <DividerWithTitle label="Phần giới thiệu"/>
       <a-form-item :rules="[{ required: true }]" label="Nội dung" name="introduction">
         <div class="w-full">
-          <a-textarea v-model:value="formState.introduction.description" rows="5"/>
+          <quill-editor ref="esgHomeQuill"
+                        v-model:content="formState.introduction.description"
+                        :modules="ModulesEditor"
+                        :toolbar="toolbarESGHome"
+                        class="min-h-[300px] max-h-[700px] overflow-x-scroll"
+                        content-type="html"/>
+          <!--          <quill-editor v-model:value="formState.introduction.description" rows="5"/>-->
         </div>
       </a-form-item>
       <a-form-item :rules="[{ required: true }]" label="Đường dẫn video" name="introduction">
