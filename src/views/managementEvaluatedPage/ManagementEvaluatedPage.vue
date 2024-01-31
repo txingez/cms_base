@@ -172,8 +172,19 @@ const handleSubmit = () => {
                     </quill-editor>
                 </div>
             </a-form-item>
+            <a-form-item :rules="[{ required: true }]" label="Nội dung phần giới thiệu tiếng Anh" name="introduction">
+                <div class="w-full">
+                    <quill-editor ref="introduction" v-model:content="formState.introduction" :modules="ModulesEditor"
+                                  :toolbar="toolbarIntroduction" class="min-h-[300px] max-h-[700px] overflow-x-scroll"
+                                  content-type="html">
+                    </quill-editor>
+                </div>
+            </a-form-item>
             <DividerWithTitle label="Chỉnh sửa công cụ ESG" />
             <a-form-item label="Tiêu đề" :name="['esg', 'title']" required>
+                <a-input v-model:value="formState.esg.title" placeholder="Tiêu đề" />
+            </a-form-item>
+            <a-form-item label="Tiêu đề tiếng Anh" :name="['esg', 'title']" required>
                 <a-input v-model:value="formState.esg.title" placeholder="Tiêu đề" />
             </a-form-item>
             <a-row>
@@ -206,6 +217,9 @@ const handleSubmit = () => {
 
             <DividerWithTitle label="Chỉnh sửa công cụ NEC" />
             <a-form-item label="Tiêu đề" :name="['nec', 'title']" required>
+                <a-input v-model:value="formState.nec.title" placeholder="Tiêu đề" />
+            </a-form-item>
+            <a-form-item label="Tiêu đề tiếng Anh" :name="['nec', 'title']" required>
                 <a-input v-model:value="formState.nec.title" placeholder="Tiêu đề" />
             </a-form-item>
             <a-row>

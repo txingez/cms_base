@@ -246,11 +246,24 @@ const handleSubmit = () => {
                     <a-textarea v-model:value="formState.introduction.title" rows="2"/>
                 </div>
             </a-form-item>
+            <a-form-item :rules="[{ required: true }]" label="Tiêu đề tiếng Anh" name="introduction">
+                <div class="w-full">
+                    <a-textarea v-model:value="formState.introduction.title" rows="2"/>
+                </div>
+            </a-form-item>
             <a-form-item :rules="[{ required: true }]" label="Nội dung" name="introduction">
                 <div class="w-full">
                     <quill-editor ref="introduction" v-model:content="formState.introduction.content" :modules="ModulesEditor"
                         :toolbar="toolbarIntroduction" class="min-h-[300px] max-h-[700px] overflow-x-scroll"
                         content-type="html">
+                    </quill-editor>
+                </div>
+            </a-form-item>
+            <a-form-item :rules="[{ required: true }]" label="Nội dung tiếng Anh" name="introduction">
+                <div class="w-full">
+                    <quill-editor ref="introduction" v-model:content="formState.introduction.content" :modules="ModulesEditor"
+                                  :toolbar="toolbarIntroduction" class="min-h-[300px] max-h-[700px] overflow-x-scroll"
+                                  content-type="html">
                     </quill-editor>
                 </div>
             </a-form-item>
@@ -260,12 +273,23 @@ const handleSubmit = () => {
                     <a-textarea v-model:value="formState.benifit.headTitle" rows="2"/>
                 </div>
             </a-form-item>
+            <a-form-item :rules="[{ required: true }]" label="Tiêu đề tiếng Anh" name="introduction">
+                <div class="w-full">
+                    <a-textarea v-model:value="formState.benifit.headTitle" rows="2"/>
+                </div>
+            </a-form-item>
             <div v-for="(content, index) in formState.benifit.contents" class="flex items-center">
                 <div class="basis-full">
                     <a-form-item :label="['Đầu mục ', index + 1]" :name="['contents', index, 'title']">
                         <a-input v-model:value="content.title" placeholder="Tạo đầu mục"/>
                     </a-form-item>
+                    <a-form-item :label="['Đầu mục tiếng Anh ', index + 1]" :name="['contents', index, 'title']">
+                        <a-input v-model:value="content.title" placeholder="Tạo đầu mục"/>
+                    </a-form-item>
                     <a-form-item :label="['Nội dung ', index + 1]" :name="['contents', index, 'description']">
+                        <a-textarea v-model:value="content.description" rows="4"/>
+                    </a-form-item>
+                    <a-form-item :label="['Nội dung tiếng Anh ', index + 1]" :name="['contents', index, 'description']">
                         <a-textarea v-model:value="content.description" rows="4"/>
                     </a-form-item>
                 </div>
@@ -286,6 +310,11 @@ const handleSubmit = () => {
                     <a-textarea v-model:value="formState.condition.title" rows="2"/>
                 </div>
             </a-form-item>
+            <a-form-item :rules="[{ required: true }]" label="Tiêu đề tiếng Anh" name="condition">
+                <div class="w-full">
+                    <a-textarea v-model:value="formState.condition.title" rows="2"/>
+                </div>
+            </a-form-item>
             <a-form-item :rules="[{ required: true }]" label="Nội dung" name="condition">
                 <div class="w-full">
                     <quill-editor ref="introduction" v-model:content="formState.condition.content" :modules="ModulesEditor"
@@ -294,8 +323,21 @@ const handleSubmit = () => {
                     </quill-editor>
                 </div>
             </a-form-item>
+            <a-form-item :rules="[{ required: true }]" label="Nội dung tiếng Anh" name="condition">
+                <div class="w-full">
+                    <quill-editor ref="introduction" v-model:content="formState.condition.content" :modules="ModulesEditor"
+                                  :toolbar="toolbarIntroduction" class="min-h-[300px] max-h-[700px] overflow-x-scroll"
+                                  content-type="html">
+                    </quill-editor>
+                </div>
+            </a-form-item>
             <DividerWithTitle label="Phần lộ trình"/>
             <a-form-item :rules="[{ required: true }]" label="Tiêu đề" name="condition">
+                <div class="w-full">
+                    <a-textarea v-model:value="formState.timeline.headTitle" rows="2"/>
+                </div>
+            </a-form-item>
+            <a-form-item :rules="[{ required: true }]" label="Tiêu đề tiếng Anh" name="condition">
                 <div class="w-full">
                     <a-textarea v-model:value="formState.timeline.headTitle" rows="2"/>
                 </div>
@@ -308,7 +350,13 @@ const handleSubmit = () => {
                     <a-form-item :label="['Tiêu đề tiêu đề sự kiện ', index + 1]" :name="['contents', index, 'title']">
                         <a-textarea v-model:value="content.title" rows="4"/>
                     </a-form-item>
+                    <a-form-item :label="['Tiêu đề tiêu đề sự kiện tiếng Anh ', index + 1]" :name="['contents', index, 'title']">
+                        <a-textarea v-model:value="content.title" rows="4"/>
+                    </a-form-item>
                     <a-form-item :label="['Mô tả nội dung sự kiện ', index + 1]" :name="['contents', index, 'description']">
+                        <a-textarea v-model:value="content.description" rows="6"/>
+                    </a-form-item>
+                    <a-form-item :label="['Mô tả nội dung sự kiện tiếng Anh ', index + 1]" :name="['contents', index, 'description']">
                         <a-textarea v-model:value="content.description" rows="6"/>
                     </a-form-item>
                     <a-form-item :label="['Hình ảnh sự kiện ', index + 1]" :name="['contents', index, 'image']"

@@ -107,6 +107,18 @@ const handleSubmit = () => {
                                   content-type="html"/>
                 </div>
             </a-form-item>
+            <a-form-item :rules="[{required: true, message: 'Nội dung không được để trống'}]"
+                         label="Nội dung tiếng Anh"
+                         name="contentAbout">
+                <div class="w-full">
+                    <quill-editor ref="quillAbout"
+                                  v-model:content="formState.contentAbout"
+                                  :modules="ModulesEditor"
+                                  :toolbar="toolbarAbout"
+                                  class="min-h-[300px] max-h-[700px] overflow-x-scroll"
+                                  content-type="html"/>
+                </div>
+            </a-form-item>
             <div class="text-right space-x-2">
                 <a-button @click.prevent="open(formState.contentAbout, 'HTML')">
                     Xem trước kết quả
