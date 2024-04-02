@@ -27,7 +27,7 @@
                        name="titleEn">
             <a-input v-model:value="formData.titleEn"
                      :maxlength="255"
-                     placeholder="Tiêu đề"/>
+                     placeholder="Tiêu đề Tiếng Anh"/>
           </a-form-item>
         </a-col>
         <a-col :md="12" :xs="24">
@@ -51,7 +51,7 @@
                            valueFormat="YYYY-MM-DD"/>
           </a-form-item>
         </a-col>
-        <a-col :md="6" :xs="24">
+        <a-col :md="6" :xs="24" v-if="formData.hotNews">
           <a-form-item label="Độ ưu tiên" name="priority">
             <a-input-number :min="0" v-model:value="formData.priority" placeholder="Nhập độ ưu tiên" class="w-full"/>
           </a-form-item>
@@ -265,15 +265,15 @@ const routes = [
 
 const formData = reactive({
   id: 0,
-  titleVi: '',
+  title: '',
   titleEn: '',
   status: '',
   category: null,
   hotNews: false,
-  descriptionVi: '',
+  description: '',
   descriptionEn: '',
   image: [],
-  contentVi: '',
+  content: '',
   contentEn: '',
   link: '',
   errorImage: '',
@@ -342,6 +342,7 @@ watch(router.currentRoute, (route) => {
           if (responseData) {
             formData.id = responseData.id;
             formData.title = responseData.title;
+            formData.titleEn = responseData.titleEn;
             formData.status = responseData.status;
             formData.category = responseData.category;
             formData.image = responseData.image ? [{
@@ -353,10 +354,13 @@ watch(router.currentRoute, (route) => {
             formData.contentType = responseData.content_type;
             formData.source = responseData.source
             formData.content = responseData.content_type === contentTypeEnum.HTML ? responseData.content : '';
+            formData.contentEn = responseData.content_type === contentTypeEnum.HTML ? responseData.contentEn : '';
             formData.link = responseData.content_type === contentTypeEnum.LINK ? responseData.content : '';
             formData.errorImage = '';
-            formData.hotNews = responseData.hot_news ? responseData.hot_news : false;
+            formData.hotNews = responseData.hot_news !== '';
             formData.description = responseData.description
+            formData.descriptionEn = responseData.descriptionEn
+            formData.priority = responseData.hot_news !== '' ? responseData.hot_news : 0
           }
         });
   }
@@ -380,6 +384,7 @@ const getDetail = (activityId) => {
         if (responseData) {
           formData.id = responseData.id;
           formData.title = responseData.title;
+          formData.titleEn = responseData.titleEn;
           formData.status = responseData.status;
           formData.category = responseData.category;
           formData.image = responseData.image ? [{
@@ -391,10 +396,13 @@ const getDetail = (activityId) => {
           formData.contentType = responseData.content_type;
           formData.source = responseData.source
           formData.content = responseData.content_type === 'HTML' ? responseData.content : '';
+          formData.contentEn = responseData.content_type === contentTypeEnum.HTML ? responseData.contentEn : '';
           formData.link = responseData.content_type === 'LINK' ? responseData.content : '';
           formData.errorImage = '';
-          formData.hotNews = responseData.hot_news ? responseData.hot_news : false;
+          formData.hotNews = responseData.hot_news !== '';
           formData.description = responseData.description
+          formData.descriptionEn = responseData.descriptionEn
+          formData.priority = responseData.hot_news !== '' ? responseData.hot_news : 0
         } else {
           showToast('error', 'Không lấy được thông tin');
           router.push('/activities');
@@ -436,10 +444,9 @@ const handleDraft = () => {
       contentEn: formData.contentType === contentTypeEnum.HTML ? formData.contentEn : formData.link,
       content_type: formData.contentType,
       release_date: formData.releaseDate,
-      hot_news: formData.hotNews,
+      hot_news: formData.hotNews ? formData.priority : '',
       ...(formData.hotNews && {description: formData.description}),
       ...(formData.hotNews && {descriptionEn: formData.descriptionEn}),
-      priority: formData.priority
     }
   };
 
@@ -478,10 +485,9 @@ const onFinish = () => {
         contentEn: formData.contentType === contentTypeEnum.HTML ? formData.contentEn : formData.link,
         content_type: formData.contentType,
         release_date: formData.releaseDate,
-        hot_news: formData.hotNews,
+        hot_news: formData.hotNews ? formData.priority : '',
         ...(formData.hotNews && {description: formData.description}),
-        ...(formData.hotNews && {descriptionEn: formData.descriptionEn}),
-        priority: formData.priority
+        ...(formData.hotNews && {descriptionEn: formData.descriptionEn})
       }
     };
 

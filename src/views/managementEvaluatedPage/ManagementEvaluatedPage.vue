@@ -28,238 +28,296 @@ const introduction = ref(null);
 const toolbarIntroduction = computed(() => ToolbarEditor(introduction))
 
 const formState = reactive({
-    introduction: '',
-    esg: { title: '', image: [], document: [] },
-    nec: { title: '', image: [], document: [] },
+  introduction: '',
+  introductionEn: '',
+  esg: {title: '', titleEn: '', image: [], document: []},
+  nec: {title: '', titleEn: '', image: [], document: []},
+  kdbt: {title: '', titleEn: '', image: [], document: []},
 })
 
 const otherState = reactive({
-    loading: false
+  loading: false
 })
 
 const routes = [
-    { name: 'Home', to: '/' },
-    { name: 'Quản lý trang công cụ đánh giá', to: '/management_evaluated_page' }
+  {name: 'Home', to: '/'},
+  {name: 'Quản lý trang công cụ đánh giá', to: '/management_evaluated_page'}
 ];
 
 const pid = 'EVALUATE'
 
 const validateMessages = {
-    required: "${label} là bắt buộc",
+  required: "${label} là bắt buộc",
 };
 
 const uploadFile = (options) => {
-    const { onError, data, file, onProgress } = options;
+  const {onError, data, file, onProgress} = options;
 
-    uploadImage(file, onProgress)
-        .then(response => {
-            const responseData = handleResponse(response.status, response.data);
-            console.log(responseData)
-            if (!responseData) {
-                const error = new Error('Uploaded Failed');
-                onError(error);
-            }
+  uploadImage(file, onProgress)
+      .then(response => {
+        const responseData = handleResponse(response.status, response.data);
+        console.log(responseData)
+        if (!responseData) {
+          const error = new Error('Uploaded Failed');
+          onError(error);
+        }
 
-            const result = {
-                file: file,
-                name: file.name,
-                status: 'done',
-                response: responseData,
-                url: handleGoogleImageLink(responseData.data.file_url)
-            }
+        const result = {
+          file: file,
+          name: file.name,
+          status: 'done',
+          response: responseData,
+          url: handleGoogleImageLink(responseData.data.file_url)
+        }
 
-            switch (data.form) {
-                case ENUM.FORM_ID.ESG:
-                    if (data.type === 'image') {
-                        formState.esg.image = [result]
-                    } else {
-                        formState.esg.document = [result]
-                    }
-                    return;
-                case ENUM.FORM_ID.NEC:
-                    if (data.type === 'image') {
-                        formState.nec.image = [result]
-                    } else {
-                        formState.nec.document = [result]
-                    }
-                    return;
+        switch (data.form) {
+          case ENUM.FORM_ID.ESG:
+            if (data.type === 'image') {
+              formState.esg.image = [result]
+            } else {
+              formState.esg.document = [result]
             }
-        })
-        .catch(error => {
-            console.log('Lỗi khi upload', error);
-            formState.image = [];
-        });
+            return;
+          case ENUM.FORM_ID.NEC:
+            if (data.type === 'image') {
+              formState.nec.image = [result]
+            } else {
+              formState.nec.document = [result]
+            }
+            return;
+          case ENUM.FORM_ID.KDBT:
+            if (data.type === 'image') {
+              formState.kdbt.image = [result]
+            } else {
+              formState.kdbt.document = [result]
+            }
+            return;
+        }
+      })
+      .catch(error => {
+        console.log('Lỗi khi upload', error);
+        formState.image = [];
+      });
 }
 
 onMounted(() => {
-    getContent()
+  getContent()
 })
 
 const getContent = () => {
-    getByPageID(pid)
-        .then(response => {
-            console.log(JSON.stringify(response))
-            const responseData = handleResponse(response.status, response.data);
-            const decodeContent = JSON.parse(Buffer.from(responseData.data.content.split('.')[1], 'base64').toString());
-            formState.introduction = decodeContent.data.introduction
-            formState.esg.title = decodeContent.data.esg.title
-            formState.esg.image = decodeContent.data.esg.image.map(i => {
-              return {...i, ...{url: handleGoogleImageLink(i.url)}}
-            })
-            formState.esg.document = decodeContent.data.esg.document
-            formState.nec.title = decodeContent.data.nec.title
-            formState.nec.image = decodeContent.data.nec.image.map(i => {
-              return {...i, ...{url: handleGoogleImageLink(i.url)}}
-            })
-            formState.nec.document = decodeContent.data.nec.document
+  getByPageID(pid)
+      .then(response => {
+        console.log(JSON.stringify(response))
+        const responseData = handleResponse(response.status, response.data);
+        const decodeContent = JSON.parse(Buffer.from(responseData.data.content.split('.')[1], 'base64').toString());
+        formState.introduction = decodeContent.data.introduction
+        formState.introductionEn = decodeContent.data.introductionEn
+
+        formState.esg.title = decodeContent.data.esg.title
+        formState.esg.titleEn = decodeContent.data.esg.titleEn
+        formState.esg.image = decodeContent.data.esg.image.map(i => {
+          return {...i, ...{url: handleGoogleImageLink(i.url)}}
         })
-        .catch((err) => {
-            console.log('Lấy dữ liệu thất bại ', err)
-            handleResponse(err.response.status, err.response.data)
+        formState.esg.document = decodeContent.data.esg.document
+
+        formState.nec.title = decodeContent.data.nec.title
+        formState.nec.titleEn = decodeContent.data.nec.titleEn
+        formState.nec.image = decodeContent.data.nec.image.map(i => {
+          return {...i, ...{url: handleGoogleImageLink(i.url)}}
         })
+        formState.nec.document = decodeContent.data.nec.document
+
+        formState.kdbt.title = decodeContent.data.kdbt.title
+        formState.kdbt.titleEn = decodeContent.data.kdbt.titleEn
+        formState.kdbt.image = decodeContent.data.kdbt.image.map(i => {
+          return {...i, ...{url: handleGoogleImageLink(i.url)}}
+        })
+        formState.kdbt.document = decodeContent.data.kdbt.document
+      })
+      .catch((err) => {
+        console.log('Lấy dữ liệu thất bại ', err)
+        handleResponse(err.response.status, err.response.data)
+      })
 }
 const handlePreview = () => {
-    const dataPreview = {
-        introduction: formState.introduction,
-        esg: formState.esg,
-        nec: formState.nec
-    }
-    previewerStore.updatePreviewEvaluatedPage(dataPreview)
-    previewerStore.updateIsPreview(true)
+  const dataPreview = {
+    introduction: formState.introduction,
+    esg: formState.esg,
+    nec: formState.nec,
+    kdbt: formState.kdbt
+  }
+  previewerStore.updatePreviewEvaluatedPage(dataPreview)
+  previewerStore.updateIsPreview(true)
 }
 
 const handleSubmit = () => {
-    otherState.loading = true;
+  otherState.loading = true;
 
-    const body = {
-        page_id: pid,
-        content: { ...formState }
-    };
+  const body = {
+    page_id: pid,
+    content: {...formState},
+    contentEn: {}
+  };
 
-    const callback = () => {
-        saveData(body)
-            .then((response) => {
-                const handledResponse = handleResponse(response.status, response.data)
-                if (handledResponse) {
-                    showToast('success', 'Success')
-                }
-            }).catch((err) => {
-                console.log('Lưu home page data thất bại ', err)
-                showToast('error', 'Lưu cài đặt thất bại');
-                handleResponse(err.response.status, err.response.data)
-            }).finally(() => {
-                otherState.loading = false;
-            })
-    }
-    ModalConfirm("Lưu bài viết", "Hành động này sẽ lưu dữ liệu và cập nhật dữ liệu này trên website. Bạn chắc chắn muốn thực hiện chứ!", callback)
+  const callback = () => {
+    saveData(body)
+        .then((response) => {
+          const handledResponse = handleResponse(response.status, response.data)
+          if (handledResponse) {
+            showToast('success', 'Success')
+          }
+        }).catch((err) => {
+      console.log('Lưu trang công cụ đánh giá thất bại ', err)
+      showToast('error', 'Lưu cài đặt thất bại');
+      handleResponse(err.response.status, err.response.data)
+    }).finally(() => {
+      otherState.loading = false;
+    })
+  }
+  ModalConfirm("Lưu bài viết", "Hành động này sẽ lưu dữ liệu và cập nhật dữ liệu này trên website. Bạn chắc chắn muốn thực hiện chứ!", callback)
 }
 </script>
 
 <template>
-    <div class="mb-5">
-        <BreadCrumb :routes="routes" />
-    </div>
+  <div class="mb-5">
+    <BreadCrumb :routes="routes"/>
+  </div>
 
-    <div class="bg-white p-10">
-        <TitlePage label="QUẢN LÝ NỘI DUNG TRANG CÔNG CỤ ĐÁNH GIÁ" />
-        <a-form :model="formState" :validate-messages="validateMessages" layout="vertical" @finish="handleSubmit">
-            <DividerWithTitle label="Phần giới thiệu" />
-            <a-form-item :rules="[{ required: true }]" label="Nội dung phần giới thiệu" name="introduction">
-                <div class="w-full">
-                    <quill-editor ref="introduction" v-model:content="formState.introduction" :modules="ModulesEditor"
+  <div class="bg-white p-10">
+    <TitlePage label="QUẢN LÝ NỘI DUNG TRANG CÔNG CỤ ĐÁNH GIÁ"/>
+    <a-form :model="formState" :validate-messages="validateMessages" layout="vertical" @finish="handleSubmit">
+      <DividerWithTitle label="Phần giới thiệu"/>
+      <a-form-item :rules="[{ required: true }]" label="Nội dung phần giới thiệu" name="introduction">
+        <div class="w-full">
+          <quill-editor ref="introduction" v-model:content="formState.introduction" :modules="ModulesEditor"
                         :toolbar="toolbarIntroduction" class="min-h-[300px] max-h-[700px] overflow-x-scroll"
                         content-type="html">
-                    </quill-editor>
-                </div>
-            </a-form-item>
-            <a-form-item :rules="[{ required: true }]" label="Nội dung phần giới thiệu tiếng Anh" name="introduction">
-                <div class="w-full">
-                    <quill-editor ref="introduction" v-model:content="formState.introduction" :modules="ModulesEditor"
-                                  :toolbar="toolbarIntroduction" class="min-h-[300px] max-h-[700px] overflow-x-scroll"
-                                  content-type="html">
-                    </quill-editor>
-                </div>
-            </a-form-item>
-            <DividerWithTitle label="Chỉnh sửa công cụ ESG" />
-            <a-form-item label="Tiêu đề" :name="['esg', 'title']" required>
-                <a-input v-model:value="formState.esg.title" placeholder="Tiêu đề" />
-            </a-form-item>
-            <a-form-item label="Tiêu đề tiếng Anh" :name="['esg', 'title']" required>
-                <a-input v-model:value="formState.esg.title" placeholder="Tiêu đề" />
-            </a-form-item>
-            <a-row>
-                <a-col :xs="24" :md="12">
-                    <a-form-item label="Thumbnail" :name="['esg', 'image']"
-                        :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
-                        <a-upload v-model:file-list="formState.esg.image" :custom-request="uploadFile"
-                            :data="{ type: 'image', form: 'ESG' }" :max-count="1" accept=".png, .jpg, .jpeg"
-                            list-type="picture-card" @preview="open">
-                            <div v-if="formState.esg.image.length < 2">
-                                <plus-outlined />
-                                <div>Upload</div>
-                            </div>
-                        </a-upload>
-                    </a-form-item>
-                </a-col>
-                <a-col :xs="24" :md="12">
-                    <a-form-item label="Tài liệu hướng dẫn" :name="['esg', 'document']"
-                        :rules="[{ required: true, message: 'Tài liệu chưa được upload' }]">
-                        <a-upload v-model:file-list="formState.esg.document" :data="{ type: 'doc', form: 'ESG' }"
-                            :max-count="1" accept=".docx, .pdf, .mp4, .csv, .xlsx, .pptx" :custom-request="uploadFile">
-                            <a-button v-if="formState.esg.document.length < 1" class="flex justify-center items-center">
-                                <UploadOutlined />
-                                <span>Upload</span>
-                            </a-button>
-                        </a-upload>
-                    </a-form-item>
-                </a-col>
-            </a-row>
+          </quill-editor>
+        </div>
+      </a-form-item>
+      <a-form-item :rules="[{ required: true }]" label="Nội dung phần giới thiệu tiếng Anh" name="introductionEn">
+        <div class="w-full">
+          <quill-editor ref="introduction" v-model:content="formState.introductionEn" :modules="ModulesEditor"
+                        :toolbar="toolbarIntroduction" class="min-h-[300px] max-h-[700px] overflow-x-scroll"
+                        content-type="html">
+          </quill-editor>
+        </div>
+      </a-form-item>
+      <DividerWithTitle label="Chỉnh sửa công cụ ESG"/>
+      <a-form-item label="Tiêu đề" :name="['esg', 'title']" required>
+        <a-input v-model:value="formState.esg.title" placeholder="Tiêu đề"/>
+      </a-form-item>
+      <a-form-item label="Tiêu đề Tiếng Anh" :name="['esg', 'titleEn']" required>
+        <a-input v-model:value="formState.esg.titleEn" placeholder="Tiêu đề Tiếng Anh"/>
+      </a-form-item>
+      <a-row>
+        <a-col :xs="24" :md="12">
+          <a-form-item label="Thumbnail" :name="['esg', 'image']"
+                       :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
+            <a-upload v-model:file-list="formState.esg.image" :custom-request="uploadFile"
+                      :data="{ type: 'image', form: 'ESG' }" :max-count="1" accept=".png, .jpg, .jpeg"
+                      list-type="picture-card" @preview="open">
+              <div v-if="formState.esg.image.length < 2">
+                <plus-outlined/>
+                <div>Upload</div>
+              </div>
+            </a-upload>
+          </a-form-item>
+        </a-col>
+        <a-col :xs="24" :md="12">
+          <a-form-item label="Tài liệu hướng dẫn" :name="['esg', 'document']"
+                       :rules="[{ required: true, message: 'Tài liệu chưa được upload' }]">
+            <a-upload v-model:file-list="formState.esg.document" :data="{ type: 'doc', form: 'ESG' }"
+                      :max-count="1" accept=".docx, .pdf, .mp4, .csv, .xlsx, .pptx" :custom-request="uploadFile">
+              <a-button v-if="formState.esg.document.length < 1" class="flex justify-center items-center">
+                <UploadOutlined/>
+                <span>Upload</span>
+              </a-button>
+            </a-upload>
+          </a-form-item>
+        </a-col>
+      </a-row>
 
-            <DividerWithTitle label="Chỉnh sửa công cụ NEC" />
-            <a-form-item label="Tiêu đề" :name="['nec', 'title']" required>
-                <a-input v-model:value="formState.nec.title" placeholder="Tiêu đề" />
-            </a-form-item>
-            <a-form-item label="Tiêu đề tiếng Anh" :name="['nec', 'title']" required>
-                <a-input v-model:value="formState.nec.title" placeholder="Tiêu đề" />
-            </a-form-item>
-            <a-row>
-                <a-col :xs="24" :md="12">
-                    <a-form-item label="Thumbnail" :name="['nec', 'image']"
-                        :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
-                        <a-upload v-model:file-list="formState.nec.image" :custom-request="uploadFile"
-                            :data="{ type: 'image', form: 'NEC' }" :max-count="1" accept=".png, .jpg, .jpeg"
-                            list-type="picture-card" @preview="open">
-                            <div v-if="formState.nec.image.length < 1">
-                                <plus-outlined />
-                                <div>Upload</div>
-                            </div>
-                        </a-upload>
-                    </a-form-item>
-                </a-col>
-                <a-col :xs="24" :md="12">
-                    <a-form-item label="Tài liệu hướng dẫn" :name="['nec', 'document']"
-                        :rules="[{ required: true, message: 'Tài liệu chưa được upload' }]">
-                        <a-upload v-model:file-list="formState.nec.document" :data="{ type: 'doc', form: 'NEC' }"
-                            :max-count="1" accept=".docx, .pdf, .mp4, .csv, .xlsx, .pptx" :custom-request="uploadFile">
-                            <a-button v-if="formState.nec.document.length < 1" class="flex justify-center items-center">
-                                <UploadOutlined />
-                                <span>Upload</span>
-                            </a-button>
-                        </a-upload>
-                    </a-form-item>
-                </a-col>
-            </a-row>
+      <DividerWithTitle label="Chỉnh sửa công cụ NEC"/>
+      <a-form-item label="Tiêu đề" :name="['nec', 'title']" required>
+        <a-input v-model:value="formState.nec.title" placeholder="Tiêu đề"/>
+      </a-form-item>
+      <a-form-item label="Tiêu đề Tiếng Anh" :name="['nec', 'titleEn']" required>
+        <a-input v-model:value="formState.nec.titleEn" placeholder="Tiêu đề Tiếng Anh"/>
+      </a-form-item>
+      <a-row>
+        <a-col :xs="24" :md="12">
+          <a-form-item label="Thumbnail" :name="['nec', 'image']"
+                       :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
+            <a-upload v-model:file-list="formState.nec.image" :custom-request="uploadFile"
+                      :data="{ type: 'image', form: 'NEC' }" :max-count="1" accept=".png, .jpg, .jpeg"
+                      list-type="picture-card" @preview="open">
+              <div v-if="formState.nec.image.length < 1">
+                <plus-outlined/>
+                <div>Upload</div>
+              </div>
+            </a-upload>
+          </a-form-item>
+        </a-col>
+        <a-col :xs="24" :md="12">
+          <a-form-item label="Tài liệu hướng dẫn" :name="['nec', 'document']"
+                       :rules="[{ required: true, message: 'Tài liệu chưa được upload' }]">
+            <a-upload v-model:file-list="formState.nec.document" :data="{ type: 'doc', form: 'NEC' }"
+                      :max-count="1" accept=".docx, .pdf, .mp4, .csv, .xlsx, .pptx" :custom-request="uploadFile">
+              <a-button v-if="formState.nec.document.length < 1" class="flex justify-center items-center">
+                <UploadOutlined/>
+                <span>Upload</span>
+              </a-button>
+            </a-upload>
+          </a-form-item>
+        </a-col>
+      </a-row>
 
-            <div class="flex justify-end gap-2 mt-5">
-                <a-button @click.prevent="handlePreview">
-                    Xem trước kết quả
-                </a-button>
-                <a-button :loading="otherState.loading" class="bg-[#1677ff]" html-type="submit" type="primary">
-                    Lưu cài đặt
-                </a-button>
-            </div>
-        </a-form>
-    </div>
+      <DividerWithTitle label="Chỉnh sửa công cụ KDBT"/>
+      <a-form-item label="Tiêu đề" :name="['kdbt', 'title']" required>
+        <a-input v-model:value="formState.kdbt.title" placeholder="Tiêu đề"/>
+      </a-form-item>
+      <a-form-item label="Tiêu đề Tiếng Anh" :name="['kdbt', 'titleEn']" required>
+        <a-input v-model:value="formState.kdbt.titleEn" placeholder="Tiêu đề Tiếng Anh"/>
+      </a-form-item>
+      <a-row>
+        <a-col :xs="24" :md="12">
+          <a-form-item label="Thumbnail" :name="['kdbt', 'image']"
+                       :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
+            <a-upload v-model:file-list="formState.kdbt.image" :custom-request="uploadFile"
+                      :data="{ type: 'image', form: 'KDBT' }" :max-count="1" accept=".png, .jpg, .jpeg"
+                      list-type="picture-card" @preview="open">
+              <div v-if="formState.kdbt.image.length < 1">
+                <plus-outlined/>
+                <div>Upload</div>
+              </div>
+            </a-upload>
+          </a-form-item>
+        </a-col>
+        <a-col :xs="24" :md="12">
+          <a-form-item label="Tài liệu hướng dẫn" :name="['kdbt', 'document']"
+                       :rules="[{ required: true, message: 'Tài liệu chưa được upload' }]">
+            <a-upload v-model:file-list="formState.kdbt.document" :data="{ type: 'doc', form: 'KDBT' }"
+                      :max-count="1" accept=".docx, .pdf, .mp4, .csv, .xlsx, .pptx" :custom-request="uploadFile">
+              <a-button v-if="formState.kdbt.document.length < 1" class="flex justify-center items-center">
+                <UploadOutlined/>
+                <span>Upload</span>
+              </a-button>
+            </a-upload>
+          </a-form-item>
+        </a-col>
+      </a-row>
 
-    <PreviewEvaluatedPage />
+      <div class="flex justify-end gap-2 mt-5">
+        <a-button @click.prevent="handlePreview">
+          Xem trước kết quả
+        </a-button>
+        <a-button :loading="otherState.loading" class="bg-[#1677ff]" html-type="submit" type="primary">
+          Lưu cài đặt
+        </a-button>
+      </div>
+    </a-form>
+  </div>
+
+  <PreviewEvaluatedPage/>
 </template>

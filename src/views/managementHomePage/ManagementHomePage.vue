@@ -286,18 +286,18 @@ const placeMissionByIndex = (index) => {
                        :rules="[{ required: true }]">
             <a-textarea v-model:value="slide.title" rows="3"/>
           </a-form-item>
-          <a-form-item :label="['Tiêu đề tiếng Anh ', index + 1]" :name="['bannerSlides', index, 'title']"
-                       :rules="[{ required: true }]">
-            <a-textarea v-model:value="slide.title" rows="3"/>
-          </a-form-item>
+<!--          <a-form-item :label="['Tiêu đề tiếng Anh ', index + 1]" :name="['bannerSlides', index, 'title']"-->
+<!--                       :rules="[{ required: true }]">-->
+<!--            <a-textarea v-model:value="slide.title" rows="3"/>-->
+<!--          </a-form-item>-->
           <a-form-item :label="['Nội dung ', index + 1]" :name="['bannerSlides', index, 'description']"
                        :rules="[{ required: false }]">
             <a-textarea v-model:value="slide.description" rows="5"/>
           </a-form-item>
-          <a-form-item :label="['Nội dung tiếng Anh ', index + 1]" :name="['bannerSlides', index, 'description']"
-                       :rules="[{ required: false }]">
-            <a-textarea v-model:value="slide.description" rows="5"/>
-          </a-form-item>
+<!--          <a-form-item :label="['Nội dung tiếng Anh ', index + 1]" :name="['bannerSlides', index, 'description']"-->
+<!--                       :rules="[{ required: false }]">-->
+<!--            <a-textarea v-model:value="slide.description" rows="5"/>-->
+<!--          </a-form-item>-->
           <a-form-item :label="['Đường dẫn  ', index + 1]" :name="['bannerSlides', index, 'target']"
                        :rules="[{ required: false }]">
             <a-input v-model:value="slide.target"
@@ -307,10 +307,10 @@ const placeMissionByIndex = (index) => {
                        :rules="[{ required: false }]">
             <a-input v-model:value="slide.labelBtn" placeholder="Tên nút"/>
           </a-form-item>
-          <a-form-item :label="['Tên nút tiếng Anh ', index + 1]" :name="['bannerSlides', index, 'labelBtn']"
-                       :rules="[{ required: false }]">
-            <a-input v-model:value="slide.labelBtn" placeholder="Tên nút"/>
-          </a-form-item>
+<!--          <a-form-item :label="['Tên nút tiếng Anh ', index + 1]" :name="['bannerSlides', index, 'labelBtn']"-->
+<!--                       :rules="[{ required: false }]">-->
+<!--            <a-input v-model:value="slide.labelBtn" placeholder="Tên nút"/>-->
+<!--          </a-form-item>-->
           <a-form-item :label="['Ảnh nền slide ', index + 1]" :name="['bannerSlides', index, 'image']"
                        :rules="[{ required: true, message: 'Ảnh chưa được upload' }]">
             <a-upload v-model:file-list="slide.image" :custom-request="uploadFile"
@@ -340,21 +340,21 @@ const placeMissionByIndex = (index) => {
           <a-textarea v-model:value="formState.homePageTitle.title" rows="5"/>
         </div>
       </a-form-item>
-      <a-form-item :rules="[{ required: true }]" label="Tiêu đề tiếng Anh" name="homePageTitle">
-        <div class="w-full">
-          <a-textarea v-model:value="formState.homePageTitle.title" rows="5"/>
-        </div>
-      </a-form-item>
+<!--      <a-form-item :rules="[{ required: true }]" label="Tiêu đề tiếng Anh" name="homePageTitle">-->
+<!--        <div class="w-full">-->
+<!--          <a-textarea v-model:value="formState.homePageTitle.title" rows="5"/>-->
+<!--        </div>-->
+<!--      </a-form-item>-->
       <a-form-item :rules="[{ required: true }]" label="Nội dung" name="homePageTitle">
         <div class="w-full">
           <a-textarea v-model:value="formState.homePageTitle.description" rows="5"/>
         </div>
       </a-form-item>
-      <a-form-item :rules="[{ required: true }]" label="Nội dung tiếng Anh" name="homePageTitle">
-        <div class="w-full">
-          <a-textarea v-model:value="formState.homePageTitle.description" rows="5"/>
-        </div>
-      </a-form-item>
+<!--      <a-form-item :rules="[{ required: true }]" label="Nội dung tiếng Anh" name="homePageTitle">-->
+<!--        <div class="w-full">-->
+<!--          <a-textarea v-model:value="formState.homePageTitle.description" rows="5"/>-->
+<!--        </div>-->
+<!--      </a-form-item>-->
 
       <DividerWithTitle label="Phần mục tiêu"/>
       <div v-for="(mission, index) in formState.missions" class="flex items-center">
@@ -369,12 +369,12 @@ const placeMissionByIndex = (index) => {
               <a-textarea v-model:value="mission.title" rows="3"/>
             </div>
           </a-form-item>
-          <a-form-item :label="['Tiêu đề mục tiêu tiếng Anh ', placeMissionByIndex(index)]" :name="['missions', index, 'title']"
-                       :rules="[{ required: true }]">
-            <div class="w-full">
-              <a-textarea v-model:value="mission.title" rows="3"/>
-            </div>
-          </a-form-item>
+<!--          <a-form-item :label="['Tiêu đề mục tiêu tiếng Anh ', placeMissionByIndex(index)]" :name="['missions', index, 'title']"-->
+<!--                       :rules="[{ required: true }]">-->
+<!--            <div class="w-full">-->
+<!--              <a-textarea v-model:value="mission.title" rows="3"/>-->
+<!--            </div>-->
+<!--          </a-form-item>-->
           <a-form-item :label="['Nội dung mục tiêu ', placeMissionByIndex(index)]"
                        :name="['missions', index, 'content']"
                        :rules="[{ required: true }]">
@@ -382,13 +382,13 @@ const placeMissionByIndex = (index) => {
               <a-textarea v-model:value="mission.content" rows="3"/>
             </div>
           </a-form-item>
-          <a-form-item :label="['Nội dung mục tiêu tiếng Anh ', placeMissionByIndex(index)]"
-                       :name="['missions', index, 'content']"
-                       :rules="[{ required: true }]">
-            <div class="w-full">
-              <a-textarea v-model:value="mission.content" rows="3"/>
-            </div>
-          </a-form-item>
+<!--          <a-form-item :label="['Nội dung mục tiêu tiếng Anh ', placeMissionByIndex(index)]"-->
+<!--                       :name="['missions', index, 'content']"-->
+<!--                       :rules="[{ required: true }]">-->
+<!--            <div class="w-full">-->
+<!--              <a-textarea v-model:value="mission.content" rows="3"/>-->
+<!--            </div>-->
+<!--          </a-form-item>-->
           <!-- <a-form-item :label="['Icon ', index + 1]"
                        :name="['missions', index, 'icon']"
                        :rules="[{required: true}]">
@@ -420,20 +420,20 @@ const placeMissionByIndex = (index) => {
                    :rules="[{ required: true }]">
         <a-textarea v-model:value="formState.descriptionEvaluate" rows="3"/>
       </a-form-item>
-      <a-form-item label="Mô tả công cụ đánh giá tiếng Anh" name="descriptionEvaluate" class="basis-full"
-                   :rules="[{ required: true }]">
-        <a-textarea v-model:value="formState.descriptionEvaluate" rows="3"/>
-      </a-form-item>
+<!--      <a-form-item label="Mô tả công cụ đánh giá tiếng Anh" name="descriptionEvaluate" class="basis-full"-->
+<!--                   :rules="[{ required: true }]">-->
+<!--        <a-textarea v-model:value="formState.descriptionEvaluate" rows="3"/>-->
+<!--      </a-form-item>-->
       <div v-for="(slide, index) in formState.evaluateSlides" class="flex items-center">
         <div class="basis-full">
           <a-form-item :label="['Tiêu đề ', index + 1]" :name="['evaluateSlides', index, 'title']"
                        :rules="[{ required: true }]">
             <a-textarea v-model:value="slide.title" rows="3"/>
           </a-form-item>
-          <a-form-item :label="['Tiêu đề tiếng Anh ', index + 1]" :name="['evaluateSlides', index, 'title']"
-                       :rules="[{ required: true }]">
-            <a-textarea v-model:value="slide.title" rows="3"/>
-          </a-form-item>
+<!--          <a-form-item :label="['Tiêu đề tiếng Anh ', index + 1]" :name="['evaluateSlides', index, 'title']"-->
+<!--                       :rules="[{ required: true }]">-->
+<!--            <a-textarea v-model:value="slide.title" rows="3"/>-->
+<!--          </a-form-item>-->
           <a-form-item :label="['Đường dẫn ', index + 1]" :name="['evaluateSlides', index, 'target']"
                        :rules="[{ required: true }]">
             <a-input v-model:value="slide.target" placeholder="Đường dẫn đến biểu mãu đánh giá"/>
@@ -455,7 +455,7 @@ const placeMissionByIndex = (index) => {
           <minus-circle-outlined/>
         </a-button>
       </div>
-      <a-button v-if="formState.evaluateSlides.length < 2" class="flex items-center" type="dashed"
+      <a-button v-if="formState.evaluateSlides.length < 3" class="flex items-center" type="dashed"
                 @click="addEvaluateSlide">
         <plus-outlined/>
         Thêm slide
@@ -473,17 +473,17 @@ const placeMissionByIndex = (index) => {
           <!--          <quill-editor v-model:value="formState.introduction.description" rows="5"/>-->
         </div>
       </a-form-item>
-      <a-form-item :rules="[{ required: true }]" label="Nội dung tiếng Anh" name="introduction">
-        <div class="w-full">
-          <quill-editor ref="esgHomeQuill"
-                        v-model:content="formState.introduction.description"
-                        :modules="ModulesEditor"
-                        :toolbar="toolbarESGHome"
-                        class="min-h-[300px] max-h-[700px] overflow-x-scroll"
-                        content-type="html"/>
-          <!--          <quill-editor v-model:value="formState.introduction.description" rows="5"/>-->
-        </div>
-      </a-form-item>
+<!--      <a-form-item :rules="[{ required: true }]" label="Nội dung tiếng Anh" name="introduction">-->
+<!--        <div class="w-full">-->
+<!--          <quill-editor ref="esgHomeQuill"-->
+<!--                        v-model:content="formState.introduction.description"-->
+<!--                        :modules="ModulesEditor"-->
+<!--                        :toolbar="toolbarESGHome"-->
+<!--                        class="min-h-[300px] max-h-[700px] overflow-x-scroll"-->
+<!--                        content-type="html"/>-->
+<!--          &lt;!&ndash;          <quill-editor v-model:value="formState.introduction.description" rows="5"/>&ndash;&gt;-->
+<!--        </div>-->
+<!--      </a-form-item>-->
       <a-form-item :rules="[{ required: true }]" label="Đường dẫn video" name="introduction">
         <div class="w-full">
           <a-textarea v-model:value="formState.introduction.videoURL" rows="1"/>
