@@ -22,7 +22,7 @@
           </a-form-item>
         </a-col>
         <a-col :md="12" :xs="24">
-          <a-form-item :rules="[{required: true}]"
+          <a-form-item :rules="[{required: false}]"
                        label="Tiêu đề Tiếng Anh"
                        name="titleEn">
             <a-input v-model:value="formData.titleEn"
@@ -70,8 +70,7 @@
                         :rows="4"
                         placeholder="Mô tả bài viết"/>
           </a-form-item>
-          <a-form-item :rules="[{required: formData.hotNews}]"
-                       label="Mô tả Tiếng Anh"
+          <a-form-item label="Mô tả Tiếng Anh"
                        name="descriptionEn">
             <a-textarea v-model:value="formData.descriptionEn"
                         :rows="4"
@@ -140,7 +139,7 @@
                 </quill-editor>
               </div>
             </a-form-item>
-            <a-form-item :rules="[{required: true}]"
+            <a-form-item :rules="[{required: false}]"
                          label="Nội dung Tiếng Anh"
                          name="contentEn">
               <div class="w-full">
