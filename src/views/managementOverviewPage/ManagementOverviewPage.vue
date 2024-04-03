@@ -111,7 +111,7 @@ const handleSubmit = () => {
                         content-type="html"/>
         </div>
       </a-form-item>
-      <a-form-item :rules="[{required: true, message: 'Nội dung không được để trống'}]"
+      <a-form-item :rules="[{required: false, message: 'Nội dung không được để trống'}]"
                    label="Nội dung tiếng Anh"
                    name="contentEn">
         <div class="w-full">
