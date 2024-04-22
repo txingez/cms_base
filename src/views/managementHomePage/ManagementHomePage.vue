@@ -193,7 +193,6 @@ const getContent = () => {
       .then(response => {
         const responseData = handleResponse(response.status, response.data);
         const decodeContent = JSON.parse(Buffer.from(responseData.data.content.split('.')[1], 'base64').toString());
-        console.log(JSON.stringify(decodeContent))
         formState.bannerSlides = decodeContent.data.bannerSlides.map(slide => {
           return {
             ...slide, ...{
@@ -225,7 +224,8 @@ const getContent = () => {
         })
         formState.stories = decodeContent.data.stories
         formState.homePageTitle = decodeContent.data.homePageTitle
-        formState.events = decodeContent.data.events
+        console.log(decodeContent.data.events)
+        formState.events = decodeContent.data.events ? decodeContent.data.events : []
       })
       .catch((err) => {
         console.log('Lấy dữ liệu thất bại ', err)
