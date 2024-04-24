@@ -51,6 +51,7 @@ const formState = reactive({
     contents: [
       {
         datetime: '',
+        datetimeEn: '',
         title: '',
         description: '',
         titleEn: '',
@@ -128,7 +129,6 @@ const getContent = () => {
         console.log(JSON.stringify(response))
         const responseData = handleResponse(response.status, response.data);
         const decodeContent = JSON.parse(Buffer.from(responseData.data.content.split('.')[1], 'base64').toString());
-        console.log(decodeContent.data.banner)
         formState.banner = decodeContent.data.banner.map(b => {
           return {...b, ...{url: handleGoogleImageLink(b.url)}}
         })
@@ -172,6 +172,7 @@ const addEvent = (index) => {
   formState.timeline.contents.push(
       {
         datetime: '',
+        datetimeEn: '',
         title: '',
         description: '',
         titleEn: '',
@@ -352,6 +353,9 @@ const handleSubmit = () => {
         <div class="basis-full">
           <a-form-item :label="['Mốc thời gian ', index + 1]" :name="['contents', index, 'datetime']">
             <a-input v-model:value="content.datetime" placeholder="Thời gian"/>
+          </a-form-item>
+          <a-form-item :label="['Mốc thời gian tiếng Anh ', index + 1]" :name="['contents', index, 'datetimeEn']">
+            <a-input v-model:value="content.datetimeEn" placeholder="Thời gian tiếng Anh"/>
           </a-form-item>
           <a-form-item :label="['Tiêu đề tiêu đề sự kiện ', index + 1]" :name="['contents', index, 'title']">
             <a-textarea v-model:value="content.title" rows="4"/>
