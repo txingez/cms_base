@@ -67,27 +67,27 @@ const uploadFile = (options) => {
           name: file.name,
           status: 'done',
           response: responseData,
-          url: handleGoogleImageLink(responseData.data.file_url)
+          url: responseData.data.file_url
         }
 
         switch (data.form) {
           case ENUM.FORM_ID.ESG:
             if (data.type === 'image') {
-              formState.esg.image = [result]
+              formState.esg.image = [{...result, ...{url: handleGoogleImageLink(result.url)}}]
             } else {
               formState.esg.document = [result]
             }
             return;
           case ENUM.FORM_ID.NEC:
             if (data.type === 'image') {
-              formState.nec.image = [result]
+              formState.nec.image = [{...result, ...{url: handleGoogleImageLink(result.url)}}]
             } else {
               formState.nec.document = [result]
             }
             return;
           case ENUM.FORM_ID.KDBT:
             if (data.type === 'image') {
-              formState.kdbt.image = [result]
+              formState.kdbt.image = [{...result, ...{url: handleGoogleImageLink(result.url)}}]
             } else {
               formState.kdbt.document = [result]
             }
